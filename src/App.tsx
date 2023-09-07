@@ -1,8 +1,11 @@
 import "@rainbow-me/rainbowkit/styles.css";
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { sepolia, mainnet, polygon, optimism, arbitrum, base, zora } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
+
+import { connectorsForWallets } from "@rainbow-me/rainbowkit";
+import { injectedWallet, metaMaskWallet } from "@rainbow-me/rainbowkit/wallets";
 
 import { publicProvider } from "wagmi/providers/public";
 
@@ -11,11 +14,19 @@ const { chains, publicClient } = configureChains(
 	[infuraProvider({ apiKey: "35a6a592708b48bc8707f2ba01b3aaf2" }), publicProvider()],
 );
 
-const { connectors } = getDefaultWallets({
-	appName: "My RainbowKit App",
-	projectId: "d2e5b14023db785f96b1bbb053881d95",
-	chains,
-});
+const projectId = "d2e5b14023db785f96b1bbb053881d95";
+
+const connectors = connectorsForWallets([
+	{
+		groupName: "Recommended",
+		wallets: [
+			injectedWallet({ chains }),
+			metaMaskWallet({ projectId, chains }),
+			// rainbowWallet({ projectId, chains }),
+			// walletConnectWallet({ projectId, chains }),
+		],
+	},
+]);
 
 const wagmiConfig = createConfig({
 	autoConnect: true,
