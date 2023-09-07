@@ -1,17 +1,13 @@
-// import { WagmiConfig, createConfig, mainnet } from "wagmi";
-// import { createPublicClient, http } from "viem";
-
-//======
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { sepolia } from "wagmi/chains";
+import { sepolia, mainnet, polygon, optimism, arbitrum, base, zora } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
 
 import { publicProvider } from "wagmi/providers/public";
 
 const { chains, publicClient } = configureChains(
-	[sepolia],
+	[sepolia, mainnet, polygon, optimism, arbitrum, base, zora],
 	[infuraProvider({ apiKey: "35a6a592708b48bc8707f2ba01b3aaf2" }), publicProvider()],
 );
 
@@ -27,8 +23,6 @@ const wagmiConfig = createConfig({
 	publicClient,
 });
 
-// =======
-
 import Theme from "./Theme/Theme";
 
 import { ToastContainer } from "react-toastify";
@@ -39,14 +33,6 @@ import { Header } from "./components/Header/Header";
 
 import { Main } from "./components/Main/Main";
 import { TestInfoSection } from "./components/TestInfoSection/TestInfoSection";
-
-// const config = createConfig({
-// 	autoConnect: true,
-// 	publicClient: createPublicClient({
-// 		chain: mainnet,
-// 		transport: http(),
-// 	}),
-// });
 
 function App() {
 	return (
