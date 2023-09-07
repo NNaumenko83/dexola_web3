@@ -19,12 +19,7 @@ const projectId = "d2e5b14023db785f96b1bbb053881d95";
 const connectors = connectorsForWallets([
 	{
 		groupName: "Recommended",
-		wallets: [
-			injectedWallet({ chains }),
-			metaMaskWallet({ projectId, chains }),
-			// rainbowWallet({ projectId, chains }),
-			// walletConnectWallet({ projectId, chains }),
-		],
+		wallets: [injectedWallet({ chains }), metaMaskWallet({ projectId, chains })],
 	},
 ]);
 
