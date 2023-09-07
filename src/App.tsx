@@ -1,5 +1,15 @@
-import { WagmiConfig, createConfig, mainnet } from "wagmi";
-import { createPublicClient, http } from "viem";
+// import { createPublicClient, http } from "viem";
+
+import { WagmiConfig, createConfig, configureChains, mainnet } from "wagmi";
+
+import { infuraProvider } from "wagmi/providers/infura";
+
+import { publicProvider } from "wagmi/providers/public";
+
+import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
+import { InjectedConnector } from "wagmi/connectors/injected";
+import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 
 import Theme from "./Theme/Theme";
 
@@ -12,12 +22,37 @@ import { Header } from "./components/Header/Header";
 import { Main } from "./components/Main/Main";
 import { TestInfoSection } from "./components/TestInfoSection/TestInfoSection";
 
+const { chains, publicClient, webSocketPublicClient } = configureChains(
+	[mainnet],
+	[infuraProvider({ apiKey: "35a6a592708b48bc8707f2ba01b3aaf2" }), publicProvider()],
+);
+
 const config = createConfig({
 	autoConnect: true,
-	publicClient: createPublicClient({
-		chain: mainnet,
-		transport: http(),
-	}),
+	connectors: [
+		new MetaMaskConnector({ chains }),
+		new CoinbaseWalletConnector({
+			chains,
+			options: {
+				appName: "wagmi",
+			},
+		}),
+		new WalletConnectConnector({
+			chains,
+			options: {
+				projectId: "prj_CvNDCcaftr8n4KYBRuDIlC0A6CFV",
+			},
+		}),
+		new InjectedConnector({
+			chains,
+			options: {
+				name: "Injected",
+				shimDisconnect: true,
+			},
+		}),
+	],
+	publicClient,
+	webSocketPublicClient,
 });
 
 function App() {
