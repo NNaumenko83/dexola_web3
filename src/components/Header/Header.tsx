@@ -8,6 +8,8 @@ import { Button, HeaderContainer, HeaderStyled } from "./Header.styled";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
+import contractUnterface from "../../contracts/contract-abi.json";
+
 export const Header = () => {
 	const { address, isConnected } = useAccount();
 	const { connect } = useConnect({
