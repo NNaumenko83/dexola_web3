@@ -5,13 +5,13 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { mainnet, polygon, optimism, arbitrum, base, zora } from "wagmi/chains";
+import { sepolia } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
 
 import { publicProvider } from "wagmi/providers/public";
 
 const { chains, publicClient } = configureChains(
-	[mainnet, polygon, optimism, arbitrum, base, zora],
+	[sepolia],
 	[infuraProvider({ apiKey: "35a6a592708b48bc8707f2ba01b3aaf2" }), publicProvider()],
 );
 
