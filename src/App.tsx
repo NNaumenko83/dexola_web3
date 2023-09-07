@@ -1,3 +1,6 @@
+import { WagmiConfig, createConfig, mainnet } from "wagmi";
+import { createPublicClient, http } from "viem";
+
 import Theme from "./Theme/Theme";
 
 import { ToastContainer } from "react-toastify";
@@ -9,27 +12,37 @@ import { Header } from "./components/Header/Header";
 import { Main } from "./components/Main/Main";
 import { TestInfoSection } from "./components/TestInfoSection/TestInfoSection";
 
+const config = createConfig({
+	autoConnect: true,
+	publicClient: createPublicClient({
+		chain: mainnet,
+		transport: http(),
+	}),
+});
+
 function App() {
 	return (
-		<Theme>
-			<Header />
-			<Main>
-				<TestInfoSection />
-			</Main>
-			<Footer />
-			<ToastContainer
-				position="top-center"
-				autoClose={5000}
-				hideProgressBar={false}
-				newestOnTop={false}
-				closeOnClick
-				rtl={false}
-				pauseOnFocusLoss
-				draggable
-				pauseOnHover
-				theme="light"
-			/>
-		</Theme>
+		<WagmiConfig config={config}>
+			<Theme>
+				<Header />
+				<Main>
+					<TestInfoSection />
+				</Main>
+				<Footer />
+				<ToastContainer
+					position="top-center"
+					autoClose={5000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					draggable
+					pauseOnHover
+					theme="light"
+				/>
+			</Theme>
+		</WagmiConfig>
 	);
 }
 
