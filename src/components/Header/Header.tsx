@@ -7,11 +7,6 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { Button, HeaderContainer, HeaderStyled } from "./Header.styled";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { styled } from "styled-components";
-
-const TestButton = styled(ConnectButton)`
-	background-color: red;
-`;
 
 export const Header = () => {
 	const { address, isConnected } = useAccount();
