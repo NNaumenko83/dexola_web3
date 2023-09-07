@@ -1,35 +1,40 @@
 import { Container } from "../Container/Container";
+import Icon from "../Icon/Icon";
 
-import { useConnect } from "wagmi";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { InjectedConnector } from "wagmi/connectors/injected";
 
-import { /* Button,*/ HeaderContainer, HeaderStyled } from "./Header.styled";
+import { Button, HeaderContainer, HeaderStyled } from "./Header.styled";
+
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export const Header = () => {
-	const { connect, connectors, error, isLoading, pendingConnector } = useConnect();
+	const { address, isConnected } = useAccount();
+	const { connect } = useConnect({
+		connector: new InjectedConnector(),
+	});
+	const { disconnect } = useDisconnect();
 
-	// const connectWalletHandler = () => {
-	// 	console.log("connectWalletHandler");
-	// 	connect();
-	// };
+	const connectWalletHandler = () => {
+		console.log("connectWalletHandler");
+		connect();
+	};
+
+	if (isConnected)
+		return (
+			<div>
+				Connected to {address}
+				<button onClick={() => disconnect()}>Disconnect</button>
+			</div>
+		);
 
 	return (
 		<HeaderStyled>
 			<Container>
 				<HeaderContainer>
-					{/* <Icon name="logo" width={35} height={20} />
-					<Button onClick={connectWalletHandler}> Connect wallet</Button> */}
-
-					<div>
-						{connectors.map(connector => (
-							<button disabled={!connector.ready} key={connector.id} onClick={() => connect({ connector })}>
-								{connector.name}
-								{!connector.ready && " (unsupported)"}
-								{isLoading && connector.id === pendingConnector?.id && " (connecting)"}
-							</button>
-						))}
-
-						{error && <div>{error.message}</div>}
-					</div>
+					<Icon name="logo" width={35} height={20} />
+					<Button onClick={connectWalletHandler}> Connect wallet</Button>
+					<ConnectButton />;
 				</HeaderContainer>
 			</Container>
 		</HeaderStyled>
