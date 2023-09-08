@@ -25,9 +25,10 @@ export const Header = () => {
 	useEffect(() => {
 		const web3 = new Web3(`https://sepolia.infura.io/v3/35a6a592708b48bc8707f2ba01b3aaf2`);
 		console.log("web3:", web3);
+		console.log("web3", web3.currentProvider);
 
 		const test = async () => {
-			const balance = await web3.eth.getBalance(address);
+			const balance = await web3.eth.getBalance("0x16a370583Ad9318049700d02f88b752761001a97");
 			console.log(balance);
 		};
 
