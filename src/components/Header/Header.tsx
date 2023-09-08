@@ -14,7 +14,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import contractABI from "../../contracts/contract-abi.json";
 import contractStrABI from "../../contracts/contract-str-abi.json";
 import { useEffect } from "react";
-import Web3 from "web3";
+import Web3, { AbiBaseFragment } from "web3";
 
 const contractAddress = "0x2f112ed8a96327747565f4d4b4615be8fb89459d";
 const contractStrAddress = "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83";
@@ -34,13 +34,16 @@ const contractStrAddress = "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83";
 // 	};
 // }
 
+// const web3 = new Web3(`https://sepolia.infura.io/v3/35a6a592708b48bc8707f2ba01b3aaf2`);
+
 export const Header = () => {
 	const { address, isConnected } = useAccount();
-
-	const web3 = new Web3(`https://sepolia.infura.io/v3/35a6a592708b48bc8707f2ba01b3aaf2`);
+	const web3 = new Web3(
+		new Web3.providers.HttpProvider("https://sepolia.infura.io/v3/35a6a592708b48bc8707f2ba01b3aaf2"),
+	);
 
 	const contractOne = new web3.eth.Contract(contractABI, contractAddress);
-	const contractStr = new web3.eth.Contract(contractStrABI, contractStrAddress);
+	const contractStrTest = new web3.eth.Contract(contractStrABI, contractStrAddress);
 
 	// const [contractData, setContractData] = useState("");
 	// const [loading, setLoading] = useState(false);
@@ -51,12 +54,12 @@ export const Header = () => {
 			console.log("balance:", balance);
 
 			if (address) {
-				const test = await contractOne.methods.balanceOf(address).call(); // @ts-ignore
-				console.log("test:", test);
+				const testOne = await contractOne.methods.balanceOf(address).call();
+				console.log("testOne:", testOne);
 			}
 
 			if (address) {
-				const strBalance = await contractStr.methods.balanceOf(address).call(); // @ts-ignore
+				const strBalance = await contractStrTest.methods.balanceOf(address).call();
 				console.log("strBalance:", strBalance);
 			}
 
