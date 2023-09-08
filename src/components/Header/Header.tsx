@@ -3,8 +3,6 @@ import Icon from "../Icon/Icon";
 
 import { useAccount, useDisconnect } from "wagmi";
 
-import { ethers, Interface } from "ethers";
-
 // import Web3 from "web3";
 
 // import { infuraProvider } from "wagmi/providers/infura";
@@ -14,21 +12,35 @@ import { HeaderContainer, HeaderStyled } from "./Header.styled";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import contractABI from "../../contracts/contract-abi.json";
-console.log("contractABI:", contractABI);
-
-const contractAddress = "0x2f112ed8a96327747565f4d4b4615be8fb89459d";
-
+import contractStrABI from "../../contracts/contract-str-abi.json";
 import { useEffect } from "react";
 import Web3 from "web3";
+
+const contractAddress = "0x2f112ed8a96327747565f4d4b4615be8fb89459d";
+const contractStrAddress = "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83";
+
+// interface ContractMethodsInterface {
+// 	methods: {
+// 		balanceOf: (address: string) => {
+// 			call: () => Promise<number>; // Ви можете змінити тип відповідно до видачі методу
+// 		};
+// 	};
+// }
+// interface ContractStr {
+// 	methods: {
+// 		balanceOf: (address: string) => {
+// 			call: () => Promise<number>; // Ви можете змінити тип відповідно до видачі методу
+// 		};
+// 	};
+// }
 
 export const Header = () => {
 	const { address, isConnected } = useAccount();
 
 	const web3 = new Web3(`https://sepolia.infura.io/v3/35a6a592708b48bc8707f2ba01b3aaf2`);
-	console.log("web3:", web3);
-	console.log("web3", web3.currentProvider);
 
-	const contract = new web3.eth.Contract(contractABI, contractAddress);
+	const contractOne = new web3.eth.Contract(contractABI, contractAddress);
+	const contractStr = new web3.eth.Contract(contractStrABI, contractStrAddress);
 
 	// const [contractData, setContractData] = useState("");
 	// const [loading, setLoading] = useState(false);
@@ -37,12 +49,20 @@ export const Header = () => {
 		const test = async () => {
 			const balance = await web3.eth.getBalance("0x16a370583Ad9318049700d02f88b752761001a97");
 			console.log("balance:", balance);
-			const test = await contract.methods.balanceOf(address).call();
-			console.log("test:", test);
-			const testOne = await contract.methods.getRewardForDuration().call();
-			console.log("testOne:", testOne);
-			const testTwo = await contract.methods.periodFinish().call();
-			console.log("testTwo:", testTwo);
+
+			if (address) {
+				const test = await contractOne.methods.balanceOf(address).call(); // @ts-ignore
+				console.log("test:", test);
+			}
+
+			if (address) {
+				const strBalance = await contractStr.methods.balanceOf(address).call(); // @ts-ignore
+				console.log("strBalance:", strBalance);
+			}
+
+			// const testOne = await contractOne.methods.getRewardForDuration().call();
+
+			// const testTwo = await contractOne.methods.periodFinish().call();
 		};
 
 		test();
