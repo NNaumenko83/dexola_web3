@@ -20,8 +20,8 @@ export const Header = () => {
 		new Web3.providers.HttpProvider("https://sepolia.infura.io/v3/35a6a592708b48bc8707f2ba01b3aaf2"),
 	);
 
-	const contractOne = new web3.eth.Contract(contractABI, contractAddress);
-	const contractStrTest = new web3.eth.Contract(contractStrABI, contractStrAddress);
+	const contractOne = new web3.eth.Contract(contractABI, contractAddress) as any;
+	const contractStrTest = new web3.eth.Contract(contractStrABI, contractStrAddress) as any;
 
 	useEffect(() => {
 		const test = async () => {
@@ -40,6 +40,7 @@ export const Header = () => {
 		};
 
 		test();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const { disconnect } = useDisconnect();
