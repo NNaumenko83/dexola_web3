@@ -47,6 +47,8 @@ export const Header = () => {
 
 		test();
 
+		// 0x16a370583ad9318049700d02f88b752761001a97;
+
 		// web3.eth.getBalance("0x16a370583Ad9318049700d02f88b752761001a97", (error, balance) => {
 		// 	if (!error) {
 		// 		console.log(`Баланс гаманця ${address}: ${web3.utils.fromWei(balance, "ether")} ETH`);
