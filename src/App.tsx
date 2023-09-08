@@ -14,6 +14,8 @@ const { chains, publicClient } = configureChains(
 	[infuraProvider({ apiKey: "35a6a592708b48bc8707f2ba01b3aaf2" }), publicProvider()],
 );
 
+console.log(publicClient);
+
 const projectId = "d2e5b14023db785f96b1bbb053881d95";
 
 const connectors = connectorsForWallets([

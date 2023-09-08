@@ -1,27 +1,27 @@
 import { Container } from "../Container/Container";
 import Icon from "../Icon/Icon";
 
-import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
+import { useAccount, useDisconnect } from "wagmi";
 
-import { Button, HeaderContainer, HeaderStyled } from "./Header.styled";
+// import Web3 from "web3";
+
+// import { infuraProvider } from "wagmi/providers/infura";
+
+import { HeaderContainer, HeaderStyled } from "./Header.styled";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
-import contractUnterface from "../../contracts/contract-abi.json";
-console.log("contractUnterface:", contractUnterface);
+import contractInterface from "../../contracts/contract-abi.json";
+console.log("contractInterface:", contractInterface);
 
 export const Header = () => {
 	const { address, isConnected } = useAccount();
-	const { connect } = useConnect({
-		connector: new InjectedConnector(),
-	});
-	const { disconnect } = useDisconnect();
 
-	const connectWalletHandler = () => {
-		console.log("connectWalletHandler");
-		connect();
-	};
+	const { connector } = useAccount();
+	// const web3 = new Web3(connector);
+	console.log("connector:", connector);
+
+	const { disconnect } = useDisconnect();
 
 	if (isConnected)
 		return (
@@ -36,7 +36,6 @@ export const Header = () => {
 			<Container>
 				<HeaderContainer>
 					<Icon name="logo" width={35} height={20} />
-					<Button onClick={connectWalletHandler}> Connect wallet</Button>
 
 					<ConnectButton.Custom>
 						{({
