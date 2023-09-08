@@ -11,15 +11,61 @@ import { HeaderContainer, HeaderStyled } from "./Header.styled";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
-import contractInterface from "../../contracts/contract-abi.json";
-console.log("contractInterface:", contractInterface);
+// import contractInterface from "../../contracts/contract-abi.json";
+
+import { useEffect } from "react";
+import Web3 from "web3";
 
 export const Header = () => {
 	const { address, isConnected } = useAccount();
 
-	const { connector } = useAccount();
-	// const web3 = new Web3(connector);
-	console.log("connector:", connector);
+	// const [contractData, setContractData] = useState("");
+	// const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		const web3 = new Web3(`https://sepolia.infura.io/v3/35a6a592708b48bc8707f2ba01b3aaf2`);
+		console.log("web3:", web3);
+
+		const test = async () => {
+			const balance = await web3.eth.getBalance(address);
+			console.log(balance);
+		};
+
+		test();
+
+		// web3.eth.getBalance("0x16a370583Ad9318049700d02f88b752761001a97", (error, balance) => {
+		// 	if (!error) {
+		// 		console.log(`Баланс гаманця ${address}: ${web3.utils.fromWei(balance, "ether")} ETH`);
+		// 	} else {
+		// 		console.error("Помилка отримання балансу:", error);
+		// 	}
+		// });
+
+		// Адреса контракту і його ABI (Application Binary Interface)
+		// const contractAddress = "0x2F112ED8A96327747565f4d4b4615be8fb89459d";
+		// const contractABI = contractInterface;
+
+		// Створення інстанції контракту
+		// const contract = new web3.eth.Contract(contractABI, contractAddress);
+		// console.log("contract:", contract);
+
+		// Функція для отримання інформації про контракт
+		// async function getContractInfo() {
+		// 	try {
+		// 		setLoading(true);
+		// 		const result = await contract.methods.balanceOf();
+		// 		console.log("result:", result);
+		// 		setContractData(result);
+		// 	} catch (error) {
+		// 		console.error("Помилка виклику функції:", error);
+		// 	} finally {
+		// 		setLoading(false);
+		// 	}
+		// }
+
+		// // Виклик функції для отримання інформації про контракт при завантаженні компонента
+		// getContractInfo();
+	}, []);
 
 	const { disconnect } = useDisconnect();
 

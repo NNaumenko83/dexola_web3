@@ -9,12 +9,21 @@ import { injectedWallet, metaMaskWallet } from "@rainbow-me/rainbowkit/wallets";
 
 import { publicProvider } from "wagmi/providers/public";
 
+import Theme from "./Theme/Theme";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { Footer } from "./components/Footer/Footer";
+import { Header } from "./components/Header/Header";
+
+import { Main } from "./components/Main/Main";
+import { TestInfoSection } from "./components/TestInfoSection/TestInfoSection";
+
 const { chains, publicClient } = configureChains(
 	[sepolia, mainnet, polygon, optimism, arbitrum, base, zora],
 	[infuraProvider({ apiKey: "35a6a592708b48bc8707f2ba01b3aaf2" }), publicProvider()],
 );
-
-console.log(publicClient);
 
 const projectId = "d2e5b14023db785f96b1bbb053881d95";
 
@@ -30,17 +39,6 @@ const wagmiConfig = createConfig({
 	connectors,
 	publicClient,
 });
-
-import Theme from "./Theme/Theme";
-
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-import { Footer } from "./components/Footer/Footer";
-import { Header } from "./components/Header/Header";
-
-import { Main } from "./components/Main/Main";
-import { TestInfoSection } from "./components/TestInfoSection/TestInfoSection";
 
 function App() {
 	return (
