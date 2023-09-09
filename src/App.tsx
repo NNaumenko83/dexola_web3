@@ -3,22 +3,21 @@ import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { sepolia, mainnet, polygon, optimism, arbitrum, base, zora } from "wagmi/chains";
 import { infuraProvider } from "wagmi/providers/infura";
-
+import { Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { publicProvider } from "wagmi/providers/public";
 import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import { injectedWallet, metaMaskWallet } from "@rainbow-me/rainbowkit/wallets";
-
-import { publicProvider } from "wagmi/providers/public";
-
-import Theme from "./Theme/Theme";
-
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { Footer } from "./components/Footer/Footer";
-import { Header } from "./components/Header/Header";
+import Theme from "./Theme/Theme";
+import { SharedLayout } from "./components/SharedLayout/SharedLayout";
 
-import { Main } from "./components/Main/Main";
-import { TestInfoSection } from "./components/TestInfoSection/TestInfoSection";
+// Pages
+import ClaimRewards from "./pages/ClaimRewards/ClaimRewards";
+import Stake from "./pages/Stake/Stake";
+import Withdraw from "./pages/Withdraw/Withdraw";
+import NotFound from "./pages/NotFound/NotFound";
 
 const { chains, publicClient } = configureChains(
 	[sepolia, mainnet, polygon, optimism, arbitrum, base, zora],
@@ -45,11 +44,15 @@ function App() {
 		<WagmiConfig config={wagmiConfig}>
 			<RainbowKitProvider chains={chains}>
 				<Theme>
-					<Header />
-					<Main>
-						<TestInfoSection />
-					</Main>
-					<Footer />
+					<Routes>
+						<Route path="/" element={<SharedLayout />}>
+							<Route index element={<Stake />} />
+							<Route path="withdraw" element={<Withdraw />} />
+							<Route path="claimrewards" element={<ClaimRewards />} />
+						</Route>
+						<Route path="*" element={<NotFound />} />
+					</Routes>
+
 					<ToastContainer
 						position="top-center"
 						autoClose={5000}
