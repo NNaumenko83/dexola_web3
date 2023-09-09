@@ -6,3 +6,9 @@ export const SuspenseWrapper = styled.div`
 	align-items: center;
 	height: 100%;
 `;
+
+export const AppWrapper = styled.div`
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+`;

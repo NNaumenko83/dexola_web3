@@ -117,7 +117,5 @@ font-family: 'Roboto Mono', monospace; */
 	min-height: 100%;
 	overflow: clip;
 
-	display: flex;
-	flex-direction: column;
 	background-color: #060412;
 }

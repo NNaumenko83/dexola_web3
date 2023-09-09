@@ -3,29 +3,30 @@ import { NavLink, Outlet } from "react-router-dom";
 
 import { Header } from "../Header/Header";
 import { Footer } from "../Footer/Footer";
-import { SuspenseWrapper } from "./SharedLayout.styled";
+import { AppWrapper, SuspenseWrapper } from "./SharedLayout.styled";
+import { Main } from "../Main/Main";
 
 export const SharedLayout = () => {
 	return (
-		<>
+		<AppWrapper>
 			<Header />
-			<div>
+			<Main>
 				<nav>
 					<NavLink to="/">Stake</NavLink>
 					<NavLink to="withdraw">Withdraw</NavLink>
 					<NavLink to="claimrewards">ClaimRewards</NavLink>
 				</nav>
-			</div>
-			<Suspense
-				fallback={
-					<SuspenseWrapper>
-						<p>LOADING...</p>
-					</SuspenseWrapper>
-				}
-			>
-				<Outlet />
-			</Suspense>
+				<Suspense
+					fallback={
+						<SuspenseWrapper>
+							<p>LOADING...</p>
+						</SuspenseWrapper>
+					}
+				>
+					<Outlet />
+				</Suspense>
+			</Main>
 			<Footer />
-		</>
+		</AppWrapper>
 	);
 };
