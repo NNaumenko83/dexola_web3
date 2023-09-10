@@ -70,6 +70,7 @@ export const Header = () => {
 			<Container>
 				<HeaderContainer>
 					<Icon name="logo" width={35} height={20} />
+
 					{isConnected ? (
 						<div>
 							Connected to {address}

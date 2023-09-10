@@ -17,6 +17,7 @@ export const HeaderStyled = styled.header`
 	width: 100%;
 	padding-top: 0.25rem;
 	padding-bottom: 0.25rem;
+	border: 1px solid red;
 
 	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
 		padding-top: 0.9375rem;
