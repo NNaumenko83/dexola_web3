@@ -1,39 +1,54 @@
-import Icon from "../Icon/Icon";
+import { HelpIcon, Table, TableBody, TableBottomRow, TableCell, TableHead, TableRow } from "./HeroTable.styled";
 
 export const TestInfoTable = () => {
 	return (
-		<table
-		// style={{
-		// 	display: "flex",
-		// 	flexDirection: "column-reverse",
-		// 	marginTop: "26px",
-		// 	width: "100%",
-		// }}
-		>
-			<thead>
-				<tr>
+		<Table>
+			<TableHead>
+				<TableRow>
 					<th>Staked balance</th>
 					<th>APY</th>
 					<th>Days</th>
 					<th>Rewards</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td style={{ display: "flex", alignItems: "center" }}>
-						<p>0.00 STRU</p> <Icon name="help_icon" width={11} height={11} />
+				</TableRow>
+			</TableHead>
+			<TableBody>
+				<TableRow>
+					<td>
+						<TableCell>
+							<p>
+								<span>0.00</span>
+								<span>STRU</span>
+							</p>
+							<HelpIcon name="help_icon" width={11} height={11} />
+						</TableCell>
 					</td>
-					<td style={{ display: "flex", alignItems: "center" }}>
-						<p>≈8%</p> <Icon name="help_icon" width={11} height={11} />
+					<td>
+						<TableCell>
+							<p>≈8%</p> <HelpIcon name="help_icon" width={11} height={11} />
+						</TableCell>
 					</td>
-					<td style={{ display: "flex", alignItems: "center" }}>
-						<p>0</p>
+					<td>
+						<TableCell>
+							<p>0</p>
+						</TableCell>
 					</td>
-					<td style={{ display: "flex", alignItems: "center" }}>
-						<p>0.00 STRU</p> <Icon name="help_icon" width={11} height={11} />
+					<td>
+						<TableCell>
+							<p>
+								<span>0.00</span>
+								<span>STRU</span>
+							</p>
+							<HelpIcon name="help_icon" width={11} height={11} />
+						</TableCell>
 					</td>
-				</tr>
-			</tbody>
-		</table>
+				</TableRow>
+				<TableBottomRow>
+					<td>Staked balance</td>
+					<td>APY</td>
+					<td>Days</td>
+					<td>Rewards</td>
+				</TableBottomRow>
+			</TableBody>
+		</Table>
 	);
 };
