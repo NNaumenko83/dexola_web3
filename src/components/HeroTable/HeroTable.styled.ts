@@ -3,6 +3,7 @@ import Icon from "../Icon/Icon";
 
 export const Table = styled.table`
 	width: 100%;
+	border-collapse: collapse;
 	/* border-spacing: 4px; */
 `;
 
@@ -27,6 +28,20 @@ export const TableBody = styled.tbody`
 
 export const TableRow = styled.tr`
 	/* outline: 1px solid red; */
+
+	@media screen and (max-width: 376px) {
+		& > :nth-child(1) {
+			width: 118px;
+		}
+
+		& > :nth-child(2) {
+			width: 60px;
+		}
+
+		& > :nth-child(3) {
+			width: 47px;
+		}
+	}
 `;
 
 export const TableBottomRow = styled(TableRow)`

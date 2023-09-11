@@ -25,7 +25,7 @@ export const TestInfoTable = () => {
 			</TableHead>
 			<TableBody>
 				<TableRow>
-					<td /*style={{ width: "98px" }}*/>
+					<td>
 						<TableCell>
 							<p>
 								<TextValue>0.00</TextValue>
@@ -39,7 +39,7 @@ export const TestInfoTable = () => {
 							</UnitIconWrapper>
 						</TableCell>
 					</td>
-					<td /*style={{ width: "51px" }}*/>
+					<td>
 						<TableCellApy>
 							<p>
 								<TextValue>≈8%</TextValue>
@@ -47,14 +47,14 @@ export const TestInfoTable = () => {
 							<HelpIcon name="help_icon" width={16} height={18} />
 						</TableCellApy>
 					</td>
-					<td /*style={{ width: "40px" }}*/>
+					<td>
 						<TableCell>
 							<p>
 								<TextValue>0</TextValue>
 							</p>
 						</TableCell>
 					</td>
-					<td /*style={{ width: "92px" }}*/>
+					<td>
 						<TableCell>
 							<p>
 								<TextValue>0.00</TextValue>
@@ -70,16 +70,16 @@ export const TestInfoTable = () => {
 					</td>
 				</TableRow>
 				<TableBottomRow>
-					<td style={{ width: "98px" }}>
+					<td>
 						<p>Staked balance</p>
 					</td>
-					<td style={{ width: "51px" }}>
+					<td>
 						<p>APY</p>
 					</td>
-					<td style={{ width: "40px" }}>
+					<td>
 						<p>Days</p>
 					</td>
-					<td style={{ width: "92px" }}>
+					<td>
 						<p>Rewards</p>
 					</td>
 				</TableBottomRow>
