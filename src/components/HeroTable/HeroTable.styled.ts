@@ -65,7 +65,7 @@ export const HelpIcon = styled(Icon)`
 	@media screen and (min-width: 744px) {
 		width: 24px;
 		height: 24px;
-		fill: #ffffff;
+		stroke: #ffffff;
 	}
 `;
 
