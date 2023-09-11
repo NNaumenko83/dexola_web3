@@ -5,7 +5,9 @@ export const Table = styled.table`
 	width: 100%;
 	max-width: 662px;
 	border-collapse: collapse;
-	/* border-spacing: 4px; */
+	@media screen and (min-width: 1440px) {
+		max-width: 833px;
+	}
 `;
 
 export const TableHead = styled.thead`
@@ -61,11 +63,29 @@ export const TableRow = styled.tr`
 		}
 
 		& > :nth-child(3) {
-			width: 112x;
+			width: 112px;
 		}
 
 		& > :nth-child(4) {
 			width: 244px;
+		}
+	}
+
+	@media screen and (min-width: 1440px) {
+		& > :nth-child(1) {
+			width: 349px;
+		}
+
+		& > :nth-child(2) {
+			width: 193px;
+		}
+
+		& > :nth-child(3) {
+			width: 112x;
+		}
+
+		& > :nth-child(4) {
+			width: 179px;
 		}
 	}
 `;
@@ -107,8 +127,13 @@ export const TableCell = styled.div`
 export const TableCellApy = styled(TableCell)`
 	align-items: center;
 	@media screen and (min-width: 744px) {
-		& > :nth-child(2) {
-			transform: translate(0, 3px);
+		& > :nth-child(3) {
+			transform: translate(0, 4px);
+		}
+	}
+	@media screen and (min-width: 1440px) {
+		align-items: baseline;
+		& > :nth-child(3) {
 		}
 	}
 `;
@@ -171,9 +196,32 @@ export const UnitName = styled.span`
 export const UnitIconWrapper = styled.div`
 	display: flex;
 	align-items: center;
-	@media screen and (min-width: 744px) {
-		& > :nth-child(2) {
+	@media screen and (min-width: 744px) and (max-width: 1439px) {
+		& > :nth-child(3) {
 			transform: translate(0, -2px);
 		}
 	}
+	@media screen and (min-width: 1440px) {
+		align-items: baseline;
+		& > :nth-child(3) {
+			transform: translate(0, 4px);
+		}
+	}
+`;
+
+export const NameCell = styled.p`
+	@media screen and (max-width: 1439.5px) {
+		display: none;
+	}
+
+	margin-left: 12px;
+
+	color: #ffffff;
+
+	font-family: Roboto Mono;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	letter-spacing: -0.32px;
 `;

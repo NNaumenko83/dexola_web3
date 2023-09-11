@@ -10,6 +10,7 @@ import {
 	UnitIconWrapper,
 	UnitName,
 	TableCellApy,
+	NameCell,
 } from "./HeroTable.styled";
 
 export const TestInfoTable = () => {
@@ -34,6 +35,7 @@ export const TestInfoTable = () => {
 								<p>
 									<UnitName>STRU</UnitName>
 								</p>
+								<NameCell>Staked balance</NameCell>
 
 								<HelpIcon name="help_icon" width={16} height={18} />
 							</UnitIconWrapper>
@@ -44,6 +46,7 @@ export const TestInfoTable = () => {
 							<p>
 								<TextValue>≈8%</TextValue>
 							</p>
+							<NameCell>APY</NameCell>
 							<HelpIcon name="help_icon" width={16} height={18} />
 						</TableCellApy>
 					</td>
@@ -52,6 +55,7 @@ export const TestInfoTable = () => {
 							<p>
 								<TextValue>0</TextValue>
 							</p>
+							<NameCell>Days</NameCell>
 						</TableCell>
 					</td>
 					<td>
@@ -63,6 +67,7 @@ export const TestInfoTable = () => {
 								<p>
 									<UnitName>STRU</UnitName>
 								</p>
+								<NameCell>Rewards</NameCell>
 
 								<HelpIcon name="help_icon" width={16} height={18} />
 							</UnitIconWrapper>
