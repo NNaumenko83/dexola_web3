@@ -43,11 +43,40 @@ export const TableCell = styled.div`
 	position: relative;
 	display: flex;
 	justify-content: flex-start;
-	align-items: center;
+	align-items: baseline;
 	margin-bottom: 4px;
+	width: auto;
 `;
 
 export const HelpIcon = styled(Icon)`
+	margin-left: 5px;
 	/* position: absolute; */
 	/* right: 0; */
+	outline: 1px solid yellow;
+`;
+
+export const TextValue = styled.span`
+	color: #ffffff;
+	font-family: Roboto Mono;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+	letter-spacing: -0.36px;
+
+	outline: 1px solid red;
+`;
+
+export const UnitName = styled.span`
+	margin-left: 4px;
+
+	color: #ffffff;
+	font-family: Roboto Mono;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 20px; /* 166.667% */
+	text-transform: uppercase;
+
+	outline: 1px solid green;
 `;
