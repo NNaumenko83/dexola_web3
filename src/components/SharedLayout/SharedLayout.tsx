@@ -1,11 +1,12 @@
 import { Suspense } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 import { Header } from "../Header/Header";
 import { Footer } from "../Footer/Footer";
 import { AppWrapper, SuspenseWrapper } from "./SharedLayout.styled";
 import { Main } from "../Main/Main";
 import { Hero } from "../Hero/Hero";
+import { NavigateComponent } from "../NavigateComponent/NavigateComponent";
 
 export const SharedLayout = () => {
 	return (
@@ -13,11 +14,8 @@ export const SharedLayout = () => {
 			<Header />
 			<Main>
 				<Hero />
-				<nav>
-					<NavLink to="/">Stake</NavLink>
-					<NavLink to="withdraw">Withdraw</NavLink>
-					<NavLink to="claimrewards">ClaimRewards</NavLink>
-				</nav>
+				<NavigateComponent />
+
 				<Suspense
 					fallback={
 						<SuspenseWrapper>
