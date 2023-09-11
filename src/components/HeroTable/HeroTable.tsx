@@ -7,7 +7,9 @@ import {
 	TableHead,
 	TableRow,
 	TextValue,
+	UnitIconWrapper,
 	UnitName,
+	TableCellApy,
 } from "./HeroTable.styled";
 
 export const TestInfoTable = () => {
@@ -27,18 +29,23 @@ export const TestInfoTable = () => {
 						<TableCell>
 							<p>
 								<TextValue>0.00</TextValue>
-								<UnitName>STRU</UnitName>
 							</p>
-							<HelpIcon name="help_icon" width={11} height={11} />
+							<UnitIconWrapper>
+								<p>
+									<UnitName>STRU</UnitName>
+								</p>
+
+								<HelpIcon name="help_icon" width={16} height={18} />
+							</UnitIconWrapper>
 						</TableCell>
 					</td>
 					<td /*style={{ width: "51px" }}*/>
-						<TableCell>
+						<TableCellApy>
 							<p>
 								<TextValue>≈8%</TextValue>
 							</p>
-							<HelpIcon name="help_icon" width={11} height={11} />
-						</TableCell>
+							<HelpIcon name="help_icon" width={16} height={18} />
+						</TableCellApy>
 					</td>
 					<td /*style={{ width: "40px" }}*/>
 						<TableCell>
@@ -51,9 +58,14 @@ export const TestInfoTable = () => {
 						<TableCell>
 							<p>
 								<TextValue>0.00</TextValue>
-								<UnitName>STRU</UnitName>
 							</p>
-							<HelpIcon name="help_icon" width={11} height={11} />
+							<UnitIconWrapper>
+								<p>
+									<UnitName>STRU</UnitName>
+								</p>
+
+								<HelpIcon name="help_icon" width={16} height={18} />
+							</UnitIconWrapper>
 						</TableCell>
 					</td>
 				</TableRow>

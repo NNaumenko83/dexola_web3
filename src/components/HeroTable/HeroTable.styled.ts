@@ -37,22 +37,36 @@ export const TableBottomRow = styled(TableRow)`
 	font-weight: 400;
 	line-height: normal;
 	letter-spacing: -0.24px;
+
+	@media screen and (min-width: 744px) {
+		display: none;
+	}
 `;
 
 export const TableCell = styled.div`
 	position: relative;
 	display: flex;
 	justify-content: flex-start;
-	align-items: baseline;
+	align-items: flex-end;
 	margin-bottom: 4px;
-	width: auto;
+`;
+
+export const TableCellApy = styled(TableCell)`
+	align-items: center;
 `;
 
 export const HelpIcon = styled(Icon)`
-	margin-left: 5px;
-	/* position: absolute; */
-	/* right: 0; */
-	outline: 1px solid yellow;
+	margin-left: 2px;
+	/* fill: red; */
+
+	stroke: #b3b3b3;
+
+	/* fill: #b3b3b3; */
+	@media screen and (min-width: 744px) {
+		width: 24px;
+		height: 24px;
+		fill: #ffffff;
+	}
 `;
 
 export const TextValue = styled.span`
@@ -64,7 +78,7 @@ export const TextValue = styled.span`
 	line-height: normal;
 	letter-spacing: -0.36px;
 
-	outline: 1px solid red;
+	/* outline: 1px solid red; */
 `;
 
 export const UnitName = styled.span`
@@ -78,5 +92,10 @@ export const UnitName = styled.span`
 	line-height: 20px; /* 166.667% */
 	text-transform: uppercase;
 
-	outline: 1px solid green;
+	/* outline: 1px solid green; */
+`;
+
+export const UnitIconWrapper = styled.div`
+	display: flex;
+	align-items: center;
 `;

@@ -31,7 +31,7 @@
       <path fill="#fff" d="m16.497 20.573 7.497-4.353-7.496-3.347v7.7z" opacity=".2" style="fill:var(--color6, #fff)"/>
       <path fill="#fff" d="m9 16.22 7.497 4.353v-7.701L9 16.22z" opacity=".602" style="fill:var(--color6, #fff)"/>
     </symbol>
-    <symbol id="help_icon" viewBox="0 0 32 32">
+    <symbol id="help_icon_old" viewBox="0 0 32 32">
       <path fill="none" stroke="#b3b3b3" style="stroke: var(--color1, #b3b3b3)" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="2.3751" d="M11.769 12.472c0.309-0.877 0.918-1.617 1.72-2.089s1.745-0.644 2.661-0.486c0.917 0.157 1.748 0.634 2.347 1.345s0.927 1.612 0.925 2.542c0 2.626-3.938 3.938-3.938 3.938M15.59 22.974h0.013M28.718 16.41c0 7.25-5.878 13.128-13.128 13.128s-13.128-5.878-13.128-13.128c0-7.25 5.878-13.128 13.128-13.128s13.128 5.878 13.128 13.128z"></path>
      </symbol>
     <symbol id="not_connected_wallet" viewBox="0 0 32 32">
@@ -43,6 +43,9 @@
     <symbol id="successfull_icon" viewBox="0 0 31 32">
       <path fill="#20fe51" d="M31.03 16c0 8.569-6.946 15.515-15.515 15.515S0 24.569 0 16 6.946.485 15.515.485 31.03 7.431 31.03 16z" style="fill:var(--color2, #20fe51)"/>
       <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.293" d="m20.04 12.121-6.464 7.758-3.233-3.232" style="stroke:var(--color10, #000)"/>
+    </symbol>
+    <symbol id="help_icon" viewBox="0 0 31 32">
+     <path fill="none" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="1.92" d="M12.38 12.928c0.241-0.684 0.716-1.261 1.341-1.629s1.361-0.502 2.076-0.379c0.715 0.123 1.364 0.494 1.831 1.049s0.723 1.257 0.722 1.983c0 2.048-3.072 3.072-3.072 3.072M15.36 21.12h0.010M25.6 16c0 5.655-4.585 10.24-10.24 10.24s-10.24-4.585-10.24-10.24c0-5.655 4.585-10.24 10.24-10.24s10.24 4.585 10.24 10.24z"></path>
     </symbol>
   </defs>
 </svg>
