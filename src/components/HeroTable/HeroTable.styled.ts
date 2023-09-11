@@ -29,17 +29,17 @@ export const TableBody = styled.tbody`
 export const TableRow = styled.tr`
 	/* outline: 1px solid red; */
 
-	@media screen and (max-width: 376px) {
+	@media screen and (min-width: 375px) {
 		& > :nth-child(1) {
-			width: 118px;
+			min-width: 118px;
 		}
 
 		& > :nth-child(2) {
-			width: 60px;
+			min-width: 60px;
 		}
 
 		& > :nth-child(3) {
-			width: 47px;
+			min-width: 47px;
 		}
 	}
 `;
