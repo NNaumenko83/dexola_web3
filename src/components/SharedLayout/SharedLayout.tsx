@@ -6,7 +6,7 @@ import { Footer } from "../Footer/Footer";
 import { AppWrapper, SuspenseWrapper } from "./SharedLayout.styled";
 import { Main } from "../Main/Main";
 import { Hero } from "../Hero/Hero";
-import { NavigateComponent } from "../NavigateComponent/NavigateComponent";
+import { Navigation } from "../Navigation/Navigation";
 
 export const SharedLayout = () => {
 	return (
@@ -14,7 +14,7 @@ export const SharedLayout = () => {
 			<Header />
 			<Main>
 				<Hero />
-				<NavigateComponent />
+				<Navigation />
 
 				<Suspense
 					fallback={

@@ -16,7 +16,7 @@ const NavLinkStyled = styled(NavLink)`
 	}
 `;
 
-export const NavigateComponent = () => {
+export const Navigation = () => {
 	return (
 		<Container>
 			<nav style={{ display: "flex", gap: "20px" }}>

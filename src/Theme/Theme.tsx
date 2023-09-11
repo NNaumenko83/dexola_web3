@@ -10,16 +10,28 @@ const theme = {
 		lightGrey: "#B3B3B3",
 		background: "#060412",
 		warningRose: "#e2e2e2",
+		//
+		// Title color
+		title: "#FFFFFF",
+		// Table text color
+		tableTextColor: "#FFFFFF",
+		// Mobile help icon color
+		helpIconColorMobile: "#B3B3B3",
+		// Tablet and Web help icon color
+		helpIconColorTabletWeb: "#FFFFFF",
+
+		//
+		//
+		//
+		//
+		//
 		//ButtonColors
 		buttonTextColor: "#FFFFFF",
 		buttonBackgroundColor: "#272A2E",
 		buttonHoverBackgroundColor: "rgba(39, 42, 46, 0.9)",
 		//Footer text color
 		footerTextColor: "#B3B3B3",
-		// Hero title color
-		heroTitle: "#FFFFFF",
-		// Title color
-		title: "#FFFFFF",
+
 		// Subtitle color
 		subtitle: "#FFFFFF",
 		// Card border color
@@ -70,9 +82,15 @@ const theme = {
 
 	fontSizes: {
 		title: {
-			web: "8.75rem",
-			tablet: "7rem",
+			web: "3rem",
+			tablet: "2.5rem",
 			mobile: "1.75rem",
+		},
+
+		textValueTable: {
+			web: "36px",
+			tablet: "28px",
+			mobile: "18px",
 		},
 
 		subTitle: {
@@ -81,9 +99,10 @@ const theme = {
 			mobile: "1rem",
 		},
 
-		tableHead: {
-			web: "1.5rem",
-			tablet: "1.25rem",
+		table: {
+			web: "16px",
+			tablet: "16px",
+			mobile: "12px",
 		},
 
 		body: {
@@ -99,14 +118,13 @@ const theme = {
 
 		footerText: "0.875rem",
 
-		error: "0.8125rem",
-
-		heroTitle: { web: "21.25rem", tablet: "17.5rem", mobile: "7.5rem" },
+		// error: "0.8125rem",
 	},
 
 	fontWeights: {
 		// normal: 400,
 		medium: 500,
+		bold: 700,
 	},
 
 	breakpoints: {
@@ -114,7 +132,7 @@ const theme = {
 		maxTablet: "1439px",
 		tablet: "744px",
 		maxMobile: "743px",
-		mobile: "393px",
+		mobile: "375px",
 	},
 };
 
