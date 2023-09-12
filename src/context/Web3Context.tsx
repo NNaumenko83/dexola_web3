@@ -10,11 +10,13 @@ export type Web3ContextType = {
 	balance: string | null;
 	struBalance: string | null;
 	stakedBalance: string | null;
+	totalSupplyStru: string | null;
 	contractStaking: any | null; // Додали інстанс контракту contractStaking
 	contractTokenTracking: any | null; // Додали інстанс контракту contractTokenTracking
 	getBalance: () => void;
 	getStruBalance: () => void;
 	getStakedBalance: () => void;
+	getTotalSupply: () => void;
 };
 
 export const Web3Context = createContext<Web3ContextType | undefined>(undefined);
@@ -32,6 +34,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const [balance, setBalance] = useState<string | null>(null);
 	const [struBalance, setStruBalance] = useState<string | null>(null);
 	const [stakedBalance, setStakedBalance] = useState<string | null>(null);
+	const [totalSupplyStru, setTotalSupplyStru] = useState<string | null>(null);
 	const [contractStaking, setContractStaking] = useState<any | null>(null); // Додали стейт для контракту contractStaking
 	const [contractTokenTracking, setContractTokenTracking] = useState<any | null>(null); // Додали стейт для контракту contractTokenTracking
 
@@ -74,7 +77,21 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const getStakedBalance = async () => {
 		if (contractTokenTracking && web3 && address) {
 			const stakedBalance = await contractStaking.methods.balanceOf(address).call();
+			console.log("stakedBalance:", stakedBalance);
 			setStakedBalance(stakedBalance.toString());
+		}
+	};
+
+	// 	Для розрахунку річної процентної ставки (APR) необхідно отримати таку інформацію з контракту:
+	// Загальна кількість винагород за період - ви повинні викликати метод читання контракту getRewardForDuration(),
+	// який поверне кількість винагород за цей період.
+	// Загальна сума ставок, зроблених всіма користувачами - це можна отримати,
+	// викликавши метод читання totalSupply() на контракті стейкінгу.
+
+	const getTotalSupply = async () => {
+		if (contractTokenTracking && web3 && address) {
+			const totalSupplySTRU = await contractStaking.methods.totalSupply().call();
+			setTotalSupplyStru(totalSupplySTRU.toString());
 		}
 	};
 
@@ -87,9 +104,11 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				stakedBalance,
 				contractStaking,
 				contractTokenTracking,
+				totalSupplyStru,
 				getBalance,
 				getStruBalance,
 				getStakedBalance,
+				getTotalSupply,
 			}}
 		>
 			{children}

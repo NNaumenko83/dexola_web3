@@ -16,11 +16,13 @@ import {
 } from "./HeroTable.styled";
 
 export const TestInfoTable = () => {
-	const { stakedBalance, getStakedBalance } = useWeb3();
+	const { stakedBalance, getStakedBalance, totalSupplyStru, getTotalSupply } = useWeb3();
+	console.log("stakedBalance:", stakedBalance);
 
 	useEffect(() => {
 		getStakedBalance();
-	}, [getStakedBalance]);
+		getTotalSupply();
+	}, [getStakedBalance, getTotalSupply]);
 
 	return (
 		<Table>
@@ -52,7 +54,7 @@ export const TestInfoTable = () => {
 					<td>
 						<TableCellApy>
 							<p>
-								<TextValue>≈8%</TextValue>
+								<TextValue>{totalSupplyStru}</TextValue>
 							</p>
 							<NameCell>APY</NameCell>
 							<HelpIcon name="help_icon" width={16} height={18} />
