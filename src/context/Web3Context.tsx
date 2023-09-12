@@ -3,7 +3,7 @@ import Web3 from "web3";
 import { useAccount } from "wagmi";
 
 import contractStakingABI from "../contracts/contract-staking-abi.json";
-import contractTokenTrackingABI from "../contracts/contract-tokenTracker-abi.json";
+import contractStarRunnerTokenABI from "../contracts/contract-tokenTracker-abi.json";
 
 export type Web3ContextType = {
 	web3: Web3 | null;
@@ -13,7 +13,7 @@ export type Web3ContextType = {
 	totalSupplyStru: string | null;
 	totalRewards: string | null;
 	contractStaking: any | null; // Додали інстанс контракту contractStaking
-	contractTokenTracking: any | null; // Додали інстанс контракту contractTokenTracking
+	contractStarRunnerToken: any | null; // Додали інстанс контракту contractStarRunnerToken
 	getBalance: () => void;
 	getStruBalance: () => void;
 	getStakedBalance: () => void;
@@ -22,7 +22,6 @@ export type Web3ContextType = {
 };
 
 export const Web3Context = createContext<Web3ContextType | undefined>(undefined);
-console.log("Web3Context:", Web3Context);
 
 const createWeb3Provider = (): Web3 | null => {
 	const infuraUrl = "https://sepolia.infura.io/v3/35a6a592708b48bc8707f2ba01b3aaf2";
@@ -39,11 +38,11 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const [totalRewards, setTotalRewards] = useState<string | null>(null);
 	const [totalSupplyStru, setTotalSupplyStru] = useState<string | null>(null);
 	const [contractStaking, setContractStaking] = useState<any | null>(null); // Додали стейт для контракту contractStaking
-	const [contractTokenTracking, setContractTokenTracking] = useState<any | null>(null); // Додали стейт для контракту contractTokenTracking
+	const [contractStarRunnerToken, setContractStarRunnerToken] = useState<any | null>(null); // Додали стейт для контракту contractStarRunnerToken
 
 	// Адреси контрактів
 	const contractStakingAddress = "0x2f112ed8a96327747565f4d4b4615be8fb89459d";
-	const contractTokenTrackingAddress = "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83";
+	const contractStarRunnerTokenAddress = "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83";
 
 	useEffect(() => {
 		if (isConnected && address) {
@@ -53,11 +52,11 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 			if (web3) {
 				const contractStakingInstance = new web3.eth.Contract(contractStakingABI, contractStakingAddress);
 				setContractStaking(contractStakingInstance);
-				const contractTokenTrackingInstance = new web3.eth.Contract(
-					contractTokenTrackingABI,
-					contractTokenTrackingAddress,
+				const contractStarRunnerTokenInstance = new web3.eth.Contract(
+					contractStarRunnerTokenABI,
+					contractStarRunnerTokenAddress,
 				);
-				setContractTokenTracking(contractTokenTrackingInstance);
+				setContractStarRunnerToken(contractStarRunnerTokenInstance);
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -71,14 +70,14 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	};
 
 	const getStruBalance = async () => {
-		if (contractTokenTracking && web3 && address) {
-			const balanceStruOnWallet = await contractTokenTracking.methods.balanceOf(address).call();
+		if (contractStarRunnerToken && web3 && address) {
+			const balanceStruOnWallet = await contractStarRunnerToken.methods.balanceOf(address).call();
 			setStruBalance(balanceStruOnWallet.toString());
 		}
 	};
 
 	const getStakedBalance = async () => {
-		if (contractTokenTracking && web3 && address) {
+		if (contractStarRunnerToken && web3 && address) {
 			const stakedBalance = await contractStaking.methods.balanceOf(address).call();
 			console.log("stakedBalance:", stakedBalance);
 			setStakedBalance(stakedBalance.toString());
@@ -92,14 +91,14 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	// викликавши метод читання totalSupply() на контракті стейкінгу.
 
 	const getTotalSupply = async () => {
-		if (contractTokenTracking && web3 && address) {
+		if (contractStarRunnerToken && web3 && address) {
 			const totalSupplySTRU = await contractStaking.methods.totalSupply().call();
 			setTotalSupplyStru(totalSupplySTRU.toString());
 		}
 	};
 
 	const getTotalRewards = async () => {
-		if (contractTokenTracking && web3 && address) {
+		if (contractStarRunnerToken && web3 && address) {
 			const totalRewards = await contractStaking.methods.getRewardForDuration().call();
 			setTotalRewards(totalRewards.toString());
 		}
@@ -112,7 +111,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				struBalance,
 				stakedBalance,
 				contractStaking,
-				contractTokenTracking,
+				contractStarRunnerToken,
 				totalSupplyStru,
 				totalRewards,
 				getBalance,
