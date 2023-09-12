@@ -26,6 +26,7 @@ export const Header = () => {
 	const { web3, balance, struBalance, getBalance, getStruBalance } = useWeb3();
 
 	useEffect(() => {
+		console.log("useEffect Header");
 		if (web3) {
 			getBalance();
 			getStruBalance();
