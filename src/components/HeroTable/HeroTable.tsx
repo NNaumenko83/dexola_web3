@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useWeb3 } from "../../hooks/useWeb3";
 import {
 	HelpIcon,
@@ -15,7 +16,11 @@ import {
 } from "./HeroTable.styled";
 
 export const TestInfoTable = () => {
-	const { struBalance } = useWeb3();
+	const { stakedBalance, getStakedBalance } = useWeb3();
+
+	useEffect(() => {
+		getStakedBalance();
+	}, [getStakedBalance]);
 
 	return (
 		<Table>
@@ -32,7 +37,7 @@ export const TestInfoTable = () => {
 					<td>
 						<TableCell>
 							<p>
-								<TextValue>{struBalance}</TextValue>
+								<TextValue>{stakedBalance}</TextValue>
 							</p>
 							<UnitIconWrapper>
 								<p>

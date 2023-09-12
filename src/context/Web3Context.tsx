@@ -9,10 +9,12 @@ export type Web3ContextType = {
 	web3: Web3 | null;
 	balance: string | null;
 	struBalance: string | null;
+	stakedBalance: string | null;
 	contractStaking: any | null; // Додали інстанс контракту contractStaking
 	contractTokenTracking: any | null; // Додали інстанс контракту contractTokenTracking
 	getBalance: () => void;
 	getStruBalance: () => void;
+	getStakedBalance: () => void;
 };
 
 export const Web3Context = createContext<Web3ContextType | undefined>(undefined);
@@ -29,7 +31,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const { address, isConnected } = useAccount();
 	const [balance, setBalance] = useState<string | null>(null);
 	const [struBalance, setStruBalance] = useState<string | null>(null);
-	// const [stakedBalance, setStakedBalance] = useState<bigint | null>(null);
+	const [stakedBalance, setStakedBalance] = useState<string | null>(null);
 	const [contractStaking, setContractStaking] = useState<any | null>(null); // Додали стейт для контракту contractStaking
 	const [contractTokenTracking, setContractTokenTracking] = useState<any | null>(null); // Додали стейт для контракту contractTokenTracking
 
@@ -69,9 +71,26 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		}
 	};
 
+	const getStakedBalance = async () => {
+		if (contractTokenTracking && web3 && address) {
+			const stakedBalance = await contractStaking.methods.balanceOf(address).call();
+			setStakedBalance(stakedBalance.toString());
+		}
+	};
+
 	return (
 		<Web3Context.Provider
-			value={{ web3, balance, struBalance, contractStaking, contractTokenTracking, getBalance, getStruBalance }}
+			value={{
+				web3,
+				balance,
+				struBalance,
+				stakedBalance,
+				contractStaking,
+				contractTokenTracking,
+				getBalance,
+				getStruBalance,
+				getStakedBalance,
+			}}
 		>
 			{children}
 		</Web3Context.Provider>
