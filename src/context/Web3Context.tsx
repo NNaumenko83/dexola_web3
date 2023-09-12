@@ -11,12 +11,14 @@ export type Web3ContextType = {
 	struBalance: string | null;
 	stakedBalance: string | null;
 	totalSupplyStru: string | null;
+	totalRewards: string | null;
 	contractStaking: any | null; // Додали інстанс контракту contractStaking
 	contractTokenTracking: any | null; // Додали інстанс контракту contractTokenTracking
 	getBalance: () => void;
 	getStruBalance: () => void;
 	getStakedBalance: () => void;
 	getTotalSupply: () => void;
+	getTotalRewards: () => void;
 };
 
 export const Web3Context = createContext<Web3ContextType | undefined>(undefined);
@@ -34,6 +36,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const [balance, setBalance] = useState<string | null>(null);
 	const [struBalance, setStruBalance] = useState<string | null>(null);
 	const [stakedBalance, setStakedBalance] = useState<string | null>(null);
+	const [totalRewards, setTotalRewards] = useState<string | null>(null);
 	const [totalSupplyStru, setTotalSupplyStru] = useState<string | null>(null);
 	const [contractStaking, setContractStaking] = useState<any | null>(null); // Додали стейт для контракту contractStaking
 	const [contractTokenTracking, setContractTokenTracking] = useState<any | null>(null); // Додали стейт для контракту contractTokenTracking
@@ -95,6 +98,12 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		}
 	};
 
+	const getTotalRewards = async () => {
+		if (contractTokenTracking && web3 && address) {
+			const totalRewards = await contractStaking.methods.getRewardForDuration().call();
+			setTotalRewards(totalRewards.toString());
+		}
+	};
 	return (
 		<Web3Context.Provider
 			value={{
@@ -105,10 +114,12 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				contractStaking,
 				contractTokenTracking,
 				totalSupplyStru,
+				totalRewards,
 				getBalance,
 				getStruBalance,
 				getStakedBalance,
 				getTotalSupply,
+				getTotalRewards,
 			}}
 		>
 			{children}

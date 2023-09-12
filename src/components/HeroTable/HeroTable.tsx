@@ -16,13 +16,14 @@ import {
 } from "./HeroTable.styled";
 
 export const TestInfoTable = () => {
-	const { stakedBalance, getStakedBalance, totalSupplyStru, getTotalSupply } = useWeb3();
+	const { stakedBalance, getStakedBalance, totalSupplyStru, getTotalSupply, totalRewards, getTotalRewards } = useWeb3();
 	console.log("stakedBalance:", stakedBalance);
 
 	useEffect(() => {
 		getStakedBalance();
 		getTotalSupply();
-	}, [getStakedBalance, getTotalSupply]);
+		getTotalRewards();
+	}, [getStakedBalance, getTotalSupply, getTotalRewards]);
 
 	return (
 		<Table>
@@ -41,6 +42,8 @@ export const TestInfoTable = () => {
 							<p>
 								<TextValue>{stakedBalance}</TextValue>
 							</p>
+							{/* Total rewars */}
+							<p>{totalRewards}</p>
 							<UnitIconWrapper>
 								<p>
 									<UnitName>STRU</UnitName>
