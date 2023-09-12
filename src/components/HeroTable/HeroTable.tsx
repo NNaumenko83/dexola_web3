@@ -1,3 +1,4 @@
+import { useWeb3 } from "../../hooks/useWeb3";
 import {
 	HelpIcon,
 	Table,
@@ -14,6 +15,8 @@ import {
 } from "./HeroTable.styled";
 
 export const TestInfoTable = () => {
+	const { struBalance } = useWeb3();
+
 	return (
 		<Table>
 			<TableHead>
@@ -29,7 +32,7 @@ export const TestInfoTable = () => {
 					<td>
 						<TableCell>
 							<p>
-								<TextValue>0.00</TextValue>
+								<TextValue>{struBalance}</TextValue>
 							</p>
 							<UnitIconWrapper>
 								<p>

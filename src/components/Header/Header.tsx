@@ -10,7 +10,8 @@ import { HeaderContainer, HeaderStyled } from "./Header.styled";
 // import contractStakingABI from "../../contracts/contract-staking-abi.json";
 // import contractTockenTrackingABI from "../../contracts/contract-tokenTracker-abi.json";
 import { ConnectToWalletButton } from "../ConnectToWalletButton/ConnectToWalletButton";
-import useWeb3 from "../../hooks/useWeb3";
+import { useWeb3 } from "../../hooks/useWeb3";
+import { useEffect } from "react";
 
 // Адреси контрактів
 // Адреса контракту на який ми депозитимо токени StarRunner
@@ -21,9 +22,17 @@ import useWeb3 from "../../hooks/useWeb3";
 export const Header = () => {
 	// Використовуємо хук для отримання аккаунта і стану підключення
 	const { address, isConnected } = useAccount();
-	console.log("isConnected:", isConnected);
-	const web3 = useWeb3();
-	console.log("web3:", web3);
+
+	const { web3, balance, struBalance, getBalance, getStruBalance } = useWeb3();
+
+	useEffect(() => {
+		if (web3) {
+			getBalance();
+			getStruBalance();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [web3]);
+
 	// const [ethBalance, setEthbalance] = useState<bigint | null>(null);
 	// const [struBalance, setStruBalance] = useState<bigint | null>(null);
 	// const [stakedBalance, setStakedBalance] = useState<bigint | null>(null);
@@ -78,6 +87,8 @@ export const Header = () => {
 					{isConnected ? (
 						<div>
 							Connected to {address}
+							Balance {balance}
+							STRU {struBalance}
 							<button onClick={() => disconnect()}>Disconnect</button>
 							{/* <div>{struBalance?.toString()} STRU</div>
 							<div>{ethBalance?.toString()} ETH</div> */}

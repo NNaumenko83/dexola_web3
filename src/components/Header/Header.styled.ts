@@ -11,9 +11,6 @@ export const HeaderContainer = styled.div`
 `;
 
 export const HeaderStyled = styled.header`
-	/* position: fixed;
-	z-index: 999; */
-	/* background-color: ${props => props.theme.colors.background}; */
 	width: 100%;
 	padding-top: 0.25rem;
 	padding-bottom: 0.25rem;
