@@ -18,6 +18,7 @@ import ClaimRewards from "./pages/ClaimRewards/ClaimRewards";
 import Stake from "./pages/Stake/Stake";
 import Withdraw from "./pages/Withdraw/Withdraw";
 import NotFound from "./pages/NotFound/NotFound";
+import { Web3Provider } from "./context/Web3Context";
 
 const { chains, publicClient } = configureChains(
 	[sepolia, mainnet, polygon, optimism, arbitrum, base, zora],
@@ -44,27 +45,29 @@ function App() {
 		<WagmiConfig config={wagmiConfig}>
 			<RainbowKitProvider chains={chains}>
 				<Theme>
-					<Routes>
-						<Route path="/" element={<SharedLayout />}>
-							<Route index element={<Stake />} />
-							<Route path="withdraw" element={<Withdraw />} />
-							<Route path="claimrewards" element={<ClaimRewards />} />
-						</Route>
-						<Route path="*" element={<NotFound />} />
-					</Routes>
+					<Web3Provider>
+						<Routes>
+							<Route path="/" element={<SharedLayout />}>
+								<Route index element={<Stake />} />
+								<Route path="withdraw" element={<Withdraw />} />
+								<Route path="claimrewards" element={<ClaimRewards />} />
+							</Route>
+							<Route path="*" element={<NotFound />} />
+						</Routes>
 
-					<ToastContainer
-						position="top-center"
-						autoClose={5000}
-						hideProgressBar={false}
-						newestOnTop={false}
-						closeOnClick
-						rtl={false}
-						pauseOnFocusLoss
-						draggable
-						pauseOnHover
-						theme="light"
-					/>
+						<ToastContainer
+							position="top-center"
+							autoClose={5000}
+							hideProgressBar={false}
+							newestOnTop={false}
+							closeOnClick
+							rtl={false}
+							pauseOnFocusLoss
+							draggable
+							pauseOnHover
+							theme="light"
+						/>
+					</Web3Provider>
 				</Theme>
 			</RainbowKitProvider>
 		</WagmiConfig>
