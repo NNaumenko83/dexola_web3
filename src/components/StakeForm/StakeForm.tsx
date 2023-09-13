@@ -17,6 +17,7 @@ export const StakeForm = () => {
 	console.log("allowance:", allowance);
 
 	useEffect(() => {
+		console.log("useEffect:", useEffect);
 		// Отримайте поточний дозвіл (allowance) за допомогою методу FirstContract.allowance()
 		// та оновіть стан компонента
 
@@ -61,6 +62,9 @@ export const StakeForm = () => {
 	console.log("isLoadingApprove:", isLoadingApprove);
 	console.log("isSuccessApprove:", isSuccessApprove);
 
+	if (isSuccessApprove) {
+		console.log("HELLOOOOO");
+	}
 	// console.log("isSuccessApprove:", isSuccessApprove);
 	// console.log("isLoadingApprove:", isLoadingApprove);
 	// console.log("approveData:", approveData);
@@ -74,12 +78,16 @@ export const StakeForm = () => {
 	const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = async e => {
 		e.preventDefault();
 
-		if (allowance.toString() < numberOfSrtu && approve) {
+		if (allowance.toString() < numberOfSrtu && approve && stake) {
 			await approve();
+			await stake();
+			return;
 		}
 
 		if (stake && numberOfSrtu !== "") {
+			await approve();
 			await stake();
+			return;
 
 			// if (stake && numberOfSrtu !== "") {
 			// 	stake();
