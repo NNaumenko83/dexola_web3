@@ -30,6 +30,7 @@ export const StakeForm = () => {
 		if (contractStarRunnerToken) {
 			fetchAllowance();
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [contractStarRunnerToken]);
 	// const { contractStaking, contractStarRunnerToken } = useWeb3();
 
@@ -84,7 +85,7 @@ export const StakeForm = () => {
 			return;
 		}
 
-		if (stake && numberOfSrtu !== "") {
+		if (stake && numberOfSrtu !== "" && approve) {
 			await approve();
 			await stake();
 			return;
