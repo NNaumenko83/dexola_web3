@@ -39,6 +39,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const [totalSupplyStru, setTotalSupplyStru] = useState<string | null>(null);
 	const [contractStaking, setContractStaking] = useState<any | null>(null); // Додали стейт для контракту contractStaking
 	const [contractStarRunnerToken, setContractStarRunnerToken] = useState<any | null>(null); // Додали стейт для контракту contractStarRunnerToken
+	console.log("contractStarRunnerToken:", contractStarRunnerToken);
 
 	// Адреси контрактів
 	const contractStakingAddress = "0x2f112ed8a96327747565f4d4b4615be8fb89459d";

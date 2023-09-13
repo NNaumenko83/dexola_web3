@@ -1,15 +1,35 @@
-import React, { useState } from "react";
-// import { toBigInt } from "web3-utils";
-// import { useWeb3 } from "../../hooks/useWeb3";
+import React, { useEffect, useState } from "react";
 
-// import { useAccount } from "wagmi";
+// import { toBigInt } from "web3-utils";
+import { useWeb3 } from "../../hooks/useWeb3";
+
+import { useAccount } from "wagmi";
 import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from "wagmi";
 
-// import contractStakingABI from "../../contracts/contract-staking-abi.json";
+import contractStakingABI from "../../contracts/contract-staking-abi.json";
 import contractStarRunnerTokenABI from "../../contracts/contract-tokenTracker-abi.json";
 
 export const StakeForm = () => {
+	const { address } = useAccount();
 	const [numberOfSrtu, setNumberOfSrtu] = useState<string>("");
+	const { contractStarRunnerToken } = useWeb3();
+	const [allowance, setAllowance] = useState(0);
+	console.log("allowance:", allowance);
+
+	useEffect(() => {
+		// Отримайте поточний дозвіл (allowance) за допомогою методу FirstContract.allowance()
+		// та оновіть стан компонента
+
+		async function fetchAllowance() {
+			const currentAllowance = await contractStarRunnerToken.methods
+				.allowance(address, "0x2f112ed8a96327747565f4d4b4615be8fb89459d")
+				.call();
+			setAllowance(currentAllowance);
+		}
+		if (contractStarRunnerToken) {
+			fetchAllowance();
+		}
+	}, [contractStarRunnerToken]);
 	// const { contractStaking, contractStarRunnerToken } = useWeb3();
 
 	// Треба використати метод approve
@@ -23,16 +43,16 @@ export const StakeForm = () => {
 		address: "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83",
 		abi: contractStarRunnerTokenABI,
 		functionName: "approve",
-		args: ["0x2f112ed8a96327747565f4d4b4615be8fb89459d", 20000],
+		args: ["0x2f112ed8a96327747565f4d4b4615be8fb89459d", "2000000000000000000000000"],
 	});
 
-	// const { config: stakeConfig } = usePrepareContractWrite({
-	// 	address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
-	// 	abi: contractStakingABI,
-	// 	functionName: "stake",
-	// 	args: [numberOfSrtu],
-	// 	enabled: Boolean(numberOfSrtu),
-	// });
+	const { config: stakeConfig } = usePrepareContractWrite({
+		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
+		abi: contractStakingABI,
+		functionName: "stake",
+		args: [numberOfSrtu],
+		enabled: Boolean(numberOfSrtu),
+	});
 
 	const { data: approveData, write: approve } = useContractWrite(approveConfig);
 	const { isLoading: isLoadingApprove, isSuccess: isSuccessApprove } = useWaitForTransaction({
@@ -44,7 +64,7 @@ export const StakeForm = () => {
 	// console.log("isSuccessApprove:", isSuccessApprove);
 	// console.log("isLoadingApprove:", isLoadingApprove);
 	// console.log("approveData:", approveData);
-	// const { /*data: stakeData,*/ write: stake } = useContractWrite(stakeConfig);
+	const { /*data: stakeData,*/ write: stake } = useContractWrite(stakeConfig);
 	// console.log("stake:", stake);
 	// console.log("stakeData:", stakeData);
 
@@ -54,16 +74,20 @@ export const StakeForm = () => {
 	const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = async e => {
 		e.preventDefault();
 
-		if (approve) {
-			approve();
+		if (allowance.toString() < numberOfSrtu && approve) {
+			await approve();
 		}
 
-		// if (stake && numberOfSrtu !== "") {
-		// 	stake();
-		// } else {
-		// 	alert("Please enter the number of tokens to stake.");
-		// 	console.log("Please enter the number of tokens to stake.");
-		// }
+		if (stake && numberOfSrtu !== "") {
+			await stake();
+
+			// if (stake && numberOfSrtu !== "") {
+			// 	stake();
+			// } else {
+			// 	alert("Please enter the number of tokens to stake.");
+			// 	console.log("Please enter the number of tokens to stake.");
+			// }
+		}
 	};
 
 	const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = e => {
