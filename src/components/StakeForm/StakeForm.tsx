@@ -59,7 +59,7 @@ export const StakeForm = () => {
 		// const myNumber = toBigInt(stake.value);
 		// console.log("myNumber:", myNumber);
 
-		stakeToken();
+		// stakeToken();
 	};
 	return (
 		<form
