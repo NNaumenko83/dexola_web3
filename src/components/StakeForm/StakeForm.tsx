@@ -1,37 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 // import { toBigInt } from "web3-utils";
-import { useWeb3 } from "../../hooks/useWeb3";
-import { useAccount } from "wagmi";
+// import { useWeb3 } from "../../hooks/useWeb3";
+
+// import { useAccount } from "wagmi";
 import { usePrepareContractWrite, useContractWrite } from "wagmi";
 
-// import contractStakingABI from "../contracts/contract-staking-abi.json";
+import contractStakingABI from "../../contracts/contract-staking-abi.json";
 import contractStarRunnerTokenABI from "../../contracts/contract-tokenTracker-abi.json";
 
 export const StakeForm = () => {
-	const { address } = useAccount();
+	const [numberOfSrtu, setNumberOfSrtu] = useState<string>("");
+	// const { contractStaking, contractStarRunnerToken } = useWeb3();
 
-	const { config } = usePrepareContractWrite({
-		address: "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83",
-		abi: contractStarRunnerTokenABI,
-		functionName: "approve",
-		args: ["0x2f112ed8a96327747565f4d4b4615be8fb89459d", 100],
-	});
-
-	const { data, write } = useContractWrite(config);
-
-	console.log("data:", data);
-
-	console.log("config:", config);
-	console.log("address:", address);
 	// Треба використати метод approve
 	// approve(address spender, uint256 allowance) - стандарт ERC20, дозвіл на зняття
 	// 0x2f112ed8a96327747565f4d4b4615be8fb89459d;
 	// токенів з контракту, перший аргумент адреса кому дозволяємо, в нашому випадку
+
 	// контракт стейкінгу, allowance сума на яку даємо дозвіл
 
-	const { contractStaking, contractStarRunnerToken } = useWeb3();
-	console.log("contractStaking:", contractStaking);
-	console.log("contractStarRunnerToken:", contractStarRunnerToken);
+	const { config: approveConfig } = usePrepareContractWrite({
+		address: "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83",
+		abi: contractStarRunnerTokenABI,
+		functionName: "approve",
+		args: ["0x2f112ed8a96327747565f4d4b4615be8fb89459d", numberOfSrtu],
+	});
+
+	const { config: stakeConfig } = usePrepareContractWrite({
+		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
+		abi: contractStakingABI,
+		functionName: "stake",
+		args: [numberOfSrtu],
+	});
+
+	const { data: approveData, write: approve } = useContractWrite(approveConfig);
+	console.log("approveData:", approveData);
+	const { data: stakeData, write: stake } = useContractWrite(stakeConfig);
+	console.log("stakeData:", stakeData);
+
+	// 	Методи Write Стейкінг
+	// stake(number of staked tokens) - робить депозит
 
 	// const stakeToken = async () => {
 	// 	try {
@@ -47,8 +55,14 @@ export const StakeForm = () => {
 
 	const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = e => {
 		e.preventDefault();
-		if (write) {
-			write();
+
+		console.log("aaaaaaaaaaaaaaaaa");
+
+		console.log("approve:", approve);
+		console.log("stake:", stake);
+		if (approve && stake) {
+			approve();
+			stake();
 		}
 
 		// const form = e.target as HTMLFormElement;
@@ -61,6 +75,11 @@ export const StakeForm = () => {
 
 		// stakeToken();
 	};
+
+	const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = e => {
+		setNumberOfSrtu(e.target.value);
+	};
+
 	return (
 		<form
 			style={{
@@ -74,7 +93,7 @@ export const StakeForm = () => {
 			}}
 			onSubmit={onSubmitHandler}
 		>
-			<input type="text" name="stake" />
+			<input type="text" name="stake" value={numberOfSrtu} onChange={onChangeInput} />
 			<button type="submit">STAKE</button>
 		</form>
 	);
