@@ -3,9 +3,9 @@ import React, { useState } from "react";
 // import { useWeb3 } from "../../hooks/useWeb3";
 
 // import { useAccount } from "wagmi";
-import { usePrepareContractWrite, useContractWrite } from "wagmi";
+import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from "wagmi";
 
-import contractStakingABI from "../../contracts/contract-staking-abi.json";
+// import contractStakingABI from "../../contracts/contract-staking-abi.json";
 import contractStarRunnerTokenABI from "../../contracts/contract-tokenTracker-abi.json";
 
 export const StakeForm = () => {
@@ -26,55 +26,44 @@ export const StakeForm = () => {
 		args: ["0x2f112ed8a96327747565f4d4b4615be8fb89459d", 20000],
 	});
 
-	const { config: stakeConfig } = usePrepareContractWrite({
-		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
-		abi: contractStakingABI,
-		functionName: "stake",
-		args: [numberOfSrtu],
-		enabled: Boolean(numberOfSrtu),
-	});
+	// const { config: stakeConfig } = usePrepareContractWrite({
+	// 	address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
+	// 	abi: contractStakingABI,
+	// 	functionName: "stake",
+	// 	args: [numberOfSrtu],
+	// 	enabled: Boolean(numberOfSrtu),
+	// });
 
 	const { data: approveData, write: approve } = useContractWrite(approveConfig);
-	console.log("approveData:", approveData);
-	const { data: stakeData, write: stake } = useContractWrite(stakeConfig);
-	console.log("stakeData:", stakeData);
+	const { isLoading: isLoadingApprove, isSuccess: isSuccessApprove } = useWaitForTransaction({
+		hash: approveData?.hash,
+	});
+	console.log("isLoadingApprove:", isLoadingApprove);
+	console.log("isSuccessApprove:", isSuccessApprove);
+
+	// console.log("isSuccessApprove:", isSuccessApprove);
+	// console.log("isLoadingApprove:", isLoadingApprove);
+	// console.log("approveData:", approveData);
+	// const { /*data: stakeData,*/ write: stake } = useContractWrite(stakeConfig);
+	// console.log("stake:", stake);
+	// console.log("stakeData:", stakeData);
 
 	// 	Методи Write Стейкінг
 	// stake(number of staked tokens) - робить депозит
 
-	// const stakeToken = async () => {
-	// 	try {
-	// 		await contractStarRunnerToken.methods
-	// 			.approve("0x2f112ed8a96327747565f4d4b4615be8fb89459d", 100)
-	// 			.send({ from: address });
-	// 		console.log("before contractStaking");
-	// 		await contractStaking.methods.stake(100).send({ from: address });
-	// 	} catch (error) {
-	// 		console.error(error);
-	// 	}
-	// };
-
-	const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = e => {
+	const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = async e => {
 		e.preventDefault();
 
-		console.log("aaaaaaaaaaaaaaaaa");
-
-		console.log("approve:", approve);
-		console.log("stake:", stake);
-		if (approve && stake) {
+		if (approve) {
 			approve();
-			stake();
 		}
 
-		// const form = e.target as HTMLFormElement;
-
-		// const value = form.elements.stake;
-		// console.log("value:", value);
-
-		// const myNumber = toBigInt(stake.value);
-		// console.log("myNumber:", myNumber);
-
-		// stakeToken();
+		// if (stake && numberOfSrtu !== "") {
+		// 	stake();
+		// } else {
+		// 	alert("Please enter the number of tokens to stake.");
+		// 	console.log("Please enter the number of tokens to stake.");
+		// }
 	};
 
 	const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = e => {
@@ -95,7 +84,7 @@ export const StakeForm = () => {
 			onSubmit={onSubmitHandler}
 		>
 			<input type="text" name="stake" value={numberOfSrtu} onChange={onChangeInput} />
-			<button type="submit">STAKE</button>
+			<button type="submit">{isLoadingApprove ? "LOADING" : "STAKE"}</button>
 		</form>
 	);
 };

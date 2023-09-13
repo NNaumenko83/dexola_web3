@@ -79,7 +79,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const getStakedBalance = async () => {
 		if (contractStarRunnerToken && web3 && address) {
 			const stakedBalance = await contractStaking.methods.balanceOf(address).call();
-			console.log("stakedBalance:", stakedBalance);
+			// console.log("stakedBalance:", stakedBalance);
 			setStakedBalance(stakedBalance.toString());
 		}
 	};

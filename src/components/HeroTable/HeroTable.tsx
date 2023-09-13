@@ -17,7 +17,7 @@ import {
 
 export const TestInfoTable = () => {
 	const { stakedBalance, getStakedBalance, totalSupplyStru, getTotalSupply, totalRewards, getTotalRewards } = useWeb3();
-	console.log("stakedBalance:", stakedBalance);
+	// console.log("stakedBalance:", stakedBalance);
 
 	useEffect(() => {
 		getStakedBalance();
