@@ -19,6 +19,10 @@ const theme = {
 		helpIconColorMobile: "#B3B3B3",
 		// Tablet and Web help icon color
 		helpIconColorTabletWeb: "#FFFFFF",
+		// Active page link color
+		activePageLinkColor: "#FFFFFF",
+		// Active page link border color
+		activePageLinkBorderColor: "#2196f3",
 
 		//
 		//
@@ -106,6 +110,12 @@ const theme = {
 		},
 
 		body: {
+			web: "1.125rem",
+			tablet: "1rem",
+			mobile: "0.875rem",
+		},
+
+		navLink: {
 			web: "1.125rem",
 			tablet: "1rem",
 			mobile: "0.875rem",
