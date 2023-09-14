@@ -11,6 +11,7 @@ export const HeaderContainer = styled.div`
 `;
 
 export const HeaderStyled = styled.header`
+	position: absolute;
 	width: 100%;
 	padding-top: 0.25rem;
 	padding-bottom: 0.25rem;
