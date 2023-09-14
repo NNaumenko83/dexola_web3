@@ -17,7 +17,7 @@ export const NotConnectedWrapper = () => {
 
 						<Text>
 							To start staking you need <br />
-							to connect you wallet first
+							to connect your wallet first
 						</Text>
 					</IconAndTextWrapper>
 					<ConnectToWalletButton />

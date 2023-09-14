@@ -23,6 +23,8 @@ const theme = {
 		activePageLinkColor: "#FFFFFF",
 		// Active page link border color
 		activePageLinkBorderColor: "#204FFE",
+		// Tablet and deskrop background footer color
+		footerTabletBgColor: "#000000",
 
 		//
 		//
@@ -126,7 +128,7 @@ const theme = {
 			medium: "1rem",
 		},
 
-		footerText: "0.875rem",
+		footerText: { tablet: "0.875rem", mobile: "0.6875rem" },
 
 		// error: "0.8125rem",
 	},

@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 
 import { Header } from "../Header/Header";
 import { Footer } from "../Footer/Footer";
-import { AppWrapper, SuspenseWrapper, Test } from "./SharedLayout.styled";
+import { AppWrapper, SuspenseWrapper, PagesWrapper } from "./SharedLayout.styled";
 import { Main } from "../Main/Main";
 import { Hero } from "../Hero/Hero";
 import { Navigation } from "../Navigation/Navigation";
@@ -14,7 +14,7 @@ export const SharedLayout = () => {
 			<Header />
 			<Main>
 				<Hero />
-				<Test>
+				<PagesWrapper>
 					<Navigation />
 
 					<Suspense
@@ -26,7 +26,7 @@ export const SharedLayout = () => {
 					>
 						<Outlet />
 					</Suspense>
-				</Test>
+				</PagesWrapper>
 			</Main>
 			<Footer />
 		</AppWrapper>

@@ -4,7 +4,7 @@ export const IconAndTextWrapper = styled.div`
 	display: flex;
 	align-items: center;
 	flex-direction: column;
-	gap: 16px;
+	gap: 1rem;
 `;
 
 export const Text = styled.p`
@@ -14,10 +14,9 @@ export const Text = styled.p`
 export const NotConnectedWrapperStyled = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 110px;
-	padding-top: 149px;
-	padding-bottom: 56px;
-	border: 1px solid red;
+	gap: 6.875rem;
+	padding-top: 9.3125rem;
+	padding-bottom: 3.5rem;
 	width: 100%;
 	height: 100%;
 `;

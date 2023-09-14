@@ -46,7 +46,7 @@ export const Navigation = () => {
 			<NavMenu>
 				<NavLinkStyled to="/">Stake</NavLinkStyled>
 				<NavLinkStyled to="/withdraw">Withdraw</NavLinkStyled>
-				<NavLinkStyled to="/claimrewards">ClaimRewards</NavLinkStyled>
+				<NavLinkStyled to="/claimrewards">Claim rewards</NavLinkStyled>
 			</NavMenu>
 		</Container>
 	);
