@@ -1,4 +1,25 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Button } from "../Button/Button";
+import styled from "styled-components";
+
+export const ConnectWalletStyled = styled(Button)`
+	width: 10.625rem;
+	height: 2.5rem;
+
+	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
+		width: 223px;
+		height: 48px;
+
+		font-size: ${props => props.theme.fontSizes.button.medium};
+		line-height: 1.5;
+		letter-spacing: 0.02rem;
+	}
+
+	/* @media screen and (min-width: ${props => props.theme.breakpoints.web}) {
+		width: 223px;
+		height: 48px;
+	} */
+`;
 
 // В даному компоненті використаний код з https://www.rainbowkit.com/docs/custom-connect-button
 
@@ -24,15 +45,7 @@ export const ConnectToWalletButton = () => {
 					>
 						{(() => {
 							if (!connected) {
-								return (
-									<button
-										onClick={openConnectModal}
-										type="button"
-										style={{ width: "150px", height: "50px", backgroundColor: "red" }}
-									>
-										Connect Wallet
-									</button>
-								);
+								return <ConnectWalletStyled onClick={openConnectModal}>Connect Wallet</ConnectWalletStyled>;
 							}
 
 							if (chain.unsupported) {

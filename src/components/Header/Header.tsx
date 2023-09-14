@@ -1,17 +1,12 @@
-// import { useEffect, useState } from "react";
-// import Web3 from "web3";
-
 import { useAccount, useDisconnect } from "wagmi";
-
 import { Container } from "../Container/Container";
 import Icon from "../Icon/Icon";
 import { HeaderContainer, HeaderStyled } from "./Header.styled";
-
-// import contractStakingABI from "../../contracts/contract-staking-abi.json";
-// import contractTockenTrackingABI from "../../contracts/contract-tokenTracker-abi.json";
 import { ConnectToWalletButton } from "../ConnectToWalletButton/ConnectToWalletButton";
 import { useWeb3 } from "../../hooks/useWeb3";
 import { useEffect } from "react";
+
+
 
 // Адреси контрактів
 // Адреса контракту на який ми депозитимо токени StarRunner
@@ -22,7 +17,6 @@ import { useEffect } from "react";
 export const Header = () => {
 	// Використовуємо хук для отримання аккаунта і стану підключення
 	const { address, isConnected } = useAccount();
-
 	const { web3, balance, struBalance, getBalance, getStruBalance } = useWeb3();
 
 	useEffect(() => {
