@@ -4,7 +4,7 @@ import styled from "styled-components";
 import React from "react";
 
 export const ConnectWalletStyled = styled(Button)`
-	width: 100%;
+	width: 10.625rem;
 	height: 2.5rem;
 	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
 		width: 223px;
@@ -20,7 +20,7 @@ interface IConnectButtonCustom {
 
 // В даному компоненті використаний код з https://www.rainbowkit.com/docs/custom-connect-button
 
-export const ConnectToWalletButton: React.FC<IConnectButtonCustom> = ({ section }) => {
+export const ConnectToWalletButtonHeader: React.FC<IConnectButtonCustom> = ({ section }) => {
 	console.log("section:", section);
 	return (
 		<ConnectButton.Custom>

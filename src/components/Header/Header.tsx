@@ -2,11 +2,9 @@ import { useAccount, useDisconnect } from "wagmi";
 import { Container } from "../Container/Container";
 import Icon from "../Icon/Icon";
 import { HeaderContainer, HeaderStyled } from "./Header.styled";
-import { ConnectToWalletButton } from "../ConnectToWalletButton/ConnectToWalletButton";
+import { ConnectToWalletButtonHeader } from "../ConnectToWalletButtonHeader/ConnectToWalletButtonHeader";
 import { useWeb3 } from "../../hooks/useWeb3";
 import { useEffect } from "react";
-
-
 
 // Адреси контрактів
 // Адреса контракту на який ми депозитимо токени StarRunner
@@ -89,7 +87,7 @@ export const Header = () => {
 							<div>{ethBalance?.toString()} ETH</div> */}
 						</div>
 					) : (
-						<ConnectToWalletButton />
+						<ConnectToWalletButtonHeader />
 					)}
 				</HeaderContainer>
 			</Container>

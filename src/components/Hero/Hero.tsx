@@ -1,4 +1,4 @@
-import { TestInfoTable } from "../HeroTable/HeroTable";
+import { TestInfoTable } from "../../HeroTable/HeroTable";
 import { Title } from "../Title/Title";
 import { HeroContainer } from "./Hero.styled";
 

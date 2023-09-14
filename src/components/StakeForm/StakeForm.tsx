@@ -8,6 +8,7 @@ import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from
 
 import contractStakingABI from "../../contracts/contract-staking-abi.json";
 import contractStarRunnerTokenABI from "../../contracts/contract-tokenTracker-abi.json";
+import { StakedFormStyled } from "./StakeForm.styled";
 
 export const StakeForm = () => {
 	const { address } = useAccount();
@@ -104,20 +105,9 @@ export const StakeForm = () => {
 	};
 
 	return (
-		<form
-			style={{
-				display: "flex",
-				flexDirection: "column",
-				width: "350px",
-				gap: "25px",
-				marginTop: "25px",
-				padding: "20px",
-				border: "1px solid red",
-			}}
-			onSubmit={onSubmitHandler}
-		>
+		<StakedFormStyled onSubmit={onSubmitHandler}>
 			<input type="text" name="stake" value={numberOfSrtu} onChange={onChangeInput} />
 			<button type="submit">{isLoadingApprove ? "LOADING" : "STAKE"}</button>
-		</form>
+		</StakedFormStyled>
 	);
 };

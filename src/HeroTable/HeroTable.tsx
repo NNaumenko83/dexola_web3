@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useWeb3 } from "../../hooks/useWeb3";
+import { useWeb3 } from "../hooks/useWeb3";
 import {
 	HelpIcon,
 	Table,
