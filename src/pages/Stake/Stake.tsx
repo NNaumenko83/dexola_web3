@@ -1,12 +1,12 @@
 import { useAccount } from "wagmi";
 import { Container } from "../../components/Container/Container";
 import { StakeForm } from "../../components/StakeForm/StakeForm";
-import { ConnectToWalletButton } from "../../components/ConnectToWalletButton/ConnectToWalletButton";
+import { NotConnectedWrapper } from "../../components/NotConnectedWrapper/NotConnectedWrapper";
 
 const Stake = () => {
 	const { isConnected } = useAccount();
 
-	return <Container>{!isConnected ? <ConnectToWalletButton /> : <StakeForm />}</Container>;
+	return <Container>{!isConnected ? <NotConnectedWrapper /> : <StakeForm />}</Container>;
 };
 
 export default Stake;

@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
-import { Container } from "../Container/Container";
+
 import { styled } from "styled-components";
-import { NavMenu } from "./Navigation.styled";
+import { Container, NavMenu } from "./Navigation.styled";
 
 const NavLinkStyled = styled(NavLink)`
 	flex-basis: calc(100% / 3);
@@ -11,15 +11,20 @@ const NavLinkStyled = styled(NavLink)`
 
 	&.active {
 		color: ${props => props.theme.colors.activePageLinkColor};
-		padding-bottom: 10px;
-		border-bottom: 6px solid ${props => props.theme.colors.activePageLinkBorderColor};
+		padding-bottom: 11px;
+		border-bottom: 5px solid ${props => props.theme.colors.activePageLinkBorderColor};
+
+		@media screen and (min-width: 744px) {
+			padding-bottom: 0.625rem;
+			border-bottom-width: 0.375rem;
+		}
 	}
 
 	&:hover,
 	&:focus {
 		color: ${props => props.theme.colors.activePageLinkColor};
 	}
-	@media screen and (min-width: 744px) {
+	@media screen and (min-width: 46.5rem) {
 		display: flex;
 		justify-content: center;
 		padding-left: 2rem;

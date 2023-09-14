@@ -22,7 +22,7 @@ const theme = {
 		// Active page link color
 		activePageLinkColor: "#FFFFFF",
 		// Active page link border color
-		activePageLinkBorderColor: "#2196f3",
+		activePageLinkBorderColor: "#204FFE",
 
 		//
 		//
