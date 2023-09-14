@@ -65,7 +65,7 @@ export const FooterStyled = styled.footer`
 	letter-spacing: -0.0175rem;
 
 	@media screen and (max-width: ${props => props.theme.breakpoints.maxMobile}) {
-		position: absolute;
+		/* position: absolute;
 		width: 1px;
 		height: 1px;
 		margin: -1px;
@@ -75,7 +75,7 @@ export const FooterStyled = styled.footer`
 		white-space: nowrap;
 		clip-path: inset(100%);
 		clip: rect(0 0 0 0);
-		overflow: hidden;
+		overflow: hidden; */
 	}
 
 	/* @media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {

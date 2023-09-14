@@ -13,4 +13,11 @@ export const AppWrapper = styled.div`
 	flex-direction: column;
 `;
 
-export const Test = styled.div``;
+export const Test = styled.div`
+	flex: 1 1 auto;
+
+	margin-top: -16px;
+	border-top-left-radius: 16px;
+	border-top-right-radius: 16px;
+	background-color: black;
+`;
