@@ -7,7 +7,6 @@ export const FooterContainer = styled(ContainerStyled)`
 
 	display: flex;
 	justify-content: space-between;
-	border-top: 1px solid ${props => props.theme.colors.footerBordersColor};
 
 	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
 		padding-top: 1.75rem;
@@ -59,6 +58,7 @@ export const FooterStyled = styled.footer`
 	letter-spacing: -0.22px;
 
 	background-color: ${props => props.theme.colors.background};
+	border-top: 1px solid ${props => props.theme.colors.footerBordersColor};
 
 	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
 		background-color: transparent;
@@ -68,9 +68,9 @@ export const FooterStyled = styled.footer`
 	}
 
 	@media screen and (min-width: ${props => props.theme.breakpoints.web}) {
-		position: fixed;
-		width: 100vw;
-		bottom: 0;
-		left: 0;
 	}
+	position: fixed;
+	width: 100vw;
+	bottom: 0;
+	left: 0;
 `;

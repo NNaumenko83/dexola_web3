@@ -1,15 +1,22 @@
 import styled from "styled-components";
 
 export const TooltipStyled = styled.div`
-	position: relative;
+	position: absolute;
+	left: -68px;
+	top: -55px;
+
 	color: black;
+
 	background-color: white;
 	padding: 8px 12px;
 
 	width: fit-content;
 
-	/* Для тестування */
-	margin-bottom: 50px;
+	font-family: "Inter", sans-serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 16px; /* 114.286% */
 
 	&::after {
 		content: "";
@@ -25,5 +32,9 @@ export const TooltipStyled = styled.div`
 		border-radius: 1px;
 
 		transform: rotate(45deg) translate(-50%);
+	}
+
+	@media screen and (max-width: 1440px) {
+		display: none;
 	}
 `;

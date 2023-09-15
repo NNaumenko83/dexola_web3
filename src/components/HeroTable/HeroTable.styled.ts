@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import Icon from "../Icon/Icon";
+import { TooltipStyled } from "../Tooltip/Tooltip.styled";
 
 export const Table = styled.table`
 	margin-bottom: 1.5rem;
@@ -202,5 +203,34 @@ export const NameCell = styled.p`
 `;
 
 export const TooltipWrapper = styled.div`
-	border: 1px solid red;
+	position: relative;
+	cursor: pointer;
+
+	& > :last-child {
+		opacity: 0;
+		transition: all 350ms linear;
+	}
+	&:hover {
+		& > :last-child {
+			opacity: 1;
+		}
+	}
+`;
+
+export const ToolTipSTRU = styled(TooltipStyled)`
+	width: 165px;
+`;
+export const ToolTipAPR = styled(TooltipStyled)`
+	left: -165px;
+	top: -56px;
+	width: 360px;
+`;
+export const ToolTipRewards = styled(TooltipStyled)`
+	left: -74px;
+	top: -55px;
+	width: 176px;
+`;
+
+export const RewardsText = styled.p`
+	text-align: center;
 `;

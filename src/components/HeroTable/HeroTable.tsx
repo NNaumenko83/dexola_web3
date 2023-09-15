@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useWeb3 } from "../../hooks/useWeb3";
+
 import {
 	HelpIcon,
 	Table,
@@ -14,10 +14,14 @@ import {
 	TableCellApy,
 	NameCell,
 	TooltipWrapper,
+	ToolTipSTRU,
+	ToolTipRewards,
+	ToolTipAPR,
+	RewardsText,
 } from "./HeroTable.styled";
-import { Tooltip } from "../Tooltip/Tooltip";
+import { useWeb3 } from "../../hooks/useWeb3";
 
-export const TestInfoTable = () => {
+export const HeroTable = () => {
 	const { stakedBalance, getStakedBalance, totalSupplyStru, getTotalSupply, totalRewards, getTotalRewards } = useWeb3();
 	// console.log("stakedBalance:", stakedBalance);
 
@@ -44,18 +48,21 @@ export const TestInfoTable = () => {
 							<p>
 								<TextValue>{stakedBalance}</TextValue>
 							</p>
-
+							{/* Total rewars */}
 							<p>{totalRewards}</p>
 							<UnitIconWrapper>
 								<p>
 									<UnitName>STRU</UnitName>
 								</p>
 								<NameCell>Staked balance</NameCell>
-
 								<TooltipWrapper>
-									<Tooltip>
-										<HelpIcon name="help_icon" width={16} height={18} />
-									</Tooltip>
+									<HelpIcon name="help_icon" width={16} height={18} />
+									<ToolTipSTRU>
+										<p>
+											Staking rewards get <br />
+											allocated on this sum
+										</p>
+									</ToolTipSTRU>
 								</TooltipWrapper>
 							</UnitIconWrapper>
 						</TableCell>
@@ -68,6 +75,12 @@ export const TestInfoTable = () => {
 							<NameCell>APY</NameCell>
 							<TooltipWrapper>
 								<HelpIcon name="help_icon" width={16} height={18} />
+								<ToolTipAPR>
+									<p>
+										Displays the average for APR.
+										<br /> Interest rate is calculated for each amount of tokens.
+									</p>
+								</ToolTipAPR>
 							</TooltipWrapper>
 						</TableCellApy>
 					</td>
@@ -91,6 +104,12 @@ export const TestInfoTable = () => {
 								<NameCell>Rewards</NameCell>
 								<TooltipWrapper>
 									<HelpIcon name="help_icon" width={16} height={18} />
+									<ToolTipRewards>
+										<RewardsText>
+											Rewards get allocated <br />
+											every second
+										</RewardsText>
+									</ToolTipRewards>
 								</TooltipWrapper>
 							</UnitIconWrapper>
 						</TableCell>
