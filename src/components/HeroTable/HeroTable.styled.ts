@@ -200,3 +200,7 @@ export const NameCell = styled.p`
 	}
 	margin-left: 0.75rem;
 `;
+
+export const TooltipWrapper = styled.div`
+	border: 1px solid red;
+`;

@@ -13,7 +13,9 @@ import {
 	UnitName,
 	TableCellApy,
 	NameCell,
+	TooltipWrapper,
 } from "./HeroTable.styled";
+import { Tooltip } from "../Tooltip/Tooltip";
 
 export const TestInfoTable = () => {
 	const { stakedBalance, getStakedBalance, totalSupplyStru, getTotalSupply, totalRewards, getTotalRewards } = useWeb3();
@@ -42,7 +44,7 @@ export const TestInfoTable = () => {
 							<p>
 								<TextValue>{stakedBalance}</TextValue>
 							</p>
-							{/* Total rewars */}
+
 							<p>{totalRewards}</p>
 							<UnitIconWrapper>
 								<p>
@@ -50,7 +52,11 @@ export const TestInfoTable = () => {
 								</p>
 								<NameCell>Staked balance</NameCell>
 
-								<HelpIcon name="help_icon" width={16} height={18} />
+								<TooltipWrapper>
+									<Tooltip>
+										<HelpIcon name="help_icon" width={16} height={18} />
+									</Tooltip>
+								</TooltipWrapper>
 							</UnitIconWrapper>
 						</TableCell>
 					</td>
@@ -60,7 +66,9 @@ export const TestInfoTable = () => {
 								<TextValue>{totalSupplyStru}</TextValue>
 							</p>
 							<NameCell>APY</NameCell>
-							<HelpIcon name="help_icon" width={16} height={18} />
+							<TooltipWrapper>
+								<HelpIcon name="help_icon" width={16} height={18} />
+							</TooltipWrapper>
 						</TableCellApy>
 					</td>
 					<td>
@@ -81,8 +89,9 @@ export const TestInfoTable = () => {
 									<UnitName>STRU</UnitName>
 								</p>
 								<NameCell>Rewards</NameCell>
-
-								<HelpIcon name="help_icon" width={16} height={18} />
+								<TooltipWrapper>
+									<HelpIcon name="help_icon" width={16} height={18} />
+								</TooltipWrapper>
 							</UnitIconWrapper>
 						</TableCell>
 					</td>
