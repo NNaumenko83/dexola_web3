@@ -24,12 +24,12 @@ const NavLinkStyled = styled(NavLink)`
 	&:focus {
 		color: ${props => props.theme.colors.activePageLinkColor};
 	}
-	@media screen and (min-width: 46.5rem) {
+	@media screen and (min-width: 744px) {
 		display: flex;
 		justify-content: center;
 		padding-left: 2rem;
 		padding-right: 2rem;
-		max-width: 100%;
+		width: 100%;
 
 		font-size: ${props => props.theme.fontSizes.navLink.tablet};
 		font-weight: ${props => props.theme.fontWeights.medium};

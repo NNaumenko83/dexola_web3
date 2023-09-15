@@ -6,10 +6,22 @@ export const NavMenu = styled.nav`
 
 	@media screen and (min-width: 744px) {
 		max-width: 27.6875rem;
+		& > :nth-child(1) {
+			min-width: 113px;
+		}
+		& > :nth-child(2) {
+			min-width: 141px;
+		}
+		& > :nth-child(3) {
+			min-width: 189px;
+		}
 	}
 `;
 
 export const Container = styled(ContainerStyled)`
-	border-bottom: 1px solid #204ffe;
 	padding-top: 16px;
+
+	@media screen and (max-width: ${props => props.theme.breakpoints.maxMobile}) {
+		border-bottom: 1px solid #204ffe;
+	}
 `;

@@ -12,6 +12,13 @@ export const ConnectWalletStyled = styled(Button)`
 	}
 `;
 
+const ButtonWrapper = styled.div`
+	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
+		display: flex;
+		justify-content: center;
+	}
+`;
+
 // В даному компоненті використаний код з https://www.rainbowkit.com/docs/custom-connect-button
 
 interface IConnectButtonCustom {
@@ -31,7 +38,7 @@ export const ConnectToWalletButton: React.FC<IConnectButtonCustom> = ({ section 
 					ready && account && chain && (!authenticationStatus || authenticationStatus === "authenticated");
 
 				return (
-					<div
+					<ButtonWrapper
 						{...(!ready && {
 							"aria-hidden": true,
 							style: {
@@ -83,7 +90,7 @@ export const ConnectToWalletButton: React.FC<IConnectButtonCustom> = ({ section 
 								</div>
 							);
 						})()}
-					</div>
+					</ButtonWrapper>
 				);
 			}}
 		</ConnectButton.Custom>

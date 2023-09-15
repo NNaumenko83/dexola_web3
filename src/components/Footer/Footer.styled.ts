@@ -61,20 +61,16 @@ export const FooterStyled = styled.footer`
 	background-color: ${props => props.theme.colors.background};
 
 	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
-		position: fixed;
-		width: 100vw;
-		bottom: 0;
-		left: 0;
 		background-color: transparent;
 		font-size: ${props => props.theme.fontSizes.footerText.tablet};
 		line-height: 1.31;
 		letter-spacing: -0.28px;
 	}
 
-	/* @media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
-		margin-top: 4.75rem;
-	}
 	@media screen and (min-width: ${props => props.theme.breakpoints.web}) {
-		margin-top: 7.8125rem;
-	} */
+		position: fixed;
+		width: 100vw;
+		bottom: 0;
+		left: 0;
+	}
 `;
