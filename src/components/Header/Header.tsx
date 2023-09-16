@@ -13,7 +13,7 @@ import {
 } from "./Header.styled";
 import { ConnectToWalletButtonHeader } from "../ConnectToWalletButtonHeader/ConnectToWalletButtonHeader";
 import { useWeb3 } from "../../hooks/useWeb3";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { convertEthereumAddress } from "../../utils/convertEthereumAddress";
 
 // Адреси контрактів
@@ -25,16 +25,15 @@ import { convertEthereumAddress } from "../../utils/convertEthereumAddress";
 export const Header = () => {
 	// Використовуємо хук для отримання аккаунта і стану підключення
 	const { address, isConnected } = useAccount();
-	const { web3, balance, struBalance, getBalance, getStruBalance } = useWeb3();
+	const { balance, struBalance } = useWeb3();
 
-	useEffect(() => {
-		// console.log("useEffect Header");
-		if (web3) {
-			getBalance();
-			getStruBalance();
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [web3]);
+	// useEffect(() => {
+	// 	// console.log("useEffect Header");
+	// 	if (web3) {
+	// 		getBalance();
+	// 		getStruBalance();
+	// 	}
+	// }, [getBalance, getStruBalance, web3]);
 
 	// const [ethBalance, setEthbalance] = useState<bigint | null>(null);
 	// const [struBalance, setStruBalance] = useState<bigint | null>(null);

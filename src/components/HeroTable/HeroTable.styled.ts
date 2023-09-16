@@ -86,7 +86,7 @@ export const TableRow = styled.tr`
 
 	@media screen and (min-width: 1440px) {
 		& > :nth-child(1) {
-			width: 21.8125rem;
+			min-width: 21.8125rem;
 		}
 
 		& > :nth-child(2) {

@@ -15,10 +15,8 @@ export const Form = () => {
 	const [numberOfSrtu, setNumberOfSrtu] = useState<string>("");
 	const { contractStarRunnerToken } = useWeb3();
 	const [allowance, setAllowance] = useState(0);
-	console.log("allowance:", allowance);
 
 	useEffect(() => {
-		console.log("useEffect:", useEffect);
 		// Отримайте поточний дозвіл (allowance) за допомогою методу FirstContract.allowance()
 		// та оновіть стан компонента
 
@@ -61,8 +59,6 @@ export const Form = () => {
 	const { isLoading: isLoadingApprove, isSuccess: isSuccessApprove } = useWaitForTransaction({
 		hash: approveData?.hash,
 	});
-	console.log("isLoadingApprove:", isLoadingApprove);
-	console.log("isSuccessApprove:", isSuccessApprove);
 
 	if (isSuccessApprove) {
 		console.log("HELLOOOOO");

@@ -66,10 +66,12 @@ export const HeroTable = () => {
 					</td>
 					<td>
 						<TableCellApy>
-							<p>
-								<TextValue>{apr}</TextValue>
-							</p>
-							<NameCell>APY</NameCell>
+							{apr && (
+								<p>
+									<TextValue>&#8776;{apr}&#37;</TextValue>
+								</p>
+							)}
+							<NameCell>APR</NameCell>
 							<TooltipWrapper>
 								<HelpIcon name="help_icon" width={16} height={18} />
 								<ToolTipAPR>
