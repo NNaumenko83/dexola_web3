@@ -68,9 +68,9 @@ export const FooterStyled = styled.footer`
 	}
 
 	@media screen and (min-width: ${props => props.theme.breakpoints.web}) {
+		position: fixed;
+		width: 100vw;
+		bottom: 0;
+		left: 0;
 	}
-	position: fixed;
-	width: 100vw;
-	bottom: 0;
-	left: 0;
 `;
