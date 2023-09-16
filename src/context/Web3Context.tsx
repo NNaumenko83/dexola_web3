@@ -85,7 +85,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	}, [web3, address, setBalance]);
 
 	const getApr = useCallback(async () => {
-		if (contractStaking && web3 && address) {
+		if (contractStaking && web3) {
 			try {
 				const totalSupplySTRU = await contractStaking.methods.totalSupply().call();
 				const totalRewards = await contractStaking.methods.getRewardForDuration().call();
@@ -95,7 +95,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				console.error("Помилка при отриманні APR:", error);
 			}
 		}
-	}, [contractStaking, web3, address, setApr]);
+	}, [contractStaking, web3, setApr]);
 
 	useEffect(() => {
 		const web3 = createWeb3Provider();
