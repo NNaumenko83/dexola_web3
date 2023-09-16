@@ -10,15 +10,15 @@ export type Web3ContextType = {
 	balance: string | null;
 	struBalance: string | null;
 	stakedBalance: string | null;
-	totalSupplyStru: string | null;
-	totalRewards: string | null;
+	// totalSupplyStru: string | null;
+	// totalRewards: string | null;
 	contractStaking: any | null; // Додали інстанс контракту contractStaking
 	contractStarRunnerToken: any | null; // Додали інстанс контракту contractStarRunnerToken
+	apr: number | null;
 	getBalance: () => void;
 	getStruBalance: () => void;
-	getStakedBalance: () => void;
-	getTotalSupply: () => void;
-	getTotalRewards: () => void;
+	getStakedBalance: () => void; // getTotalSupply: () => void;
+	// getTotalRewards: () => void;
 };
 
 export const Web3Context = createContext<Web3ContextType | undefined>(undefined);
@@ -35,8 +35,9 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const [balance, setBalance] = useState<string | null>(null);
 	const [struBalance, setStruBalance] = useState<string | null>(null);
 	const [stakedBalance, setStakedBalance] = useState<string | null>(null);
-	const [totalRewards, setTotalRewards] = useState<string | null>(null);
-	const [totalSupplyStru, setTotalSupplyStru] = useState<string | null>(null);
+	const [apr, setApr] = useState<number | null>(null);
+	// const [totalRewards, setTotalRewards] = useState<string | null>(null);
+	// const [totalSupplyStru, setTotalSupplyStru] = useState<string | null>(null);
 	const [contractStaking, setContractStaking] = useState<any | null>(null); // Додали стейт для контракту contractStaking
 	const [contractStarRunnerToken, setContractStarRunnerToken] = useState<any | null>(null); // Додали стейт для контракту contractStarRunnerToken
 	console.log("contractStarRunnerToken:", contractStarRunnerToken);
@@ -46,19 +47,30 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const contractStarRunnerTokenAddress = "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83";
 
 	useEffect(() => {
-		if (isConnected && address) {
-			const web3 = createWeb3Provider();
-			setWeb3(web3);
+		const web3 = createWeb3Provider();
+		const contractStakingInstance = new web3.eth.Contract(contractStakingABI, contractStakingAddress);
+		setContractStaking(contractStakingInstance);
+		setWeb3(web3);
+	}, []);
 
-			if (web3) {
-				const contractStakingInstance = new web3.eth.Contract(contractStakingABI, contractStakingAddress);
-				setContractStaking(contractStakingInstance);
-				const contractStarRunnerTokenInstance = new web3.eth.Contract(
-					contractStarRunnerTokenABI,
-					contractStarRunnerTokenAddress,
-				);
-				setContractStarRunnerToken(contractStarRunnerTokenInstance);
-			}
+	useEffect(() => {
+		if (web3) {
+			getApr();
+		}
+	}, [web3]);
+
+	useEffect(() => {
+		// const web3 = createWeb3Provider();
+		// setWeb3(web3);
+		// getApr();
+		if (isConnected && address && web3) {
+			const contractStakingInstance = new web3.eth.Contract(contractStakingABI, contractStakingAddress);
+			setContractStaking(contractStakingInstance);
+			const contractStarRunnerTokenInstance = new web3.eth.Contract(
+				contractStarRunnerTokenABI,
+				contractStarRunnerTokenAddress,
+			);
+			setContractStarRunnerToken(contractStarRunnerTokenInstance);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [address, isConnected]);
@@ -66,7 +78,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const getBalance = async () => {
 		if (web3 && address) {
 			const balanceEth = await web3.eth.getBalance(address);
-			const formattedBalance = web3.utils.fromWei(balanceEth, "ether").slice(0, 3);
+			const formattedBalance = Number(web3.utils.fromWei(balanceEth, "ether")).toFixed(1);
 			setBalance(formattedBalance.toString());
 		}
 	};
@@ -74,7 +86,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const getStruBalance = async () => {
 		if (contractStarRunnerToken && web3 && address) {
 			const balanceStruOnWallet = await contractStarRunnerToken.methods.balanceOf(address).call();
-			const formattedStruBalance = web3.utils.fromWei(balanceStruOnWallet, "ether").slice(0, 4);
+			const formattedStruBalance = Math.floor(Number(web3.utils.fromWei(balanceStruOnWallet, "ether")));
 			setStruBalance(formattedStruBalance.toString());
 		}
 	};
@@ -82,7 +94,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const getStakedBalance = async () => {
 		if (contractStarRunnerToken && web3 && address) {
 			const stakedBalance = await contractStaking.methods.balanceOf(address).call();
-			const formattedStakedBalance = web3.utils.fromWei(stakedBalance, "ether").slice(0, 4);
+			const formattedStakedBalance = Number(web3.utils.fromWei(stakedBalance, "ether")).toFixed(2);
 			setStakedBalance(formattedStakedBalance.toString());
 		}
 	};
@@ -93,19 +105,35 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	// Загальна сума ставок, зроблених всіма користувачами - це можна отримати,
 	// викликавши метод читання totalSupply() на контракті стейкінгу.
 
-	const getTotalSupply = async () => {
-		if (contractStarRunnerToken && web3 && address) {
+	const getApr = async () => {
+		if (web3) {
+			console.log("getApr:");
+
 			const totalSupplySTRU = await contractStaking.methods.totalSupply().call();
-			setTotalSupplyStru(totalSupplySTRU.toString());
+			console.log("totalSupplySTRU:", totalSupplySTRU);
+			const totalRewards = await contractStaking.methods.getRewardForDuration().call();
+			console.log("totalRewards:", totalRewards);
+			console.log(Number(totalRewards / totalSupplySTRU));
+			const apr = Math.floor(Number(totalRewards / totalSupplySTRU)) * 100;
+			console.log("apr:", apr);
+			setApr(apr);
 		}
 	};
 
-	const getTotalRewards = async () => {
-		if (contractStarRunnerToken && web3 && address) {
-			const totalRewards = await contractStaking.methods.getRewardForDuration().call();
-			setTotalRewards(totalRewards.toString());
-		}
-	};
+	// const getTotalSupply = async () => {
+	// 	if (contractStarRunnerToken && web3 && address) {
+	// 		const totalSupplySTRU = await contractStaking.methods.totalSupply().call();
+	// 		setTotalSupplyStru(totalSupplySTRU.toString());
+	// 	}
+	// };
+
+	// const getTotalRewards = async () => {
+	// 	if (contractStarRunnerToken && web3 && address) {
+	// 		const totalRewards = await contractStaking.methods.getRewardForDuration().call();
+	// 		setTotalRewards(totalRewards.toString());
+	// 	}
+	// };
+
 	return (
 		<Web3Context.Provider
 			value={{
@@ -115,13 +143,11 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				stakedBalance,
 				contractStaking,
 				contractStarRunnerToken,
-				totalSupplyStru,
-				totalRewards,
+
 				getBalance,
 				getStruBalance,
 				getStakedBalance,
-				getTotalSupply,
-				getTotalRewards,
+				apr,
 			}}
 		>
 			{children}

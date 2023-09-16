@@ -22,14 +22,12 @@ import {
 import { useWeb3 } from "../../hooks/useWeb3";
 
 export const HeroTable = () => {
-	const { stakedBalance, getStakedBalance, getTotalSupply, getTotalRewards } = useWeb3();
+	const { stakedBalance, getStakedBalance, apr } = useWeb3();
 	// console.log("stakedBalance:", stakedBalance);
 
 	useEffect(() => {
 		getStakedBalance();
-		getTotalSupply();
-		getTotalRewards();
-	}, [getStakedBalance, getTotalSupply, getTotalRewards]);
+	}, [getStakedBalance]);
 
 	return (
 		<Table>
@@ -69,7 +67,7 @@ export const HeroTable = () => {
 					<td>
 						<TableCellApy>
 							<p>
-								<TextValue>8</TextValue>
+								<TextValue>{apr}</TextValue>
 							</p>
 							<NameCell>APY</NameCell>
 							<TooltipWrapper>
