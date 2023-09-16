@@ -33,7 +33,6 @@ export const NotConnectedWrapperStyled = styled.div`
 		padding: 63px 69px;
 		height: auto;
 		gap: 2rem;
-		border: 1px solid #204ffe;
 	}
 `;
 
