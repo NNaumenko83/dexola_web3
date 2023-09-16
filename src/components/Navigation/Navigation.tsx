@@ -1,13 +1,12 @@
 import { NavLink } from "react-router-dom";
 
 import { styled } from "styled-components";
-import { Container, NavMenu } from "./Navigation.styled";
+import { Container, LinkWrapper, NavMenu } from "./Navigation.styled";
 
 const NavLinkStyled = styled(NavLink)`
-	flex-basis: calc(100% / 3);
+	display: inline-block;
 	padding-top: 1rem;
 	padding-bottom: 1rem;
-	position: relative;
 
 	&.active {
 		color: ${props => props.theme.colors.activePageLinkColor};
@@ -44,9 +43,15 @@ export const Navigation = () => {
 	return (
 		<Container>
 			<NavMenu>
-				<NavLinkStyled to="/">Stake</NavLinkStyled>
-				<NavLinkStyled to="/withdraw">Withdraw</NavLinkStyled>
-				<NavLinkStyled to="/claimrewards">Claim rewards</NavLinkStyled>
+				<LinkWrapper>
+					<NavLinkStyled to="/">Stake</NavLinkStyled>
+				</LinkWrapper>
+				<LinkWrapper>
+					<NavLinkStyled to="/withdraw">Withdraw</NavLinkStyled>
+				</LinkWrapper>
+				<LinkWrapper>
+					<NavLinkStyled to="/claimrewards">Claim rewards</NavLinkStyled>
+				</LinkWrapper>
 			</NavMenu>
 		</Container>
 	);

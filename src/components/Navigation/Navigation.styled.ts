@@ -25,3 +25,7 @@ export const Container = styled(ContainerStyled)`
 		border-bottom: 1px solid #204ffe;
 	}
 `;
+
+export const LinkWrapper = styled.div`
+	flex-basis: calc(100% / 3);
+`;
