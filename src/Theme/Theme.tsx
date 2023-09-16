@@ -25,6 +25,8 @@ const theme = {
 		activePageLinkBorderColor: "#204FFE",
 		// Tablet and deskrop background footer color
 		footerTabletBgColor: "#000000",
+		// Balance color
+		balanceColor: "#FFFFFF",
 
 		//
 		//
@@ -123,6 +125,11 @@ const theme = {
 			mobile: "0.875rem",
 		},
 
+		headerBalance: {
+			big: "14px",
+			small: "12px",
+		},
+
 		button: {
 			small: "0.875rem",
 			medium: "1rem",
@@ -136,6 +143,7 @@ const theme = {
 	fontWeights: {
 		// normal: 400,
 		medium: 500,
+		semiBold: 600,
 		bold: 700,
 	},
 

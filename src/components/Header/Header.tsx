@@ -1,7 +1,16 @@
-import { useAccount, useDisconnect } from "wagmi";
+import { useAccount /*useDisconnect*/ } from "wagmi";
 import { Container } from "../Container/Container";
 import Icon from "../Icon/Icon";
-import { HeaderContainer, HeaderStyled } from "./Header.styled";
+import {
+	AdddressText,
+	Delimiter,
+	EtheriumInfoWrapper,
+	HeaderBalanceInfoWrapper,
+	HeaderContainer,
+	HeaderStyled,
+	IconBalanceWrapper,
+	StruIcon,
+} from "./Header.styled";
 import { ConnectToWalletButtonHeader } from "../ConnectToWalletButtonHeader/ConnectToWalletButtonHeader";
 import { useWeb3 } from "../../hooks/useWeb3";
 import { useEffect } from "react";
@@ -70,7 +79,7 @@ export const Header = () => {
 	// }, []);
 
 	// Використовуємо хук для відключення аккаунта
-	const { disconnect } = useDisconnect();
+	// const { disconnect } = useDisconnect();
 
 	return (
 		<HeaderStyled>
@@ -79,13 +88,24 @@ export const Header = () => {
 					<Icon name="logo" width={35} height={20} />
 
 					{isConnected ? (
-						<div>
-							{convertEthereumAddress(address)}
-							Balance {balance} ETH STRU {struBalance}
-							<button onClick={() => disconnect()}>Disconnect</button>
+						<HeaderBalanceInfoWrapper>
+							<IconBalanceWrapper>
+								<StruIcon></StruIcon>
+								{struBalance} STRU
+							</IconBalanceWrapper>
+							<EtheriumInfoWrapper>
+								<IconBalanceWrapper>
+									<Icon name="eth_icon" width={32} height={32} />
+									{balance} ETH
+								</IconBalanceWrapper>
+								<Delimiter>|</Delimiter>
+								<AdddressText>{convertEthereumAddress(address)}</AdddressText>
+							</EtheriumInfoWrapper>
+
+							{/* <button onClick={() => disconnect()}>Disconnect</button> */}
 							{/* <div>{struBalance?.toString()} STRU</div>
 							<div>{ethBalance?.toString()} ETH</div> */}
-						</div>
+						</HeaderBalanceInfoWrapper>
 					) : (
 						<ConnectToWalletButtonHeader />
 					)}
