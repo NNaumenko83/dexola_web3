@@ -10,15 +10,13 @@ export type Web3ContextType = {
 	balance: string | null;
 	struBalance: string | null;
 	stakedBalance: string | null;
-	// totalSupplyStru: string | null;
-	// totalRewards: string | null;
-	contractStaking: any | null; // Додали інстанс контракту contractStaking
-	contractStarRunnerToken: any | null; // Додали інстанс контракту contractStarRunnerToken
+	contractStaking: any | null;
+	contractStarRunnerToken: any | null;
 	apr: number | null;
+	days: number | null;
 	getBalance: () => void;
 	getStruBalance: () => void;
-	getStakedBalance: () => void; // getTotalSupply: () => void;
-	// getTotalRewards: () => void;
+	getStakedBalance: () => void;
 };
 
 export const Web3Context = createContext<Web3ContextType | undefined>(undefined);
@@ -33,15 +31,12 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const [web3, setWeb3] = useState<Web3 | null>(null);
 	const { address, isConnected } = useAccount();
 	const [balance, setBalance] = useState<string | null>(null);
-
 	const [struBalance, setStruBalance] = useState<string | null>(null);
 	const [stakedBalance, setStakedBalance] = useState<string | null>(null);
 	const [apr, setApr] = useState<number | null>(null);
-	// const [totalRewards, setTotalRewards] = useState<string | null>(null);
-	// const [totalSupplyStru, setTotalSupplyStru] = useState<string | null>(null);
 	const [contractStaking, setContractStaking] = useState<any | null>(null); // Додали стейт для контракту contractStaking
 	const [contractStarRunnerToken, setContractStarRunnerToken] = useState<any | null>(null); // Додали стейт для контракту contractStarRunnerToken
-
+	const [days, setDays] = useState<number | null>(null);
 	// Адреси контрактів
 	const contractStakingAddress = "0x2f112ed8a96327747565f4d4b4615be8fb89459d";
 	const contractStarRunnerTokenAddress = "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83";
@@ -53,6 +48,19 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 			setStruBalance(formattedStruBalance.toString());
 		}
 	}, [contractStarRunnerToken, web3, address]);
+
+	const calculateDaysRemaining = useCallback(async () => {
+		try {
+			const periodFinish = await contractStaking.methods.periodFinish().call();
+			const currentTimestamp = Math.floor(Date.now() / 1000);
+			const timeRemainingInSeconds = Number(periodFinish) - currentTimestamp;
+			const oneDayInSeconds = 24 * 60 * 60;
+			const daysRemaining = Math.floor(timeRemainingInSeconds / oneDayInSeconds);
+			setDays(daysRemaining);
+		} catch (error) {
+			return null;
+		}
+	}, [contractStaking]);
 
 	const getStakedBalance = useCallback(async () => {
 		if (contractStarRunnerToken && web3 && address) {
@@ -101,8 +109,9 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	useEffect(() => {
 		if (web3) {
 			getApr();
+			calculateDaysRemaining();
 		}
-	}, [getApr, web3]);
+	}, [calculateDaysRemaining, getApr, web3]);
 
 	useEffect(() => {
 		if (isConnected && address && web3) {
@@ -124,12 +133,6 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		}
 	}, [contractStaking, contractStarRunnerToken, getStakedBalance, getStruBalance]);
 
-	// 	Для розрахунку річної процентної ставки (APR) необхідно отримати таку інформацію з контракту:
-	// Загальна кількість винагород за період - ви повинні викликати метод читання контракту getRewardForDuration(),
-	// який поверне кількість винагород за цей період.
-	// Загальна сума ставок, зроблених всіма користувачами - це можна отримати,
-	// викликавши метод читання totalSupply() на контракті стейкінгу.
-
 	return (
 		<Web3Context.Provider
 			value={{
@@ -139,11 +142,11 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				stakedBalance,
 				contractStaking,
 				contractStarRunnerToken,
-
 				getBalance,
 				getStruBalance,
 				getStakedBalance,
 				apr,
+				days,
 			}}
 		>
 			{children}
