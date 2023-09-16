@@ -100,9 +100,9 @@ const theme = {
 		},
 
 		subTitle: {
-			web: "1.5rem",
-			tablet: "1.25rem",
-			mobile: "1rem",
+			web: "24px",
+			tablet: "24px",
+			mobile: "18px",
 		},
 
 		table: {
