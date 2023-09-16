@@ -66,22 +66,24 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const getBalance = async () => {
 		if (web3 && address) {
 			const balanceEth = await web3.eth.getBalance(address);
-			setBalance(balanceEth.toString());
+			const formattedBalance = web3.utils.fromWei(balanceEth, "ether").slice(0, 3);
+			setBalance(formattedBalance.toString());
 		}
 	};
 
 	const getStruBalance = async () => {
 		if (contractStarRunnerToken && web3 && address) {
 			const balanceStruOnWallet = await contractStarRunnerToken.methods.balanceOf(address).call();
-			setStruBalance(balanceStruOnWallet.toString());
+			const formattedStruBalance = web3.utils.fromWei(balanceStruOnWallet, "ether").slice(0, 4);
+			setStruBalance(formattedStruBalance.toString());
 		}
 	};
 
 	const getStakedBalance = async () => {
 		if (contractStarRunnerToken && web3 && address) {
 			const stakedBalance = await contractStaking.methods.balanceOf(address).call();
-			// console.log("stakedBalance:", stakedBalance);
-			setStakedBalance(stakedBalance.toString());
+			const formattedStakedBalance = web3.utils.fromWei(stakedBalance, "ether").slice(0, 4);
+			setStakedBalance(formattedStakedBalance.toString());
 		}
 	};
 

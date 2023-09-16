@@ -5,6 +5,7 @@ import { HeaderContainer, HeaderStyled } from "./Header.styled";
 import { ConnectToWalletButtonHeader } from "../ConnectToWalletButtonHeader/ConnectToWalletButtonHeader";
 import { useWeb3 } from "../../hooks/useWeb3";
 import { useEffect } from "react";
+import { convertEthereumAddress } from "../../utils/convertEthereumAddress";
 
 // Адреси контрактів
 // Адреса контракту на який ми депозитимо токени StarRunner
@@ -79,9 +80,8 @@ export const Header = () => {
 
 					{isConnected ? (
 						<div>
-							Connected to {address}
-							Balance {balance}
-							STRU {struBalance}
+							{convertEthereumAddress(address)}
+							Balance {balance} ETH STRU {struBalance}
 							<button onClick={() => disconnect()}>Disconnect</button>
 							{/* <div>{struBalance?.toString()} STRU</div>
 							<div>{ethBalance?.toString()} ETH</div> */}

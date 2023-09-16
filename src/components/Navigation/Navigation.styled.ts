@@ -19,10 +19,10 @@ export const NavMenu = styled.nav`
 `;
 
 export const Container = styled(ContainerStyled)`
-	padding-top: 16px;
+	padding-top: 1rem;
 
 	@media screen and (max-width: ${props => props.theme.breakpoints.maxMobile}) {
-		border-bottom: 1px solid #204ffe;
+		border-bottom: 0.0625rem solid #204ffe;
 	}
 `;
 

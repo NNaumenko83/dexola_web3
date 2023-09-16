@@ -11,11 +11,11 @@ const NavLinkStyled = styled(NavLink)`
 	&.active {
 		color: ${props => props.theme.colors.activePageLinkColor};
 		padding-bottom: 11px;
-		border-bottom: 5px solid ${props => props.theme.colors.activePageLinkBorderColor};
+		border-bottom: 6px solid ${props => props.theme.colors.activePageLinkBorderColor};
 
 		@media screen and (min-width: 744px) {
 			padding-bottom: 0.625rem;
-			border-bottom-width: 0.375rem;
+			/* border-bottom-width: 0.375rem; */
 		}
 	}
 
