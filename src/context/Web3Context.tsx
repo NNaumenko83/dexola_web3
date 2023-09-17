@@ -9,7 +9,7 @@ export type Web3ContextType = {
 	web3: Web3 | null;
 	balance: string | null;
 	struBalance: string | null;
-	stakedBalance: string | null;
+	stakedBalance: number | null;
 	contractStaking: any | null;
 	contractStarRunnerToken: any | null;
 	apr: number | null;
@@ -33,7 +33,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const { address, isConnected } = useAccount();
 	const [balance, setBalance] = useState<string | null>(null);
 	const [struBalance, setStruBalance] = useState<string | null>(null);
-	const [stakedBalance, setStakedBalance] = useState<string | null>(null);
+	const [stakedBalance, setStakedBalance] = useState<number | null>(null);
 	const [apr, setApr] = useState<number | null>(null);
 	const [contractStaking, setContractStaking] = useState<any | null>(null); // Додали стейт для контракту contractStaking
 	const [contractStarRunnerToken, setContractStarRunnerToken] = useState<any | null>(null); // Додали стейт для контракту contractStarRunnerToken
@@ -68,7 +68,13 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		if (contractStarRunnerToken && web3 && address) {
 			const stakedBalance = await contractStaking.methods.balanceOf(address).call();
 			const formattedStakedBalance = Number(web3.utils.fromWei(stakedBalance, "ether")).toFixed(2);
-			setStakedBalance(formattedStakedBalance.toString());
+			// setStakedBalance(formattedStakedBalance.toString());
+
+			if (Number(formattedStakedBalance) < 1) {
+				setStakedBalance(Number(formattedStakedBalance));
+				return;
+			}
+			setStakedBalance(Math.floor(Number(formattedStakedBalance)));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [contractStarRunnerToken, web3, address]);
@@ -104,7 +110,11 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 			try {
 				const earned = await contractStaking.methods.earned(address).call();
 				const formattedEarned = Number(web3.utils.fromWei(earned, "ether")).toFixed(3);
-				setEarned(Number(formattedEarned));
+				if (Number(formattedEarned) < 0) {
+					setEarned(Number(formattedEarned));
+					return;
+				}
+				setEarned(Math.floor(Number(formattedEarned)));
 			} catch (error) {
 				console.error("Помилка при отриманні earned:", error);
 			}
