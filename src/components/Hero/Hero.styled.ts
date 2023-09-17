@@ -7,6 +7,10 @@ export const HeroSectionStyled = styled.section`
 	/* background-color: #1e2746; */
 	padding-top: 4.0625rem;
 
+	@media screen and (max-width: ${props => props.theme.breakpoints.maxMobile}) {
+		padding-bottom: 1rem;
+	}
+
 	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
 		padding-top: 6.375rem;
 	}

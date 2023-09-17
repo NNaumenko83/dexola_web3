@@ -24,8 +24,8 @@ export const PagesWrapper = styled.div`
 	/* background-color: black; */
 
 	@media screen and (max-width: ${props => props.theme.breakpoints.maxMobile}) {
-		border-top-left-radius: 16px;
-		border-top-right-radius: 16px;
+		border-radius: 16px 16px 0px 0px;
+
 		margin-top: -16px;
 	}
 
