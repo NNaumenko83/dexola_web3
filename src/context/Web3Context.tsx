@@ -14,6 +14,7 @@ export type Web3ContextType = {
 	contractStarRunnerToken: any | null;
 	apr: number | null;
 	days: number | null;
+	earned: number | null;
 	getBalance: () => void;
 	getStruBalance: () => void;
 	getStakedBalance: () => void;
@@ -37,6 +38,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const [contractStaking, setContractStaking] = useState<any | null>(null); // Додали стейт для контракту contractStaking
 	const [contractStarRunnerToken, setContractStarRunnerToken] = useState<any | null>(null); // Додали стейт для контракту contractStarRunnerToken
 	const [days, setDays] = useState<number | null>(null);
+	const [earned, setEarned] = useState<number | null>(null);
 	// Адреси контрактів
 	const contractStakingAddress = "0x2f112ed8a96327747565f4d4b4615be8fb89459d";
 	const contractStarRunnerTokenAddress = "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83";
@@ -97,6 +99,18 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		}
 	}, [contractStaking, web3, setApr]);
 
+	const getEarned = useCallback(async () => {
+		if (contractStaking && web3 && address) {
+			try {
+				const earned = await contractStaking.methods.earned(address).call();
+				const formattedEarned = Number(web3.utils.fromWei(earned, "ether")).toFixed(3);
+				setEarned(Number(formattedEarned));
+			} catch (error) {
+				console.error("Помилка при отриманні earned:", error);
+			}
+		}
+	}, [contractStaking, web3, address]);
+
 	useEffect(() => {
 		const web3 = createWeb3Provider();
 		if (web3) {
@@ -130,8 +144,9 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		if (contractStaking && contractStarRunnerToken) {
 			getStruBalance();
 			getStakedBalance();
+			getEarned();
 		}
-	}, [contractStaking, contractStarRunnerToken, getStakedBalance, getStruBalance]);
+	}, [contractStaking, contractStarRunnerToken, getEarned, getStakedBalance, getStruBalance]);
 
 	return (
 		<Web3Context.Provider
@@ -147,6 +162,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				getStakedBalance,
 				apr,
 				days,
+				earned,
 			}}
 		>
 			{children}
