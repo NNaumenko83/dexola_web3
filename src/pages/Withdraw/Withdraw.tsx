@@ -1,10 +1,10 @@
 import { useAccount } from "wagmi";
 import { Container } from "../../components/Container/Container";
-import { Form } from "../../components/Form/Form";
 import { NotConnectedWrapper } from "../../components/NotConnectedWrapper/NotConnectedWrapper";
 import { PageWrapper } from "../../components/PageWrapper/PageWrapper";
 import { PageTitleWrapper } from "../../components/PageTitleWrapper/PageTitleWrapper";
 import { PageTitle } from "../../components/PageTitle/PageTitle";
+import { WithdrawForm } from "../../components/WithdrawForm/WithdrawForm";
 
 const Withdraw = () => {
 	const { isConnected } = useAccount();
@@ -17,11 +17,8 @@ const Withdraw = () => {
 					<>
 						<PageTitleWrapper>
 							<PageTitle>Withdraw</PageTitle>
-							<p>
-								Reward rate:<span>1 STRU/week</span>
-							</p>
 						</PageTitleWrapper>
-						<Form />
+						<WithdrawForm />
 					</>
 				)}
 			</PageWrapper>

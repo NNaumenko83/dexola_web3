@@ -1,6 +1,6 @@
 import { useAccount } from "wagmi";
 import { Container } from "../../components/Container/Container";
-import { Form } from "../../components/Form/Form";
+// import { Form } from "../../components/Form/Form";
 import { PageTitleWrapper } from "../../components/PageTitleWrapper/PageTitleWrapper";
 import { PageTitle } from "../../components/PageTitle/PageTitle";
 import { PageWrapper } from "../../components/PageWrapper/PageWrapper";
@@ -19,11 +19,8 @@ const ClaimRewards = () => {
 					<>
 						<PageTitleWrapper>
 							<PageTitle>Claim rewards</PageTitle>
-							<p>
-								Reward rate:<span>1 STRU/week</span>
-							</p>
 						</PageTitleWrapper>
-						<Form />
+						{/* <Form /> */}
 					</>
 				)}
 			</PageWrapper>

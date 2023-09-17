@@ -10,6 +10,7 @@ export const Input = styled.input`
 	padding-bottom: 8px;
 	margin-bottom: 34px;
 	background-color: transparent;
+	color: white;
 	border-bottom: 1px solid white;
 `;
 

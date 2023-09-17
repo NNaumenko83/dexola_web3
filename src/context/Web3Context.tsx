@@ -7,8 +7,8 @@ import contractStarRunnerTokenABI from "../contracts/contract-tokenTracker-abi.j
 
 export type Web3ContextType = {
 	web3: Web3 | null;
-	balance: string | null;
-	struBalance: string | null;
+	balance: number | null;
+	struBalance: number | null;
 	stakedBalance: number | null;
 	contractStaking: any | null;
 	contractStarRunnerToken: any | null;
@@ -31,8 +31,8 @@ const createWeb3Provider = (): Web3 | null => {
 export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	const [web3, setWeb3] = useState<Web3 | null>(null);
 	const { address, isConnected } = useAccount();
-	const [balance, setBalance] = useState<string | null>(null);
-	const [struBalance, setStruBalance] = useState<string | null>(null);
+	const [balance, setBalance] = useState<number | null>(null);
+	const [struBalance, setStruBalance] = useState<number | null>(null);
 	const [stakedBalance, setStakedBalance] = useState<number | null>(null);
 	const [apr, setApr] = useState<number | null>(null);
 	const [contractStaking, setContractStaking] = useState<any | null>(null); // Додали стейт для контракту contractStaking
@@ -47,7 +47,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		if (contractStarRunnerToken && web3 && address) {
 			const balanceStruOnWallet = await contractStarRunnerToken.methods.balanceOf(address).call();
 			const formattedStruBalance = Math.floor(Number(web3.utils.fromWei(balanceStruOnWallet, "ether")));
-			setStruBalance(formattedStruBalance.toString());
+			setStruBalance(Number(formattedStruBalance));
 		}
 	}, [contractStarRunnerToken, web3, address]);
 
@@ -85,7 +85,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				const balanceEth = await web3.eth.getBalance(address);
 
 				const formattedBalance = Number(web3.utils.fromWei(balanceEth, "ether")).toFixed(1);
-				setBalance(formattedBalance.toString());
+				setBalance(Number(formattedBalance));
 			} catch (error) {
 				console.error("Помилка при отриманні балансу:", error);
 			}
