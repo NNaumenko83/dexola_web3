@@ -8,12 +8,19 @@ import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from
 
 import contractStakingABI from "../../contracts/contract-staking-abi.json";
 import contractStarRunnerTokenABI from "../../contracts/contract-tokenTracker-abi.json";
-import { FormStyled } from "./Form.styled";
+import {
+	AvailableQtyText,
+	AvailableWrapper,
+	ButtonStyled,
+	FormStyled,
+	Input,
+	AvailableQtyWrapper,
+} from "./Form.styled";
 
 export const Form = () => {
 	const { address } = useAccount();
 	const [numberOfSrtu, setNumberOfSrtu] = useState<string>("");
-	const { contractStarRunnerToken } = useWeb3();
+	const { contractStarRunnerToken, struBalance } = useWeb3();
 	const [allowance, setAllowance] = useState(0);
 
 	useEffect(() => {
@@ -102,12 +109,15 @@ export const Form = () => {
 
 	return (
 		<FormStyled onSubmit={onSubmitHandler}>
-			<input type="text" name="stake" value={numberOfSrtu} onChange={onChangeInput} placeholder="Enter stake amount" />
-			<p>
-				Available: <span>354</span>
-				<span>STRU</span>
-			</p>
-			<button type="submit">{isLoadingApprove ? "LOADING" : "STAKE"}</button>
+			<Input type="text" name="stake" value={numberOfSrtu} onChange={onChangeInput} placeholder="Enter stake amount" />
+			<AvailableWrapper>
+				<p>Available:</p>
+				<AvailableQtyWrapper>
+					<AvailableQtyText>{struBalance}</AvailableQtyText>
+					<p>STRU</p>
+				</AvailableQtyWrapper>
+			</AvailableWrapper>
+			<ButtonStyled type="submit">{isLoadingApprove ? "LOADING" : "STAKE"}</ButtonStyled>
 		</FormStyled>
 	);
 };
