@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import mainBackground from "../../assets/main_backgroung-min.jpeg";
 
 export const SuspenseWrapper = styled.div`
 	display: flex;
@@ -11,11 +12,14 @@ export const AppWrapper = styled.div`
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
+	background-image: url("${mainBackground}");
+	background-position: top;
 `;
 
 export const PagesWrapper = styled.div`
 	position: relative;
 	flex: 1 1 auto;
+	background-color: black;
 
 	/* background-color: black; */
 

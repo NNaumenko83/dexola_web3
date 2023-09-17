@@ -61,13 +61,14 @@ export const FooterStyled = styled.footer`
 	border-top: 1px solid ${props => props.theme.colors.footerBordersColor};
 
 	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
-		background-color: transparent;
+		background-color: black;
 		font-size: ${props => props.theme.fontSizes.footerText.tablet};
 		line-height: 1.31;
 		letter-spacing: -0.28px;
 	}
 
 	@media screen and (min-width: ${props => props.theme.breakpoints.web}) {
+		background-color: transparent;
 		position: fixed;
 		width: 100vw;
 		bottom: 0;
