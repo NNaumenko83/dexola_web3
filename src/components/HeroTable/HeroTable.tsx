@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import {
 	HelpIcon,
@@ -24,8 +24,33 @@ import { TooltipSwipeable } from "../TooltipSwipeable/TooltipSwipeable";
 
 export const HeroTable = () => {
 	const { stakedBalance, getStakedBalance, apr, days, earned } = useWeb3();
-	console.log("earned:", earned);
-	// console.log("stakedBalance:", stakedBalance);
+	const [isTooltipVisible, setTooltipVisible] = useState(false);
+	const [text, setText] = useState("");
+
+	const toggleTooltipVisible = () => {
+		setTooltipVisible(!isTooltipVisible);
+	};
+
+	const handleTouchStart: React.TouchEventHandler<HTMLDivElement> = e => {
+		if (e.currentTarget instanceof HTMLDivElement) {
+			const key = e.currentTarget.id;
+			toggleTooltipVisible();
+			switch (key) {
+				case "staking":
+					setText("Staking rewards get allocated on this sum");
+					break;
+				case "apr":
+					setText("Displays the average for APR.Interest rate is calculated for each amount of tokens.");
+					break;
+				case "rewards":
+					setText("Rewards get allocated every second");
+					break;
+
+				default:
+					break;
+			}
+		}
+	};
 
 	useEffect(() => {
 		getStakedBalance();
@@ -33,7 +58,6 @@ export const HeroTable = () => {
 
 	return (
 		<>
-			{" "}
 			<Table>
 				<TableHead>
 					<TableRow>
@@ -56,8 +80,8 @@ export const HeroTable = () => {
 										<UnitName>STRU</UnitName>
 									</p>
 									<NameCell>Staked balance</NameCell>
-									<TooltipWrapper>
-										<HelpIcon name="help_icon" width={16} height={18} /*onTouchStart={handleTouchStart}*/ />
+									<TooltipWrapper onTouchStart={handleTouchStart} id="staking">
+										<HelpIcon name="help_icon" width={16} height={18} />
 										<ToolTipSTRU>
 											<p>
 												Staking rewards get <br />
@@ -76,7 +100,7 @@ export const HeroTable = () => {
 									</p>
 								)}
 								<NameCell>APR</NameCell>
-								<TooltipWrapper>
+								<TooltipWrapper onTouchStart={handleTouchStart} id="apr">
 									<HelpIcon name="help_icon" width={16} height={18} />
 									<ToolTipAPR>
 										<p>
@@ -105,7 +129,7 @@ export const HeroTable = () => {
 										<UnitName>STRU</UnitName>
 									</p>
 									<NameCell>Rewards</NameCell>
-									<TooltipWrapper>
+									<TooltipWrapper onTouchStart={handleTouchStart} id="rewards">
 										<HelpIcon name="help_icon" width={16} height={18} />
 										<ToolTipRewards>
 											<RewardsText>
@@ -134,7 +158,7 @@ export const HeroTable = () => {
 					</TableBottomRow>
 				</TableBody>
 			</Table>
-			<TooltipSwipeable />
+			<TooltipSwipeable isTooltipVisible={isTooltipVisible} toggleTooltipVisible={toggleTooltipVisible} text={text} />
 		</>
 	);
 };
