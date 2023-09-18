@@ -56,6 +56,7 @@ export const TooltipSwipeable: React.FC<ITooltipSwipeable> = ({ isTooltipVisible
 		onSwipedDown: () => {
 			toggleTooltipVisible();
 		},
+		preventScrollOnSwipe: true,
 	});
 
 	const stylesBackdrop = useSpring({
