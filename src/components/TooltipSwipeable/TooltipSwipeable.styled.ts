@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 
-export const TooltipContainer = styled.div`
+export const TooltipBackdrop = styled.div`
 	position: fixed;
 	height: 100vh;
 	width: 100vw;
