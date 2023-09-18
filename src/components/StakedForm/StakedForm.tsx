@@ -10,12 +10,15 @@ import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from
 
 import contractStakingABI from "../../contracts/contract-staking-abi.json";
 import contractStarRunnerTokenABI from "../../contracts/contract-tokenTracker-abi.json";
+import { validateAmount } from "../../helpers/validateAmount";
 
 export const StakedForm = () => {
 	const { address } = useAccount();
+	const { contractStarRunnerToken, struBalance, web3 } = useWeb3();
 	const [numberOfSrtu, setNumberOfSrtu] = useState<string>("");
-	const { contractStarRunnerToken, struBalance } = useWeb3();
 	const [allowance, setAllowance] = useState(0);
+	const [approveLoading, setApproveLoading] = useState(false);
+	const formattedNumberOfSrtu = web3?.utils.toWei(numberOfSrtu, "ether");
 
 	useEffect(() => {
 		// Отримайте поточний дозвіл (allowance) за допомогою методу FirstContract.allowance()
@@ -25,6 +28,7 @@ export const StakedForm = () => {
 			const currentAllowance = await contractStarRunnerToken.methods
 				.allowance(address, "0x2f112ed8a96327747565f4d4b4615be8fb89459d")
 				.call();
+			console.log("currentAllowance:", currentAllowance);
 			setAllowance(currentAllowance);
 		}
 		if (contractStarRunnerToken) {
@@ -45,25 +49,32 @@ export const StakedForm = () => {
 		address: "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83",
 		abi: contractStarRunnerTokenABI,
 		functionName: "approve",
-		args: ["0x2f112ed8a96327747565f4d4b4615be8fb89459d", "2000000000000000000000000"],
+		args: ["0x2f112ed8a96327747565f4d4b4615be8fb89459d", struBalance ? web3?.utils.toWei(struBalance, "ether") : 0],
+		enabled: Boolean(numberOfSrtu),
 	});
 
 	const { config: stakeConfig } = usePrepareContractWrite({
 		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
 		abi: contractStakingABI,
 		functionName: "stake",
-		args: [numberOfSrtu],
+		args: [formattedNumberOfSrtu],
 		enabled: Boolean(numberOfSrtu),
 	});
 
 	const { data: approveData, write: approve } = useContractWrite(approveConfig);
-	const { isLoading: isLoadingApprove, isSuccess: isSuccessApprove } = useWaitForTransaction({
+
+	const waitForTransaction = useWaitForTransaction({
 		hash: approveData?.hash,
+		onSettled() {
+			setApproveLoading(false);
+		},
 	});
 
-	if (isSuccessApprove) {
-		console.log("HELLOOOOO");
-	}
+	console.log("waitForTransaction:", waitForTransaction);
+
+	// if (isSuccessApprove) {
+	// 	console.log("HELLOOOOO");
+	// }
 	// console.log("isSuccessApprove:", isSuccessApprove);
 	// console.log("isLoadingApprove:", isLoadingApprove);
 	// console.log("approveData:", approveData);
@@ -76,29 +87,62 @@ export const StakedForm = () => {
 
 	const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = async e => {
 		e.preventDefault();
+		console.log("Submit");
+		if (formattedNumberOfSrtu) {
+			console.log("BigInt(formattedNumberOfSrtu:", BigInt(formattedNumberOfSrtu));
+			console.log("Submit перевірка", allowance < BigInt(formattedNumberOfSrtu) && approve);
+			console.log("stake:", stake);
+		}
 
-		if (allowance.toString() < numberOfSrtu && approve && stake) {
+		console.log("allowance:", allowance);
+		console.log("Number(numberOfSrtu:", formattedNumberOfSrtu);
+		console.log("approve:", approve);
+		console.log("stake:", stake);
+
+		if (formattedNumberOfSrtu && allowance < BigInt(formattedNumberOfSrtu) && approve) {
+			setApproveLoading(true);
+			console.log("Before approve");
 			await approve();
-			await stake();
+			console.log("After approve");
 			return;
 		}
 
-		if (stake && numberOfSrtu !== "" && approve) {
-			await approve();
-			await stake();
-			return;
+		// if (stake && numberOfSrtu !== "") {
+		// 	await stake();
+		// 	console.log("After stake");
+		// 	return;
 
-			// if (stake && numberOfSrtu !== "") {
-			// 	stake();
-			// } else {
-			// 	alert("Please enter the number of tokens to stake.");
-			// 	console.log("Please enter the number of tokens to stake.");
-			// }
-		}
+		// 	// if (stake && numberOfSrtu !== "") {
+		// 	// 	stake();
+		// 	// } else {
+		// 	// 	alert("Please enter the number of tokens to stake.");
+		// 	// 	console.log("Please enter the number of tokens to stake.");
+		// 	// }
+		// }
 	};
 
 	const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = e => {
-		setNumberOfSrtu(e.target.value);
+		console.log("struBalance:", struBalance);
+		console.log("numberOfSrtu:", numberOfSrtu);
+
+		const inputText = e.target.value;
+
+		if (!validateAmount(inputText) && inputText === "") {
+			setNumberOfSrtu(inputText);
+			return;
+		}
+		if (!validateAmount(inputText)) {
+			return;
+		}
+		if (
+			struBalance &&
+			web3 &&
+			Number(web3.utils.toWei(struBalance, "ether")) < Number(web3.utils.toWei(e.target.value, "ether"))
+		) {
+			return;
+		}
+		console.log("inputText:", inputText);
+		setNumberOfSrtu(inputText);
 	};
 
 	return (
@@ -107,7 +151,7 @@ export const StakedForm = () => {
 			inputName="stake"
 			inputValue={numberOfSrtu}
 			onChangeInput={onChangeInput}
-			buttonText={isLoadingApprove ? "LOADING" : "STAKE"}
+			buttonText={approveLoading ? "LOADING" : "STAKE"}
 			// isLoading={isLoadingApprove}
 			balance={struBalance}
 			placeholder={"Enter stake amount"}
