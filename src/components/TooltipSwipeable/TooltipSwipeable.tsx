@@ -3,6 +3,7 @@ import { Grabber } from "./TooltipSwipeable.styled";
 import { useSwipeable } from "react-swipeable";
 import { animated, useSpring, config } from "react-spring";
 import styled from "styled-components";
+import { createPortal } from "react-dom";
 
 const Tooltip = styled(animated.div)`
 	width: 100%;
@@ -33,6 +34,9 @@ const TooltipBackdrop = styled(animated.div)<{ $pointerEv: boolean }>`
 	pointer-events: ${props => (props.$pointerEv ? "auto" : "none")};
 `;
 
+const tooltip: HTMLElement | null = document.getElementById("tooltip-root");
+console.log("tooltip:", tooltip);
+
 export const TooltipSwipeable = () => {
 	const [isTooltipVisible, setTooltipVisible] = useState(true);
 
@@ -51,11 +55,16 @@ export const TooltipSwipeable = () => {
 		y: isTooltipVisible ? 0 : 600,
 	});
 
-	return (
-		<TooltipBackdrop style={stylesBackdrop} $pointerEv={isTooltipVisible}>
-			<Tooltip style={stylesTooltip} {...handlers}>
-				<Grabber></Grabber>TooltipSwipeable
-			</Tooltip>
-		</TooltipBackdrop>
-	);
+	if (tooltip) {
+		return createPortal(
+			<TooltipBackdrop style={stylesBackdrop} $pointerEv={isTooltipVisible}>
+				<Tooltip style={stylesTooltip} {...handlers}>
+					<Grabber></Grabber>TooltipSwipeable
+				</Tooltip>
+			</TooltipBackdrop>,
+			tooltip,
+		);
+	} else {
+		return null;
+	}
 };

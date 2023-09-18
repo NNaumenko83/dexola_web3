@@ -7,7 +7,6 @@ import { AppWrapper, SuspenseWrapper, PagesWrapper } from "./SharedLayout.styled
 import { Main } from "../Main/Main";
 import { Hero } from "../Hero/Hero";
 import { Navigation } from "../Navigation/Navigation";
-import { TooltipSwipeable } from "../TooltipSwipeable/TooltipSwipeable";
 
 export const SharedLayout = () => {
 	return (
@@ -30,7 +29,6 @@ export const SharedLayout = () => {
 				</PagesWrapper>
 			</Main>
 			<Footer />
-			<TooltipSwipeable />
 		</AppWrapper>
 	);
 };
