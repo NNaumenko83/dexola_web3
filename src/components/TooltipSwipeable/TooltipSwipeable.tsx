@@ -5,21 +5,6 @@ import styled from "styled-components";
 import { createPortal } from "react-dom";
 import React from "react";
 
-const Tooltip = styled(animated.div)`
-	width: 100%;
-	height: 50%;
-	position: absolute;
-
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 20px;
-	left: 0;
-	bottom: 0;
-	background-color: white;
-	border-radius: 16px 16px 0 0;
-`;
-
 const TooltipBackdrop = styled(animated.div)<{ $pointerEv: boolean }>`
 	position: fixed;
 	height: 100vh;
@@ -32,6 +17,29 @@ const TooltipBackdrop = styled(animated.div)<{ $pointerEv: boolean }>`
 	transition: bottom 0.3s ease-in-out;
 	z-index: 999;
 	pointer-events: ${props => (props.$pointerEv ? "auto" : "none")};
+`;
+
+const Tooltip = styled(animated.div)`
+	width: 100%;
+	height: 275px;
+	position: absolute;
+
+	display: flex;
+	gap: 16px;
+	flex-direction: column;
+	align-items: center;
+
+	padding: 20px;
+	left: 0;
+	bottom: 0;
+	background-color: white;
+	border-radius: 16px 16px 0 0;
+
+	color: rgba(0, 0, 0, 0.8);
+	font-family: Roboto Mono, sans-serif;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.14;
 `;
 
 const tooltip: HTMLElement | null = document.getElementById("tooltip-root");
