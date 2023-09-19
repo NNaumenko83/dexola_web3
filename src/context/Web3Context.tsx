@@ -18,6 +18,7 @@ export type Web3ContextType = {
 	getBalance: () => void;
 	getStruBalance: () => void;
 	getStakedBalance: () => void;
+	updAll: () => void;
 };
 
 export const Web3Context = createContext<Web3ContextType | undefined>(undefined);
@@ -67,6 +68,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const getStakedBalance = useCallback(async () => {
 		if (contractStarRunnerToken && web3 && address) {
 			const stakedBalance = await contractStaking.methods.balanceOf(address).call();
+
 			const formattedStakedBalance = Number(web3.utils.fromWei(stakedBalance, "ether")).toFixed(2);
 			// setStakedBalance(formattedStakedBalance.toString());
 
@@ -83,6 +85,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		if (web3 && address) {
 			try {
 				const balanceEth = await web3.eth.getBalance(address);
+				console.log("balanceEth:", balanceEth);
 
 				const formattedBalance = Number(web3.utils.fromWei(balanceEth, "ether")).toFixed(1);
 				setBalance(Number(formattedBalance));
@@ -120,6 +123,16 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 			}
 		}
 	}, [contractStaking, web3, address]);
+
+	const updAll = () => {
+		getBalance();
+		getStruBalance();
+		getStakedBalance();
+		getEarned();
+		getApr();
+		calculateDaysRemaining();
+		getEarned();
+	};
 
 	useEffect(() => {
 		const web3 = createWeb3Provider();
@@ -173,6 +186,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				apr,
 				days,
 				earned,
+				updAll,
 			}}
 		>
 			{children}
