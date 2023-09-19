@@ -69,7 +69,7 @@ export const FooterStyled = styled.footer`
 
 	@media screen and (min-width: ${props => props.theme.breakpoints.web}) {
 		background-color: transparent;
-		position: fixed;
+		position: absolute;
 		width: 100vw;
 		bottom: 0;
 		left: 0;

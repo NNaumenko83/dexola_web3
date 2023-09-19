@@ -150,13 +150,11 @@ const Stake = () => {
 			</Container>
 
 			<TransactionStatusWrapper>
-				<Container>
-					<LoadingInfo mobile={false}>
-						<p>
-							Adding <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> to Staking
-						</p>
-					</LoadingInfo>
-				</Container>
+				<LoadingInfo mobile={false}>
+					<p>
+						Adding <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> to Staking
+					</p>
+				</LoadingInfo>
 			</TransactionStatusWrapper>
 		</>
 	);

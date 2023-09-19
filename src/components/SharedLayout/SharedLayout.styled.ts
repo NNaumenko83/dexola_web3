@@ -9,6 +9,7 @@ export const SuspenseWrapper = styled.div`
 `;
 
 export const AppWrapper = styled.div`
+	position: relative;
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
@@ -31,6 +32,7 @@ export const PagesWrapper = styled.div`
 	}
 
 	@media screen and (min-width: 1440px) {
+		min-height: 800px;
 		background: radial-gradient(42.93% 42.93% at 50% calc(50% + 294px), #2f4bc9 0%, #080808 100%);
 	}
 `;
