@@ -1,5 +1,5 @@
 import { ConnectToWalletButton } from "../../components/ConnectToWalletButton/ConnectToWalletButton";
-import Icon from "../../components/Icon/Icon";
+import Icon from "../Icon/Icon";
 import { Break, IconAndTextWrapper, NotConnectedWrapperStyled, Text } from "./NotConnectedWrapper.styled";
 
 export const NotConnectedWrapper = () => {

@@ -9,8 +9,8 @@ import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from
 import contractStakingABI from "../../contracts/contract-staking-abi.json";
 import contractStarRunnerTokenABI from "../../contracts/contract-tokenTracker-abi.json";
 import { validateAmount } from "../../helpers/validateAmount";
-import Icon from "../Icon/Icon";
-import { Loader, LoadingContainer } from "./StakedForm.styled";
+import { LoadingInfo } from "../LoadingInfo/LoadingInfo";
+import { NumberSTRU } from "./StakedForm.styled";
 
 export const StakedForm = () => {
 	const { address } = useAccount();
@@ -125,19 +125,19 @@ export const StakedForm = () => {
 				buttonText={isLoadingApprove ? "APPROVE WAITING" : isLoadingStake ? "STAKE LOADING" : "STAKE"}
 				balance={struBalance}
 				placeholder={"Enter stake amount"}
-			/>
-			{isLoadingStake && (
-				<div>
-					<h1>LOADING</h1>
-				</div>
-			)}
-			<LoadingContainer>
-				<Loader>
-					<Icon name="simple_loader" width={32} height={32} />
-				</Loader>
+			>
+				<LoadingInfo mobile={true}>
+					<p>
+						Adding <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> to Staking
+					</p>
+				</LoadingInfo>
+			</Form>
 
-				<h1>LOADING</h1>
-			</LoadingContainer>
+			<LoadingInfo mobile={false}>
+				<p>
+					Adding <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> to Staking
+				</p>
+			</LoadingInfo>
 		</>
 	);
 };

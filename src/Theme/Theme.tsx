@@ -27,6 +27,8 @@ const theme = {
 		footerTabletBgColor: "#000000",
 		// Balance color
 		balanceColor: "#FFFFFF",
+		// Info Loading and error text color
+		infoColor: "#FFFFFF",
 
 		//
 		//

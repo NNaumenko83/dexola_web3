@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent } from "react";
+import React, { ChangeEvent, FormEvent, ReactNode } from "react";
 
 import {
 	AvailableQtyText,
@@ -18,6 +18,7 @@ interface CustomFormProps {
 	// isLoading: boolean;
 	balance: number | null;
 	placeholder: string;
+	children: ReactNode;
 }
 
 export const Form: React.FC<CustomFormProps> = ({
@@ -28,6 +29,7 @@ export const Form: React.FC<CustomFormProps> = ({
 	buttonText,
 	balance,
 	placeholder,
+	children,
 }) => {
 	return (
 		<FormStyled onSubmit={onSubmitHandler}>
@@ -40,6 +42,7 @@ export const Form: React.FC<CustomFormProps> = ({
 					<p>STRU</p>
 				</AvailableQtyWrapper>
 			</AvailableWrapper>
+			{children}
 			<ButtonStyled type="submit">{buttonText}</ButtonStyled>
 		</FormStyled>
 	);
