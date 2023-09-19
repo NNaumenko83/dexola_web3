@@ -130,30 +130,35 @@ const Stake = () => {
 	};
 
 	return (
-		<Container>
-			<PageWrapper>
-				{!isConnected ? (
-					<NotConnectedWrapper />
-				) : (
-					<>
-						<PageTitleWrapper>
-							<PageTitle>Stake</PageTitle>
-							<p>
-								Reward rate:<span>1 STRU/week</span>
-							</p>
-						</PageTitleWrapper>
-						<StakedForm {...stakedFormProps} />
-					</>
-				)}
-			</PageWrapper>
+		<>
+			<Container>
+				<PageWrapper>
+					{!isConnected ? (
+						<NotConnectedWrapper />
+					) : (
+						<>
+							<PageTitleWrapper>
+								<PageTitle>Stake</PageTitle>
+								<p>
+									Reward rate:<span>1 STRU/week</span>
+								</p>
+							</PageTitleWrapper>
+							<StakedForm {...stakedFormProps} />
+						</>
+					)}
+				</PageWrapper>
+			</Container>
+
 			<TransactionStatusWrapper>
-				<LoadingInfo mobile={false}>
-					<p>
-						Adding <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> to Staking
-					</p>
-				</LoadingInfo>
+				<Container>
+					<LoadingInfo mobile={false}>
+						<p>
+							Adding <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> to Staking
+						</p>
+					</LoadingInfo>
+				</Container>
 			</TransactionStatusWrapper>
-		</Container>
+		</>
 	);
 };
 

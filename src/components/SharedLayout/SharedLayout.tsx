@@ -16,7 +16,6 @@ export const SharedLayout = () => {
 				<Hero />
 				<PagesWrapper>
 					<Navigation />
-
 					<Suspense
 						fallback={
 							<SuspenseWrapper>

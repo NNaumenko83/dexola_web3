@@ -20,6 +20,7 @@ export const PagesWrapper = styled.div`
 	position: relative;
 	flex: 1 1 auto;
 	background-color: black;
+	min-height: 700px;
 
 	/* background-color: black; */
 
