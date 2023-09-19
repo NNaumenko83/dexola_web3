@@ -148,14 +148,15 @@ const Stake = () => {
 					)}
 				</PageWrapper>
 			</Container>
-
-			<TransactionStatusWrapper>
-				<LoadingInfo mobile={false}>
-					<p>
-						Adding <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> to Staking
-					</p>
-				</LoadingInfo>
-			</TransactionStatusWrapper>
+			{isLoadingApprove && (
+				<TransactionStatusWrapper>
+					<LoadingInfo mobile={false}>
+						<p>
+							Adding <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> to Staking
+						</p>
+					</LoadingInfo>
+				</TransactionStatusWrapper>
+			)}
 		</>
 	);
 };

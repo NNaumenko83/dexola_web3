@@ -34,11 +34,13 @@ export const StakedForm: React.FC<StakedFormProps> = ({
 				balance={struBalance}
 				placeholder={"Enter stake amount"}
 			>
-				<LoadingInfo mobile={true}>
-					<p>
-						Adding <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> to Staking
-					</p>
-				</LoadingInfo>
+				{isLoadingApprove && (
+					<LoadingInfo mobile={true}>
+						<p>
+							Adding <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> to Staking
+						</p>
+					</LoadingInfo>
+				)}
 			</Form>
 		</>
 	);
