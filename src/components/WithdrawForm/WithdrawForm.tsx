@@ -37,6 +37,8 @@ export const WithdrawForm = () => {
 			// isLoading={isLoadingApprove}
 			balance={stakedBalance}
 			placeholder={"Enter stake amount"}
-		/>
+		>
+			<></>
+		</Form>
 	);
 };

@@ -14,7 +14,6 @@ export const LoadingContainer = styled.div<{ $mobile: boolean | undefined }>`
 	align-items: center;
 	justify-content: center;
 	gap: 1rem;
-	margin-bottom: 32px;
 
 	color: ${props => props.theme.colors.infoColor};
 	line-height: 1.71;
