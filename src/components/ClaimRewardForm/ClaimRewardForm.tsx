@@ -36,6 +36,8 @@ export const ClaimRewardsForm = () => {
 			// isLoading={isLoadingApprove}
 			balance={earned}
 			placeholder={"Enter stake amount"}
-		/>
+		>
+			<div></div>
+		</Form>
 	);
 };

@@ -25,7 +25,12 @@ const Stake = () => {
 	const { address } = useAccount();
 	const { contractStarRunnerToken, struBalance, web3, updAll } = useWeb3();
 	const [numberOfSrtu, setNumberOfSrtu] = useState<string>("");
+	const [transactionNumberOfStru, setTransactionNumberOfStru] = useState<string>("");
 	const [allowance, setAllowance] = useState(0);
+	const [isErrorApprove, setIsErrorApprove] = useState(false);
+	const [isErrorStaked, setIsErrorStaked] = useState(false);
+	const [isSuccessApprove, setIsSuccessApprove] = useState(false);
+	const [isSuccessStake, setIsSuccessStake] = useState(false);
 
 	const formattedNumberOfSrtu = web3?.utils.toWei(numberOfSrtu, "ether");
 
@@ -33,13 +38,34 @@ const Stake = () => {
 		const currentAllowance = await contractStarRunnerToken.methods
 			.allowance(address, "0x2f112ed8a96327747565f4d4b4615be8fb89459d")
 			.call();
-		console.log("currentAllowance:", currentAllowance);
+
 		setAllowance(currentAllowance);
 	}
 
 	useEffect(() => {
-		console.log("useEffect: Stake");
+		if (isSuccessApprove) {
+			setTimeout(() => {
+				setIsSuccessApprove(false);
+			}, 8000);
+		}
+		if (isErrorApprove) {
+			setTimeout(() => {
+				setIsErrorApprove(false);
+			}, 8000);
+		}
+		if (isSuccessStake) {
+			setTimeout(() => {
+				setIsSuccessStake(false);
+			}, 8000);
+		}
+		if (isErrorStaked) {
+			setTimeout(() => {
+				setIsErrorStaked(false);
+			}, 8000);
+		}
+	}, [isErrorApprove, isErrorStaked, isSuccessApprove, isSuccessStake]);
 
+	useEffect(() => {
 		if (contractStarRunnerToken) {
 			fetchAllowance();
 		}
@@ -64,35 +90,31 @@ const Stake = () => {
 
 	const { data: approveData, write: approve } = useContractWrite(approveConfig);
 	const { data: stakeData, write: stake } = useContractWrite(stakeConfig);
-	console.log("stake:", stake);
 
-	const {
-		isLoading: isLoadingApprove,
-		isError: isErrorApprove,
-		isSuccess: isSuccessApprove,
-	} = useWaitForTransaction({
+	const { isLoading: isLoadingApprove } = useWaitForTransaction({
 		hash: approveData?.hash,
 		onSuccess() {
-			console.log("aaaaaaaaaaaaaaaa");
+			setIsSuccessApprove(true);
 			fetchAllowance();
+		},
+		onError() {
+			setIsErrorApprove(true);
 		},
 	});
 
-	const {
-		isLoading: isLoadingStake,
-		isError: isErrorStaked,
-		isSuccess: isSuccessStake,
-	} = useWaitForTransaction({
+	const { isLoading: isLoadingStake } = useWaitForTransaction({
 		hash: stakeData?.hash,
 		onSuccess() {
-			console.log("Stakeeeeee");
+			setIsSuccessStake(true);
 			updAll();
 			setNumberOfSrtu("");
+		},
+		onError() {
+			setIsErrorStaked(true);
 		},
 	});
 
 	const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = async e => {
-		console.log("onSubmitHandler:", onSubmitHandler);
 		e.preventDefault();
 
 		if (formattedNumberOfSrtu && allowance < BigInt(formattedNumberOfSrtu) && approve) {
@@ -102,15 +124,13 @@ const Stake = () => {
 		}
 
 		if (stake && numberOfSrtu !== "") {
+			setTransactionNumberOfStru(numberOfSrtu);
 			stake();
 			return;
 		}
 	};
 
 	const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = e => {
-		console.log("struBalance:", struBalance);
-		console.log("numberOfSrtu:", numberOfSrtu);
-
 		const inputText = e.target.value;
 
 		if (!validateAmount(inputText) && inputText === "") {
@@ -127,7 +147,7 @@ const Stake = () => {
 		) {
 			return;
 		}
-		console.log("inputText:", inputText);
+
 		setNumberOfSrtu(inputText);
 	};
 
@@ -142,6 +162,7 @@ const Stake = () => {
 		isErrorStaked,
 		isSuccessApprove,
 		isSuccessStake,
+		transactionNumberOfStru,
 	};
 
 	return (
@@ -168,9 +189,7 @@ const Stake = () => {
 			{isSuccessApprove && (
 				<TransactionStatusWrapper>
 					<SuccessInfo>
-						<p>
-							<NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> successfully approved
-						</p>
+						<p>Successfully approved</p>
 					</SuccessInfo>
 				</TransactionStatusWrapper>
 			)}
@@ -178,7 +197,7 @@ const Stake = () => {
 				<TransactionStatusWrapper>
 					<SuccessInfo>
 						<p>
-							<NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> successfully added to Staking
+							<NumberSTRU>{transactionNumberOfStru} STRU</NumberSTRU> successfully added to Staking
 						</p>
 					</SuccessInfo>
 				</TransactionStatusWrapper>
@@ -186,9 +205,7 @@ const Stake = () => {
 			{isLoadingApprove && (
 				<TransactionStatusWrapper>
 					<LoadingInfo mobile={false}>
-						<p>
-							Approving <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU>
-						</p>
+						<p>Approving</p>
 					</LoadingInfo>
 				</TransactionStatusWrapper>
 			)}
@@ -196,7 +213,7 @@ const Stake = () => {
 				<TransactionStatusWrapper>
 					<LoadingInfo mobile={false}>
 						<p>
-							Adding <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> to Staking
+							Adding <NumberSTRU>{transactionNumberOfStru} STRU</NumberSTRU> to Staking
 						</p>
 					</LoadingInfo>
 				</TransactionStatusWrapper>
