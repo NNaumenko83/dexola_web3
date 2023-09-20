@@ -7,6 +7,7 @@ import {
 	FormStyled,
 	Input,
 	AvailableQtyWrapper,
+	ChildrenWrapper,
 } from "./Form.styled";
 
 interface CustomFormProps {
@@ -42,7 +43,8 @@ export const Form: React.FC<CustomFormProps> = ({
 					<p>STRU</p>
 				</AvailableQtyWrapper>
 			</AvailableWrapper>
-			{children}
+			<ChildrenWrapper>{children}</ChildrenWrapper>
+
 			<ButtonStyled type="submit">{buttonText}</ButtonStyled>
 		</FormStyled>
 	);

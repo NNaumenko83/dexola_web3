@@ -4,6 +4,7 @@ import { useWeb3 } from "../../hooks/useWeb3";
 
 import { LoadingInfo } from "../LoadingInfo/LoadingInfo";
 import { NumberSTRU } from "./StakedForm.styled";
+import { ErrorMessage } from "../ErrorMessage/ErrorMessage";
 
 export interface StakedFormProps {
 	onSubmitHandler: React.FormEventHandler<HTMLFormElement>;
@@ -41,6 +42,7 @@ export const StakedForm: React.FC<StakedFormProps> = ({
 						</p>
 					</LoadingInfo>
 				)}
+				<ErrorMessage mobile={true} />
 			</Form>
 		</>
 	);

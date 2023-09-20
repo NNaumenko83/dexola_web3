@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
-import { Loader, LoadingContainer } from "./LoadinfInfo.styled";
+import { Loader } from "./LoadinfInfo.styled";
+import { InfoContainer } from "../InfoContainer/InfoContainer";
 
 interface ILoadingInfoProps {
 	children: ReactNode;
@@ -8,7 +9,7 @@ interface ILoadingInfoProps {
 
 export const LoadingInfo: React.FC<ILoadingInfoProps> = ({ children, mobile }) => {
 	return (
-		<LoadingContainer $mobile={mobile}>
+		<InfoContainer mobile={mobile}>
 			<Loader xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
 				<g opacity="0.3">
 					<mask id="path-1-inside-1_3230_1048" fill="white">
@@ -27,6 +28,6 @@ export const LoadingInfo: React.FC<ILoadingInfoProps> = ({ children, mobile }) =
 				/>
 			</Loader>
 			{children}
-		</LoadingContainer>
+		</InfoContainer>
 	);
 };

@@ -3,6 +3,7 @@ import { Button } from "../Button/Button";
 
 export const FormStyled = styled.form`
 	width: 100%;
+	position: relative;
 `;
 
 export const Input = styled.input`
@@ -35,4 +36,13 @@ export const AvailableQtyWrapper = styled.div`
 	display: flex;
 	gap: 4px;
 	color: white;
+`;
+
+export const ChildrenWrapper = styled.div`
+	position: absolute;
+	width: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: 48px;
+	padding-bottom: 20px;
 `;

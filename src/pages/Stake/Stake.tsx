@@ -16,6 +16,7 @@ import { StakedForm, StakedFormProps } from "../../components/StakedForm/StakedF
 import { TransactionStatusWrapper } from "../../components/TransactionStatusWrapper/TransactionStatusWrapper";
 import { LoadingInfo } from "../../components/LoadingInfo/LoadingInfo";
 import { NumberSTRU } from "../../components/StakedForm/StakedForm.styled";
+import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
 
 const Stake = () => {
 	const { isConnected } = useAccount();
@@ -148,15 +149,19 @@ const Stake = () => {
 					)}
 				</PageWrapper>
 			</Container>
-			{isLoadingApprove && (
-				<TransactionStatusWrapper>
-					<LoadingInfo mobile={false}>
-						<p>
-							Adding <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> to Staking
-						</p>
-					</LoadingInfo>
-				</TransactionStatusWrapper>
-			)}
+			{/* <TransactionStatusWrapper>
+				<ErrorMessage mobile={false} />
+			</TransactionStatusWrapper> */}
+			{/* {isLoadingApprove && ( */}
+
+			<TransactionStatusWrapper>
+				<LoadingInfo mobile={false}>
+					<p>
+						Adding <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> to Staking
+					</p>
+				</LoadingInfo>
+			</TransactionStatusWrapper>
+			{/* // )} */}
 		</>
 	);
 };
