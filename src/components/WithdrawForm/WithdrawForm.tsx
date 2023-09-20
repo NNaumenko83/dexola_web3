@@ -3,18 +3,18 @@ import { Form } from "../Form/Form";
 import React, { /*useEffect,*/ useState } from "react";
 import { useWeb3 } from "../../hooks/useWeb3";
 
-// import { toBigInt } from "web3-utils";
-// import { useWeb3 } from "../../hooks/useWeb3";
+export interface IWithdrawdFormProps {
+	onSubmitHandler: React.FormEventHandler<HTMLFormElement>;
+	onChangeInput: React.ChangeEventHandler<HTMLInputElement>;
+	numberOfSrtu: string;
 
-// import { useAccount } from "wagmi";
-// import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from "wagmi";
+	isLoadingWithdraw: boolean;
+	isErrorWithdraw: boolean;
+	isSuccessWithdraw: boolean;
+}
 
-// import contractStakingABI from "../../contracts/contract-staking-abi.json";
-// import contractStarRunnerTokenABI from "../../contracts/contract-tokenTracker-abi.json";
-
-export const WithdrawForm = () => {
+export const WithdrawForm: React.FC<IWithdrawdFormProps> = () => {
 	const { stakedBalance } = useWeb3();
-	console.log("stakedBalance:", stakedBalance);
 
 	const [numberOfSrtu, setNumberOfSrtu] = useState<string>("");
 
@@ -36,7 +36,7 @@ export const WithdrawForm = () => {
 			buttonText={"Withdraw"}
 			// isLoading={isLoadingApprove}
 			balance={stakedBalance}
-			placeholder={"Enter stake amount"}
+			placeholder={"Enter withdraw amount"}
 		>
 			<></>
 		</Form>

@@ -88,6 +88,8 @@ const Stake = () => {
 		enabled: Boolean(numberOfSrtu),
 	});
 
+	console.log("stakeConfig", stakeConfig);
+
 	const { data: approveData, write: approve } = useContractWrite(approveConfig);
 	const { data: stakeData, write: stake } = useContractWrite(stakeConfig);
 
