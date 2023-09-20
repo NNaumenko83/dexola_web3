@@ -65,7 +65,7 @@ const Stake = () => {
 	const { data: stakeData, write: stake } = useContractWrite(stakeConfig);
 	console.log("stake:", stake);
 
-	const { isLoading: isLoadingApprove } = useWaitForTransaction({
+	const { isLoading: isLoadingApprove, isError: isErrorApprove } = useWaitForTransaction({
 		hash: approveData?.hash,
 		onSuccess() {
 			console.log("aaaaaaaaaaaaaaaa");
@@ -73,7 +73,7 @@ const Stake = () => {
 		},
 	});
 
-	const { isLoading: isLoadingStake } = useWaitForTransaction({
+	const { isLoading: isLoadingStake, isError: isErrorStaked } = useWaitForTransaction({
 		hash: stakeData?.hash,
 		onSuccess() {
 			console.log("Stakeeeeee");
@@ -129,6 +129,8 @@ const Stake = () => {
 		numberOfSrtu,
 		isLoadingApprove,
 		isLoadingStake,
+		isErrorApprove,
+		isErrorStaked,
 	};
 
 	return (
@@ -152,19 +154,21 @@ const Stake = () => {
 					)}
 				</PageWrapper>
 			</Container>
-			<TransactionStatusWrapper>
-				<ErrorMessage mobile={false} />
-			</TransactionStatusWrapper>
-			{/* {isLoadingApprove && ( */}
 
-			{/* <TransactionStatusWrapper>
-				<LoadingInfo mobile={false}>
-					<p>
-						Adding <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> to Staking
-					</p>
-				</LoadingInfo>
-			</TransactionStatusWrapper> */}
-			{/* // )} */}
+			{isLoadingApprove && (
+				<TransactionStatusWrapper>
+					<LoadingInfo mobile={false}>
+						<p>
+							Adding <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> to Staking
+						</p>
+					</LoadingInfo>
+				</TransactionStatusWrapper>
+			)}
+			{(isErrorApprove || isErrorStaked) && (
+				<TransactionStatusWrapper>
+					<ErrorMessage mobile={false} />
+				</TransactionStatusWrapper>
+			)}
 		</>
 	);
 };

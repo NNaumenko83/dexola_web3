@@ -12,6 +12,8 @@ export interface StakedFormProps {
 	numberOfSrtu: string;
 	isLoadingApprove: boolean;
 	isLoadingStake: boolean;
+	isErrorApprove: boolean;
+	isErrorStaked: boolean;
 }
 
 export const StakedForm: React.FC<StakedFormProps> = ({
@@ -20,6 +22,8 @@ export const StakedForm: React.FC<StakedFormProps> = ({
 	numberOfSrtu,
 	isLoadingApprove,
 	isLoadingStake,
+	isErrorApprove,
+	isErrorStaked,
 }) => {
 	const { struBalance } = useWeb3();
 	console.log("isLoadingApprove:", isLoadingApprove);
@@ -42,7 +46,7 @@ export const StakedForm: React.FC<StakedFormProps> = ({
 						</p>
 					</LoadingInfo>
 				)}
-				<ErrorMessage mobile={true} />
+				{(isErrorApprove || isErrorStaked) && <ErrorMessage mobile={true} />}
 			</Form>
 		</>
 	);
