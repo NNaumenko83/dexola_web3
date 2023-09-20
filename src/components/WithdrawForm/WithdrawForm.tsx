@@ -7,25 +7,22 @@ export interface IWithdrawdFormProps {
 	onSubmitHandler: React.FormEventHandler<HTMLFormElement>;
 	onChangeInput: React.ChangeEventHandler<HTMLInputElement>;
 	numberOfSrtu: string;
-
+	transactionNumberOfStru: string;
 	isLoadingWithdraw: boolean;
 	isErrorWithdraw: boolean;
 	isSuccessWithdraw: boolean;
 }
 
-export const WithdrawForm: React.FC<IWithdrawdFormProps> = () => {
+export const WithdrawForm: React.FC<IWithdrawdFormProps> = ({
+	onSubmitHandler,
+	onChangeInput,
+	numberOfSrtu,
+	isLoadingWithdraw,
+	isErrorWithdraw,
+	isSuccessWithdraw,
+	transactionNumberOfStru,
+}) => {
 	const { stakedBalance } = useWeb3();
-
-	const [numberOfSrtu, setNumberOfSrtu] = useState<string>("");
-
-	const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = async e => {
-		e.preventDefault();
-		console.log("WithdrawForm");
-	};
-
-	const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = e => {
-		setNumberOfSrtu(e.target.value);
-	};
 
 	return (
 		<Form

@@ -21,8 +21,8 @@ import { RewardQtyText, RewardRateText, StruWeekText } from "./Stake.styled";
 import { SuccessInfo } from "../../components/SuccessInfo/SuccessInfo";
 
 const Stake = () => {
-	const { isConnected } = useAccount();
-	const { address } = useAccount();
+	const { isConnected, address } = useAccount();
+	// const { address } = useAccount();
 	const { contractStarRunnerToken, struBalance, web3, updAll } = useWeb3();
 	const [numberOfSrtu, setNumberOfSrtu] = useState<string>("");
 	const [transactionNumberOfStru, setTransactionNumberOfStru] = useState<string>("");
