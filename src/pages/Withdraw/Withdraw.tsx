@@ -10,6 +10,11 @@ import { useEffect, useState } from "react";
 import contractStakingABI from "../../contracts/contract-staking-abi.json";
 import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from "wagmi";
 import { validateAmount } from "../../helpers/validateAmount";
+import { TransactionStatusWrapper } from "../../components/TransactionStatusWrapper/TransactionStatusWrapper";
+import { SuccessInfo } from "../../components/SuccessInfo/SuccessInfo";
+import { NumberSTRU } from "../../components/StakedForm/StakedForm.styled";
+import { LoadingInfo } from "../../components/LoadingInfo/LoadingInfo";
+import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
 
 const Withdraw = () => {
 	const { isConnected } = useAccount();
@@ -58,13 +63,17 @@ const Withdraw = () => {
 
 	const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = async e => {
 		e.preventDefault();
+		setTransactionNumberOfStru(numberOfSrtu);
 		console.log("Submit");
+		if (withdraw) {
+			withdraw();
+		}
 	};
 
 	const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = e => {
 		const inputText = e.target.value;
 		console.log("inputText:", inputText);
-		setTransactionNumberOfStru(numberOfSrtu);
+
 		if (!validateAmount(inputText) && inputText === "") {
 			setNumberOfSrtu(inputText);
 			return;
@@ -94,20 +103,45 @@ const Withdraw = () => {
 	};
 
 	return (
-		<Container>
-			<PageWrapper>
-				{!isConnected ? (
-					<NotConnectedWrapper />
-				) : (
-					<>
-						<PageTitleWrapper>
-							<PageTitle>Withdraw</PageTitle>
-						</PageTitleWrapper>
-						<WithdrawForm {...stakedFormProps} />
-					</>
-				)}
-			</PageWrapper>
-		</Container>
+		<>
+			<Container>
+				<PageWrapper>
+					{!isConnected ? (
+						<NotConnectedWrapper />
+					) : (
+						<>
+							<PageTitleWrapper>
+								<PageTitle>Withdraw</PageTitle>
+							</PageTitleWrapper>
+							<WithdrawForm {...stakedFormProps} />
+						</>
+					)}
+				</PageWrapper>
+			</Container>
+			{isSuccessWithdraw && (
+				<TransactionStatusWrapper>
+					<SuccessInfo mobile={false}>
+						<p>
+							<NumberSTRU>{transactionNumberOfStru} STRU</NumberSTRU> successfully withdrawed
+						</p>
+					</SuccessInfo>
+				</TransactionStatusWrapper>
+			)}
+			{isLoadingWithdraw && (
+				<TransactionStatusWrapper>
+					<LoadingInfo mobile={false}>
+						<p>
+							Withdrawing <NumberSTRU>{transactionNumberOfStru} STRU</NumberSTRU>
+						</p>
+					</LoadingInfo>
+				</TransactionStatusWrapper>
+			)}
+			{isErrorWithdraw && (
+				<TransactionStatusWrapper>
+					<ErrorMessage mobile={false} />
+				</TransactionStatusWrapper>
+			)}
+		</>
 	);
 };
 
