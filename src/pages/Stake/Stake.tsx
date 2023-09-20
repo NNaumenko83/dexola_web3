@@ -17,6 +17,7 @@ import { TransactionStatusWrapper } from "../../components/TransactionStatusWrap
 import { LoadingInfo } from "../../components/LoadingInfo/LoadingInfo";
 import { NumberSTRU } from "../../components/StakedForm/StakedForm.styled";
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
+import { RewardQtyText, RewardRateText, StruWeekText } from "./Stake.styled";
 
 const Stake = () => {
 	const { isConnected } = useAccount();
@@ -140,27 +141,29 @@ const Stake = () => {
 						<>
 							<PageTitleWrapper>
 								<PageTitle>Stake</PageTitle>
-								<p>
-									Reward rate:<span>1 STRU/week</span>
-								</p>
+								<RewardRateText>
+									<span>Reward rate:</span>
+									<RewardQtyText>1</RewardQtyText>
+									<StruWeekText>STRU/week</StruWeekText>
+								</RewardRateText>
 							</PageTitleWrapper>
 							<StakedForm {...stakedFormProps} />
 						</>
 					)}
 				</PageWrapper>
 			</Container>
-			{/* <TransactionStatusWrapper>
+			<TransactionStatusWrapper>
 				<ErrorMessage mobile={false} />
-			</TransactionStatusWrapper> */}
+			</TransactionStatusWrapper>
 			{/* {isLoadingApprove && ( */}
 
-			<TransactionStatusWrapper>
+			{/* <TransactionStatusWrapper>
 				<LoadingInfo mobile={false}>
 					<p>
 						Adding <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> to Staking
 					</p>
 				</LoadingInfo>
-			</TransactionStatusWrapper>
+			</TransactionStatusWrapper> */}
 			{/* // )} */}
 		</>
 	);

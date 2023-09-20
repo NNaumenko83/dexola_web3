@@ -19,13 +19,25 @@ export const AvailableWrapper = styled.div`
 	margin-bottom: 224px;
 	display: flex;
 	gap: 8px;
+
+	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
+		margin-bottom: 3.875rem;
+	}
 `;
 
 export const ButtonStyled = styled(Button)`
 	width: 100%;
 	padding-top: 12px;
 	padding-bottom: 12px;
-	margin-bottom: 56px;
+	@media screen and (max-width: ${props => props.theme.breakpoints.maxMobile}) {
+		margin-bottom: 56px;
+	}
+
+	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
+		padding: 12px 40px;
+
+		width: fit-content;
+	}
 `;
 
 export const AvailableQtyText = styled.span`
