@@ -1,19 +1,16 @@
-import "@rainbow-me/rainbowkit/styles.css";
-import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { sepolia, mainnet, polygon, optimism, arbitrum, base, zora } from "wagmi/chains";
-import { infuraProvider } from "wagmi/providers/infura";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { publicProvider } from "wagmi/providers/public";
-import { connectorsForWallets } from "@rainbow-me/rainbowkit";
-import { injectedWallet, metaMaskWallet } from "@rainbow-me/rainbowkit/wallets";
 import "react-toastify/dist/ReactToastify.css";
+import "@rainbow-me/rainbowkit/styles.css";
+import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { configureChains, createConfig, WagmiConfig } from "wagmi";
+import { sepolia } from "wagmi/chains";
+import { infuraProvider } from "wagmi/providers/infura";
+import { publicProvider } from "wagmi/providers/public";
 
 import Theme from "./Theme/Theme";
 import { SharedLayout } from "./components/SharedLayout/SharedLayout";
-
-// Pages
+// // Pages
 import ClaimRewards from "./pages/ClaimRewards/ClaimRewards";
 import Stake from "./pages/Stake/Stake";
 import Withdraw from "./pages/Withdraw/Withdraw";
@@ -21,18 +18,15 @@ import NotFound from "./pages/NotFound/NotFound";
 import { Web3Provider } from "./context/Web3Context";
 
 const { chains, publicClient } = configureChains(
-	[sepolia, mainnet, polygon, optimism, arbitrum, base, zora],
+	[sepolia],
 	[infuraProvider({ apiKey: "35a6a592708b48bc8707f2ba01b3aaf2" }), publicProvider()],
 );
 
-const projectId = "d2e5b14023db785f96b1bbb053881d95";
-
-const connectors = connectorsForWallets([
-	{
-		groupName: "Recommended",
-		wallets: [injectedWallet({ chains }), metaMaskWallet({ projectId, chains })],
-	},
-]);
+const { connectors } = getDefaultWallets({
+	appName: "My RainbowKit App",
+	projectId: "d2e5b14023db785f96b1bbb053881d95",
+	chains,
+});
 
 const wagmiConfig = createConfig({
 	autoConnect: true,
