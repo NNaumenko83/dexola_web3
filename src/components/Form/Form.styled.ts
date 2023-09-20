@@ -13,6 +13,10 @@ export const Input = styled.input`
 	background-color: transparent;
 	color: white;
 	border-bottom: 1px solid white;
+
+	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
+		width: 24.4375rem;
+	}
 `;
 
 export const AvailableWrapper = styled.div`

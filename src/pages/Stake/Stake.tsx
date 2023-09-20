@@ -18,6 +18,7 @@ import { LoadingInfo } from "../../components/LoadingInfo/LoadingInfo";
 import { NumberSTRU } from "../../components/StakedForm/StakedForm.styled";
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
 import { RewardQtyText, RewardRateText, StruWeekText } from "./Stake.styled";
+import { SuccessInfo } from "../../components/SuccessInfo/SuccessInfo";
 
 const Stake = () => {
 	const { isConnected } = useAccount();
@@ -65,7 +66,11 @@ const Stake = () => {
 	const { data: stakeData, write: stake } = useContractWrite(stakeConfig);
 	console.log("stake:", stake);
 
-	const { isLoading: isLoadingApprove, isError: isErrorApprove } = useWaitForTransaction({
+	const {
+		isLoading: isLoadingApprove,
+		isError: isErrorApprove,
+		isSuccess: isSuccessApprove,
+	} = useWaitForTransaction({
 		hash: approveData?.hash,
 		onSuccess() {
 			console.log("aaaaaaaaaaaaaaaa");
@@ -73,7 +78,11 @@ const Stake = () => {
 		},
 	});
 
-	const { isLoading: isLoadingStake, isError: isErrorStaked } = useWaitForTransaction({
+	const {
+		isLoading: isLoadingStake,
+		isError: isErrorStaked,
+		isSuccess: isSuccessStake,
+	} = useWaitForTransaction({
 		hash: stakeData?.hash,
 		onSuccess() {
 			console.log("Stakeeeeee");
@@ -131,6 +140,8 @@ const Stake = () => {
 		isLoadingStake,
 		isErrorApprove,
 		isErrorStaked,
+		isSuccessApprove,
+		isSuccessStake,
 	};
 
 	return (
@@ -154,8 +165,34 @@ const Stake = () => {
 					)}
 				</PageWrapper>
 			</Container>
-
+			{isSuccessApprove && (
+				<TransactionStatusWrapper>
+					<SuccessInfo>
+						<p>
+							<NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> successfully approved
+						</p>
+					</SuccessInfo>
+				</TransactionStatusWrapper>
+			)}
+			{isSuccessStake && (
+				<TransactionStatusWrapper>
+					<SuccessInfo>
+						<p>
+							<NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> successfully added to Staking
+						</p>
+					</SuccessInfo>
+				</TransactionStatusWrapper>
+			)}
 			{isLoadingApprove && (
+				<TransactionStatusWrapper>
+					<LoadingInfo mobile={false}>
+						<p>
+							Approving <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU>
+						</p>
+					</LoadingInfo>
+				</TransactionStatusWrapper>
+			)}
+			{isLoadingStake && (
 				<TransactionStatusWrapper>
 					<LoadingInfo mobile={false}>
 						<p>

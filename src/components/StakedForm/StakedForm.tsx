@@ -5,6 +5,7 @@ import { useWeb3 } from "../../hooks/useWeb3";
 import { LoadingInfo } from "../LoadingInfo/LoadingInfo";
 import { NumberSTRU } from "./StakedForm.styled";
 import { ErrorMessage } from "../ErrorMessage/ErrorMessage";
+import { SuccessInfo } from "../SuccessInfo/SuccessInfo";
 
 export interface StakedFormProps {
 	onSubmitHandler: React.FormEventHandler<HTMLFormElement>;
@@ -14,6 +15,8 @@ export interface StakedFormProps {
 	isLoadingStake: boolean;
 	isErrorApprove: boolean;
 	isErrorStaked: boolean;
+	isSuccessApprove: boolean;
+	isSuccessStake: boolean;
 }
 
 export const StakedForm: React.FC<StakedFormProps> = ({
@@ -24,6 +27,8 @@ export const StakedForm: React.FC<StakedFormProps> = ({
 	isLoadingStake,
 	isErrorApprove,
 	isErrorStaked,
+	isSuccessApprove,
+	isSuccessStake,
 }) => {
 	const { struBalance } = useWeb3();
 	console.log("isLoadingApprove:", isLoadingApprove);
@@ -39,7 +44,30 @@ export const StakedForm: React.FC<StakedFormProps> = ({
 				balance={struBalance}
 				placeholder={"Enter stake amount"}
 			>
+				{isSuccessApprove && (
+					<SuccessInfo mobile={true}>
+						<p>
+							<NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> successfully <br />
+							approved
+						</p>
+					</SuccessInfo>
+				)}
+				{isSuccessStake && (
+					<SuccessInfo mobile={true}>
+						<p>
+							<NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> successfully <br />
+							added to Staking
+						</p>
+					</SuccessInfo>
+				)}
 				{isLoadingApprove && (
+					<LoadingInfo mobile={true}>
+						<p>
+							Approving <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU>
+						</p>
+					</LoadingInfo>
+				)}
+				{isLoadingStake && (
 					<LoadingInfo mobile={true}>
 						<p>
 							Adding <NumberSTRU>{numberOfSrtu} STRU</NumberSTRU> to Staking
