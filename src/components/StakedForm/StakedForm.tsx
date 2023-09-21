@@ -18,6 +18,7 @@ export interface StakedFormProps {
 	isErrorStaked: boolean;
 	isSuccessApprove: boolean;
 	isSuccessStake: boolean;
+	isErrorApprovePrepare: boolean;
 }
 
 export const StakedForm: React.FC<StakedFormProps> = ({
@@ -31,6 +32,7 @@ export const StakedForm: React.FC<StakedFormProps> = ({
 	isSuccessApprove,
 	isSuccessStake,
 	transactionNumberOfStru,
+	isErrorApprovePrepare,
 }) => {
 	const { struBalance } = useWeb3();
 
@@ -41,7 +43,15 @@ export const StakedForm: React.FC<StakedFormProps> = ({
 				inputName="stake"
 				inputValue={numberOfSrtu}
 				onChangeInput={onChangeInput}
-				buttonText={isLoadingApprove ? "APPROVE WAITING" : isLoadingStake ? "STAKE LOADING" : "STAKE"}
+				buttonText={
+					isErrorApprovePrepare
+						? "APPROVE"
+						: isLoadingApprove
+						? "APPROVE WAITING"
+						: isLoadingStake
+						? "STAKE LOADING"
+						: "STAKE"
+				}
 				balance={struBalance}
 				placeholder={"Enter stake amount"}
 			>

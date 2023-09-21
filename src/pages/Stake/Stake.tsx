@@ -80,15 +80,13 @@ const Stake = () => {
 		enabled: Boolean(numberOfSrtu),
 	});
 
-	const { config: stakeConfig } = usePrepareContractWrite({
+	const { config: stakeConfig, error: isErrorApprovePrepare } = usePrepareContractWrite({
 		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
 		abi: contractStakingABI,
 		functionName: "stake",
 		args: [formattedNumberOfSrtu],
 		enabled: Boolean(numberOfSrtu),
 	});
-
-	console.log("stakeConfig", stakeConfig);
 
 	const { data: approveData, write: approve } = useContractWrite(approveConfig);
 	const { data: stakeData, write: stake } = useContractWrite(stakeConfig);
@@ -165,6 +163,7 @@ const Stake = () => {
 		isSuccessApprove,
 		isSuccessStake,
 		transactionNumberOfStru,
+		isErrorApprovePrepare,
 	};
 
 	return (
