@@ -50,15 +50,14 @@ export const WithdrawForm: React.FC<IWithdrawdFormProps> = ({
 			{isSuccessWithdraw && (
 				<SuccessInfo mobile={true}>
 					<p>
-						<NumberSTRU>{transactionNumberOfStru} STRU</NumberSTRU> successfully <br />
-						added to Staking
+						<NumberSTRU>{transactionNumberOfStru} STRU</NumberSTRU> successfully withdrawed
 					</p>
 				</SuccessInfo>
 			)}
 			{isLoadingWithdraw && (
 				<LoadingInfo mobile={true}>
 					<p>
-						Witdrawing <NumberSTRU>{transactionNumberOfStru} STRU</NumberSTRU>
+						Withdrawing <NumberSTRU>{transactionNumberOfStru} STRU</NumberSTRU>
 					</p>
 				</LoadingInfo>
 			)}
@@ -70,7 +69,7 @@ export const WithdrawForm: React.FC<IWithdrawdFormProps> = ({
 			)}
 			{isLoadingWithdrawAll && (
 				<LoadingInfo mobile={true}>
-					<p>Witdrawing all and rewards</p>
+					<p>Withdrawing all and rewards</p>
 				</LoadingInfo>
 			)}
 		</Form>

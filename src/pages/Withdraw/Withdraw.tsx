@@ -187,7 +187,7 @@ const Withdraw = () => {
 			{isLoadingWithdrawAll && (
 				<TransactionStatusWrapper>
 					<LoadingInfo mobile={false}>
-						<p>Witdrawing all and rewards</p>
+						<p>Withdrawing all and rewards</p>
 					</LoadingInfo>
 				</TransactionStatusWrapper>
 			)}
