@@ -64,6 +64,7 @@ const ClaimRewardss = () => {
 
 		if (claimRewards && earned) {
 			setTransactionNumberOfStru(earned.toString());
+			claimRewards();
 		}
 	};
 

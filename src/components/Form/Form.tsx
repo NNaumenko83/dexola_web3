@@ -36,7 +36,9 @@ export const Form: React.FC<CustomFormProps> = ({
 }) => {
 	return (
 		<FormStyled onSubmit={onSubmitHandler}>
-			<Input type="text" name={inputName} value={inputValue} onChange={onChangeInput} placeholder={placeholder} />
+			{buttonText !== "Claim rewards" && (
+				<Input type="text" name={inputName} value={inputValue} onChange={onChangeInput} placeholder={placeholder} />
+			)}
 			<AvailableWrapper>
 				<p>Available:</p>
 
