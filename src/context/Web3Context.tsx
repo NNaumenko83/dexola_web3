@@ -113,7 +113,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 			try {
 				const earned = await contractStaking.methods.earned(address).call();
 				const formattedEarned = Number(web3.utils.fromWei(earned, "ether")).toFixed(3);
-				if (Number(formattedEarned) < 0) {
+				if (Number(formattedEarned) < 1) {
 					setEarned(Number(formattedEarned));
 					return;
 				}

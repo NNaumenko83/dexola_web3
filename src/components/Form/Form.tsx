@@ -14,13 +14,13 @@ import {
 
 interface CustomFormProps {
 	onSubmitHandler: (event: FormEvent<HTMLFormElement>) => void;
-	inputName: string;
-	inputValue: string;
-	onChangeInput: (event: ChangeEvent<HTMLInputElement>) => void;
+	inputName?: string;
+	inputValue?: string;
+	onChangeInput?: (event: ChangeEvent<HTMLInputElement>) => void;
 	buttonText: string;
 	// isLoading: boolean;
 	balance: number | null;
-	placeholder: string;
+	placeholder?: string;
 	children: ReactNode;
 }
 

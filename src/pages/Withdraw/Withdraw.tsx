@@ -1,10 +1,13 @@
 import { useAccount } from "wagmi";
 import { Container } from "../../components/Container/Container";
-import { NotConnectedWrapper } from "../../components/NotConnectedWrapper/NotConnectedWrapper";
-import { PageWrapper } from "../../components/PageWrapper/PageWrapper";
+
 import { PageTitleWrapper } from "../../components/PageTitleWrapper/PageTitleWrapper";
 import { PageTitle } from "../../components/PageTitle/PageTitle";
+import { PageWrapper } from "../../components/PageWrapper/PageWrapper";
+
+import { NotConnectedWrapper } from "../../components/NotConnectedWrapper/NotConnectedWrapper";
 import { WithdrawForm, IWithdrawdFormProps } from "../../components/WithdrawForm/WithdrawForm";
+
 import { useWeb3 } from "../../hooks/useWeb3";
 import { useEffect, useState } from "react";
 import contractStakingABI from "../../contracts/contract-staking-abi.json";
