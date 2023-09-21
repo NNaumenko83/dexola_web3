@@ -30,7 +30,7 @@ export const NotConnectedWrapperStyled = styled.div`
 	height: 100%;
 
 	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
-		padding: 63px 69px;
+		padding: 1.9375rem 4.3125rem;
 		height: auto;
 		gap: 2rem;
 	}
