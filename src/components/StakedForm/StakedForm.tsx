@@ -18,7 +18,7 @@ export interface StakedFormProps {
 	isErrorStaked: boolean;
 	isSuccessApprove: boolean;
 	isSuccessStake: boolean;
-	isErrorApprovePrepare: boolean;
+	isErrorApprovePrepare: Error | null;
 }
 
 export const StakedForm: React.FC<StakedFormProps> = ({
@@ -44,13 +44,7 @@ export const StakedForm: React.FC<StakedFormProps> = ({
 				inputValue={numberOfSrtu}
 				onChangeInput={onChangeInput}
 				buttonText={
-					isErrorApprovePrepare
-						? "APPROVE"
-						: isLoadingApprove
-						? "APPROVE WAITING"
-						: isLoadingStake
-						? "STAKE LOADING"
-						: "STAKE"
+					isErrorApprovePrepare ? "APPROVE" : isLoadingApprove ? "APPROVING" : isLoadingStake ? "STAKING" : "STAKE"
 				}
 				balance={struBalance}
 				placeholder={"Enter stake amount"}

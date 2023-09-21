@@ -23,6 +23,9 @@ const Withdraw = () => {
 	const [transactionNumberOfStru, setTransactionNumberOfStru] = useState<string>("");
 	const [isSuccessWithdraw, setIsSuccessWithdraw] = useState(false);
 	const [isErrorWithdraw, setIsErrorWithdraw] = useState(false);
+	const [isSuccessWithdrawAll, setIsSuccessWithdrawAll] = useState(false);
+	const [isErrorWithdrawAll, setIsErrorWithdrawAll] = useState(false);
+
 	const formattedNumberOfSrtu = web3?.utils.toWei(numberOfSrtu, "ether");
 
 	useEffect(() => {
@@ -38,6 +41,7 @@ const Withdraw = () => {
 		}
 	}, [isErrorWithdraw, isSuccessWithdraw]);
 
+	// Знаття зі стейк певної кількості токенів
 	const { config: withdrawConfig } = usePrepareContractWrite({
 		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
 		abi: contractStakingABI,
@@ -47,7 +51,6 @@ const Withdraw = () => {
 	});
 
 	const { data: withdrawData, write: withdraw } = useContractWrite(withdrawConfig);
-	console.log("withdraw:", withdraw);
 
 	const { isLoading: isLoadingWithdraw } = useWaitForTransaction({
 		hash: withdrawData?.hash,
@@ -61,18 +64,43 @@ const Withdraw = () => {
 		},
 	});
 
+	// Знаття зі стейку всіх токенів і винагороди
+	const { config: withdrawAllConfig } = usePrepareContractWrite({
+		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
+		abi: contractStakingABI,
+		functionName: "exit",
+		enabled: Boolean(!numberOfSrtu),
+	});
+
+	const { data: withdrawAllData, write: withdrawAll } = useContractWrite(withdrawAllConfig);
+
+	const { isLoading: isLoadingWithdrawAll } = useWaitForTransaction({
+		hash: withdrawAllData?.hash,
+		onSuccess() {
+			setIsSuccessWithdrawAll(true);
+			updAll();
+			setNumberOfSrtu("");
+		},
+		onError() {
+			setIsErrorWithdrawAll(true);
+		},
+	});
+
 	const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = async e => {
 		e.preventDefault();
-		setTransactionNumberOfStru(numberOfSrtu);
-		console.log("Submit");
-		if (withdraw) {
+
+		if (withdraw && numberOfSrtu) {
+			setTransactionNumberOfStru(numberOfSrtu);
 			withdraw();
+		}
+
+		if (withdrawAll && !numberOfSrtu) {
+			withdrawAll();
 		}
 	};
 
 	const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = e => {
 		const inputText = e.target.value;
-		console.log("inputText:", inputText);
 
 		if (!validateAmount(inputText) && inputText === "") {
 			setNumberOfSrtu(inputText);
@@ -100,6 +128,9 @@ const Withdraw = () => {
 		isErrorWithdraw,
 		isSuccessWithdraw,
 		transactionNumberOfStru,
+		isSuccessWithdrawAll,
+		isErrorWithdrawAll,
+		isLoadingWithdrawAll,
 	};
 
 	return (
@@ -118,6 +149,12 @@ const Withdraw = () => {
 					)}
 				</PageWrapper>
 			</Container>
+			{(isErrorWithdraw || isErrorWithdrawAll) && (
+				<TransactionStatusWrapper>
+					<ErrorMessage mobile={false} />
+				</TransactionStatusWrapper>
+			)}
+			{/* Виведення інформації про статус транзакцій при знятті зі стейку */}
 			{isSuccessWithdraw && (
 				<TransactionStatusWrapper>
 					<SuccessInfo mobile={false}>
@@ -136,9 +173,19 @@ const Withdraw = () => {
 					</LoadingInfo>
 				</TransactionStatusWrapper>
 			)}
-			{isErrorWithdraw && (
+			{/* Виведення інформації про статус транзакцій при знятті всього стейку і винагород */}
+			{isSuccessWithdrawAll && (
 				<TransactionStatusWrapper>
-					<ErrorMessage mobile={false} />
+					<SuccessInfo mobile={false}>
+						<p>Successfully withdrawed all and rewards</p>
+					</SuccessInfo>
+				</TransactionStatusWrapper>
+			)}
+			{isLoadingWithdrawAll && (
+				<TransactionStatusWrapper>
+					<LoadingInfo mobile={false}>
+						<p>Witdrawing all and rewards</p>
+					</LoadingInfo>
 				</TransactionStatusWrapper>
 			)}
 		</>

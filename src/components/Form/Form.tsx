@@ -8,6 +8,8 @@ import {
 	Input,
 	AvailableQtyWrapper,
 	ChildrenWrapper,
+	ButtonTextWrapper,
+	WithdrawText,
 } from "./Form.styled";
 
 interface CustomFormProps {
@@ -44,8 +46,10 @@ export const Form: React.FC<CustomFormProps> = ({
 				</AvailableQtyWrapper>
 			</AvailableWrapper>
 			<ChildrenWrapper>{children}</ChildrenWrapper>
-
-			<ButtonStyled type="submit">{buttonText}</ButtonStyled>
+			<ButtonTextWrapper>
+				<ButtonStyled type="submit">{buttonText}</ButtonStyled>
+				{inputName === "withdraw" && !inputValue && <WithdrawText>withdraw all & Claim rewards</WithdrawText>}
+			</ButtonTextWrapper>
 		</FormStyled>
 	);
 };

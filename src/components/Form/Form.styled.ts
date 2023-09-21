@@ -33,9 +33,6 @@ export const ButtonStyled = styled(Button)`
 	width: 100%;
 	padding-top: 12px;
 	padding-bottom: 12px;
-	@media screen and (max-width: ${props => props.theme.breakpoints.maxMobile}) {
-		margin-bottom: 56px;
-	}
 
 	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
 		padding: 12px 40px;
@@ -61,4 +58,27 @@ export const ChildrenWrapper = styled.div`
 	transform: translateX(-50%);
 	bottom: 48px;
 	padding-bottom: 20px;
+`;
+
+export const ButtonTextWrapper = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	@media screen and (max-width: ${props => props.theme.breakpoints.maxMobile}) {
+		flex-direction: column;
+		margin-bottom: 56px;
+	}
+
+	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
+		gap: 40px;
+	}
+`;
+
+export const WithdrawText = styled.p`
+	color: #fff;
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 1.5; /* 150% */
+	letter-spacing: 0.32px;
+	text-transform: uppercase;
 `;
