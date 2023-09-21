@@ -112,7 +112,7 @@ const ClaimRewardss = () => {
 				<TransactionStatusWrapper>
 					<LoadingInfo mobile={false}>
 						<p>
-							Witdrawing reward: <NumberSTRU>{transactionNumberOfStru} STRU</NumberSTRU>
+							Withdrawing reward: <NumberSTRU>{transactionNumberOfStru} STRU</NumberSTRU>
 						</p>
 					</LoadingInfo>
 				</TransactionStatusWrapper>

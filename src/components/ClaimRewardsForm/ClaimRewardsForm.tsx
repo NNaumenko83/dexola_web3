@@ -36,7 +36,7 @@ export const ClaimRewardsForm: React.FC<IClaimRewardsFormProps> = ({
 			{isLoadingWithdrawRewards && (
 				<LoadingInfo mobile={true}>
 					<p>
-						Witdrawing reward: <NumberSTRU>{transactionNumberOfStru} STRU</NumberSTRU>
+						Withdrawing reward: <NumberSTRU>{transactionNumberOfStru} STRU</NumberSTRU>
 					</p>
 				</LoadingInfo>
 			)}
