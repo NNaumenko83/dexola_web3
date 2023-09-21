@@ -39,7 +39,7 @@ export const Form: React.FC<CustomFormProps> = ({
 			{buttonText !== "Claim rewards" && (
 				<Input type="text" name={inputName} value={inputValue} onChange={onChangeInput} placeholder={placeholder} />
 			)}
-			<AvailableWrapper>
+			<AvailableWrapper $claimrewards={buttonText === "Claim rewards"}>
 				<p>Available:</p>
 
 				<AvailableQtyWrapper>

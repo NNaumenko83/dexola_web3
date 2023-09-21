@@ -19,13 +19,14 @@ export const Input = styled.input`
 	}
 `;
 
-export const AvailableWrapper = styled.div`
-	margin-bottom: 224px;
+export const AvailableWrapper = styled.div<{ $claimrewards?: boolean }>`
 	display: flex;
 	gap: 8px;
 
+	margin-bottom: ${props => (props.$claimrewards ? "17.75rem" : "14rem")};
+
 	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
-		margin-bottom: 3.875rem;
+		margin-bottom: ${props => (props.$claimrewards ? "7.67rem" : "3.875rem")};
 	}
 `;
 
