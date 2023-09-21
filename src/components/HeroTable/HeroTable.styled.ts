@@ -72,11 +72,11 @@ export const TableRow = styled.tr`
 		}
 
 		& > :nth-child(2) {
-			width: 7rem;
+			width: 8rem;
 		}
 
 		& > :nth-child(3) {
-			width: 7rem;
+			width: 6rem;
 		}
 
 		& > :nth-child(4) {
@@ -90,11 +90,11 @@ export const TableRow = styled.tr`
 		}
 
 		& > :nth-child(2) {
-			width: 12.0625rem;
+			width: 13rem;
 		}
 
 		& > :nth-child(3) {
-			width: 7rem;
+			width: 8rem;
 		}
 
 		& > :nth-child(4) {
