@@ -1,4 +1,5 @@
 import { useAccount } from "wagmi";
+import { useDebouncedCallback } from "use-debounce";
 import { Container } from "../../components/Container/Container";
 import { NotConnectedWrapper } from "../../components/NotConnectedWrapper/NotConnectedWrapper";
 import { PageTitleWrapper } from "../../components/PageTitleWrapper/PageTitleWrapper";
@@ -33,6 +34,7 @@ const Stake = () => {
 	const [isSuccessStake, setIsSuccessStake] = useState(false);
 
 	const formattedNumberOfSrtu = web3?.utils.toWei(numberOfSrtu, "ether");
+	const debouncedGetRewardRate = useDebouncedCallback(input => getRewardRate(Number(input)), 500);
 
 	async function fetchAllowance() {
 		const currentAllowance = await contractStarRunnerToken.methods
@@ -132,7 +134,6 @@ const Stake = () => {
 
 	const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = e => {
 		const inputText = e.target.value;
-		getRewardRate(Number(inputText));
 
 		if (!validateAmount(inputText) && inputText === "") {
 			setNumberOfSrtu(inputText);
@@ -149,6 +150,7 @@ const Stake = () => {
 			return;
 		}
 
+		debouncedGetRewardRate(Number(inputText));
 		setNumberOfSrtu(inputText);
 	};
 
