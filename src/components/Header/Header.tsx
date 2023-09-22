@@ -1,4 +1,4 @@
-import { useAccount, useDisconnect } from "wagmi";
+import { useAccount /*useDisconnect*/ } from "wagmi";
 import { Container } from "../Container/Container";
 import Icon from "../Icon/Icon";
 import {
@@ -77,8 +77,8 @@ export const Header = () => {
 	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	// }, []);
 
-	// Використовуємо хук для відключення аккаунта
-	const { disconnect } = useDisconnect();
+	// Використовуємо хук для відключення аккаунта (при необхідностф можна додати в майбутньому)
+	// const { disconnect } = useDisconnect();
 
 	return (
 		<HeaderStyled>
@@ -107,9 +107,8 @@ export const Header = () => {
 								)}
 								<AdddressText>{convertEthereumAddress(address)}</AdddressText>
 							</EtheriumInfoWrapper>
-							<button onClick={() => disconnect()}>Disconnect</button>
-							{/* <div>{struBalance?.toString()} STRU</div>
-							<div>{ethBalance?.toString()} ETH</div> */}
+							{/* При необхідності в майбутньому можна в майбутньому додати кнопку disconnect */}
+							{/* <button onClick={() => disconnect()}>Disconnect</button> */}
 						</HeaderBalanceInfoWrapper>
 					) : (
 						<ConnectToWalletButtonHeader />
