@@ -7,6 +7,7 @@ import { AppWrapper, SuspenseWrapper, PagesWrapper } from "./SharedLayout.styled
 import { Main } from "../Main/Main";
 import { Hero } from "../Hero/Hero";
 import { Navigation } from "../Navigation/Navigation";
+import { Spinner } from "../Spinner/Spinner";
 
 export const SharedLayout = () => {
 	return (
@@ -19,6 +20,7 @@ export const SharedLayout = () => {
 					<Suspense
 						fallback={
 							<SuspenseWrapper>
+								<Spinner />
 								<p>LOADING...</p>
 							</SuspenseWrapper>
 						}

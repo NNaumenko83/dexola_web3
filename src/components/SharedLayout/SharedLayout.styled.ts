@@ -5,7 +5,8 @@ export const SuspenseWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 100%;
+	gap: 1.25rem;
+	height: 25rem;
 `;
 
 export const AppWrapper = styled.div`
@@ -21,9 +22,6 @@ export const PagesWrapper = styled.div`
 	position: relative;
 	flex: 1 1 auto;
 	background-color: black;
-	/* min-height: 700px; */
-
-	/* background-color: black; */
 
 	@media screen and (max-width: ${props => props.theme.breakpoints.maxMobile}) {
 		border-radius: 16px 16px 0px 0px;

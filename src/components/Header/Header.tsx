@@ -88,19 +88,25 @@ export const Header = () => {
 
 					{isConnected ? (
 						<HeaderBalanceInfoWrapper>
-							<IconBalanceWrapper>
-								<StruIcon></StruIcon>
-								{struBalance} STRU
-							</IconBalanceWrapper>
-							<EtheriumInfoWrapper>
+							{struBalance && (
 								<IconBalanceWrapper>
-									<Icon name="eth_icon" width={32} height={32} />
-									{balance} ETH
+									<StruIcon></StruIcon>
+									{struBalance} STRU
 								</IconBalanceWrapper>
-								<Delimiter>|</Delimiter>
+							)}
+							<EtheriumInfoWrapper>
+								{balance && (
+									<>
+										<IconBalanceWrapper>
+											<Icon name="eth_icon" width={32} height={32} />
+											{balance} ETH
+										</IconBalanceWrapper>
+
+										<Delimiter>|</Delimiter>
+									</>
+								)}
 								<AdddressText>{convertEthereumAddress(address)}</AdddressText>
 							</EtheriumInfoWrapper>
-
 							<button onClick={() => disconnect()}>Disconnect</button>
 							{/* <div>{struBalance?.toString()} STRU</div>
 							<div>{ethBalance?.toString()} ETH</div> */}
