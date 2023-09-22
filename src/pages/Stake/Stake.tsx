@@ -137,6 +137,7 @@ const Stake = () => {
 
 		if (!validateAmount(inputText) && inputText === "") {
 			setNumberOfSrtu(inputText);
+			debouncedGetRewardRate(Number(0));
 			return;
 		}
 		if (!validateAmount(inputText)) {

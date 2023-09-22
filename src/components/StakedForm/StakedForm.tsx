@@ -35,6 +35,7 @@ export const StakedForm: React.FC<StakedFormProps> = ({
 	isErrorApprovePrepare,
 }) => {
 	const { struBalance } = useWeb3();
+	console.log("numberOfSrtu:", numberOfSrtu);
 
 	return (
 		<>
@@ -44,7 +45,7 @@ export const StakedForm: React.FC<StakedFormProps> = ({
 				inputValue={numberOfSrtu}
 				onChangeInput={onChangeInput}
 				buttonText={
-					numberOfSrtu && isErrorApprovePrepare
+					Number(numberOfSrtu) && isErrorApprovePrepare
 						? "APPROVE"
 						: isLoadingApprove
 						? "APPROVING"
