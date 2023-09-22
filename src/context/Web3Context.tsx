@@ -10,15 +10,17 @@ export type Web3ContextType = {
 	balance: number | null;
 	struBalance: number | null;
 	stakedBalance: number | null;
+	rewardRate: number | null;
 	contractStaking: any | null;
 	contractStarRunnerToken: any | null;
-	apr: number | null;
+	apy: number | null;
 	days: number | null;
 	earned: number | null;
 	getBalance: () => void;
 	getStruBalance: () => void;
 	getStakedBalance: () => void;
 	updAll: () => void;
+	getRewardRate: (input: number) => void;
 };
 
 export const Web3Context = createContext<Web3ContextType | undefined>(undefined);
@@ -35,11 +37,12 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const [balance, setBalance] = useState<number | null>(null);
 	const [struBalance, setStruBalance] = useState<number | null>(null);
 	const [stakedBalance, setStakedBalance] = useState<number | null>(null);
-	const [apr, setApr] = useState<number | null>(null);
+	const [apy, setApy] = useState<number | null>(null);
 	const [contractStaking, setContractStaking] = useState<any | null>(null); // Додали стейт для контракту contractStaking
 	const [contractStarRunnerToken, setContractStarRunnerToken] = useState<any | null>(null); // Додали стейт для контракту contractStarRunnerToken
 	const [days, setDays] = useState<number | null>(null);
 	const [earned, setEarned] = useState<number | null>(null);
+	const [rewardRate, setRewardRate] = useState<number | null>(null);
 	// Адреси контрактів
 	const contractStakingAddress = "0x2f112ed8a96327747565f4d4b4615be8fb89459d";
 	const contractStarRunnerTokenAddress = "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83";
@@ -65,6 +68,50 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		}
 	}, [contractStaking]);
 
+	const getRewardRate = useCallback(
+		async (input: number) => {
+			try {
+				//totalAvailbleRewards -  розраховуємо так
+				const periodFinish = await contractStaking.methods.periodFinish().call();
+				const currentTimestamp = Math.floor(Date.now() / 1000);
+				const timeRemainingInSeconds = Number(periodFinish) - currentTimestamp;
+
+				// rewardRate - це метод смарт-контракту contractStaking, який повертає
+				// кількість винагороди, яку користувач може отримати
+				// на одиницю стейкінгу в секунду.
+				const rewardRate = await contractStaking.methods.rewardRate().call();
+
+				// Доступна кількість винагород
+
+				const totalAvailbleRewards = BigInt(timeRemainingInSeconds) * rewardRate;
+
+				// Загальний обсяг STRU, який був стейкований всіма користувачами.
+				const totalSupplySTRU = await contractStaking.methods.totalSupply().call();
+
+				// Кількість STRU, яку користувач застейкав
+				const stakedBalance = await contractStaking.methods.balanceOf(address).call();
+
+				if (web3) {
+					const testRewardRate =
+						(stakedBalance * totalAvailbleRewards) / totalSupplySTRU + BigInt(web3.utils.toWei(input, "ether"));
+
+					const formattedRewardRate = Number(web3.utils.fromWei(testRewardRate, "ether")).toFixed(3);
+					if (Number(formattedRewardRate) < 1) {
+						setRewardRate(Number(formattedRewardRate));
+						return;
+					}
+					setRewardRate(Math.floor(Number(formattedRewardRate)));
+				}
+			} catch (error) {
+				console.log(error);
+				return null;
+			}
+		},
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[address, web3],
+	);
+
 	const getStakedBalance = useCallback(async () => {
 		if (contractStarRunnerToken && web3 && address) {
 			const stakedBalance = await contractStaking.methods.balanceOf(address).call();
@@ -85,7 +132,6 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		if (web3 && address) {
 			try {
 				const balanceEth = await web3.eth.getBalance(address);
-				console.log("balanceEth:", balanceEth);
 
 				const formattedBalance = Number(web3.utils.fromWei(balanceEth, "ether")).toFixed(1);
 				setBalance(Number(formattedBalance));
@@ -95,18 +141,18 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		}
 	}, [web3, address, setBalance]);
 
-	const getApr = useCallback(async () => {
+	const getApy = useCallback(async () => {
 		if (contractStaking && web3) {
 			try {
 				const totalSupplySTRU = await contractStaking.methods.totalSupply().call();
 				const totalRewards = await contractStaking.methods.getRewardForDuration().call();
-				const apr = Math.floor(Number(totalRewards / totalSupplySTRU)) * 100;
-				setApr(apr);
+				const apy = Math.floor(Number(totalRewards / totalSupplySTRU)) * 100;
+				setApy(apy);
 			} catch (error) {
-				console.error("Помилка при отриманні APR:", error);
+				console.error("Помилка при отриманні APy:", error);
 			}
 		}
-	}, [contractStaking, web3, setApr]);
+	}, [contractStaking, web3, setApy]);
 
 	const getEarned = useCallback(async () => {
 		if (contractStaking && web3 && address) {
@@ -129,7 +175,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		getStruBalance();
 		getStakedBalance();
 		getEarned();
-		getApr();
+		getApy();
 		calculateDaysRemaining();
 		getEarned();
 	};
@@ -145,10 +191,11 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
 	useEffect(() => {
 		if (web3) {
-			getApr();
+			getApy();
 			calculateDaysRemaining();
+			getRewardRate(0);
 		}
-	}, [calculateDaysRemaining, getApr, web3]);
+	}, [calculateDaysRemaining, getApy, web3, getRewardRate]);
 
 	useEffect(() => {
 		if (isConnected && address && web3) {
@@ -178,12 +225,14 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				balance,
 				struBalance,
 				stakedBalance,
+				rewardRate,
 				contractStaking,
 				contractStarRunnerToken,
 				getBalance,
 				getStruBalance,
 				getStakedBalance,
-				apr,
+				getRewardRate,
+				apy,
 				days,
 				earned,
 				updAll,

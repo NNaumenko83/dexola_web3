@@ -12,7 +12,7 @@ import { useWeb3 } from "../../hooks/useWeb3";
 import { useEffect, useState } from "react";
 import contractStakingABI from "../../contracts/contract-staking-abi.json";
 import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from "wagmi";
-import { validateAmount } from "../../helpers/validateAmount";
+import { validateAmount } from "../../utils/validateAmount";
 import { TransactionStatusWrapper } from "../../components/TransactionStatusWrapper/TransactionStatusWrapper";
 import { SuccessInfo } from "../../components/SuccessInfo/SuccessInfo";
 import { NumberSTRU } from "../../components/StakedForm/StakedForm.styled";

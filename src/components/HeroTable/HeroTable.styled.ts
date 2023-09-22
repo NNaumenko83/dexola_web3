@@ -220,7 +220,7 @@ export const TooltipWrapper = styled.div`
 export const ToolTipSTRU = styled(TooltipStyled)`
 	width: 165px;
 `;
-export const ToolTipAPR = styled(TooltipStyled)`
+export const ToolTipAPY = styled(TooltipStyled)`
 	left: -165px;
 	top: -56px;
 	width: 360px;

@@ -16,14 +16,14 @@ import {
 	TooltipWrapper,
 	ToolTipSTRU,
 	ToolTipRewards,
-	ToolTipAPR,
+	ToolTipAPY,
 	RewardsText,
 } from "./HeroTable.styled";
 import { useWeb3 } from "../../hooks/useWeb3";
 import { TooltipSwipeable } from "../TooltipSwipeable/TooltipSwipeable";
 
 export const HeroTable = () => {
-	const { stakedBalance, getStakedBalance, apr, days, earned } = useWeb3();
+	const { stakedBalance, getStakedBalance, apy, days, earned } = useWeb3();
 	const [isTooltipVisible, setTooltipVisible] = useState(false);
 	const [text, setText] = useState("");
 
@@ -39,8 +39,8 @@ export const HeroTable = () => {
 				case "staking":
 					setText("Staking rewards get allocated on this sum");
 					break;
-				case "apr":
-					setText("Displays the average for APR.Interest rate is calculated for each amount of tokens.");
+				case "apy":
+					setText("Displays the average for APY.Interest rate is calculated for each amount of tokens.");
 					break;
 				case "rewards":
 					setText("Rewards get allocated every second");
@@ -94,20 +94,20 @@ export const HeroTable = () => {
 						</td>
 						<td>
 							<TableCellApy>
-								{apr && (
+								{apy && (
 									<p>
-										<TextValue>&#8776;{apr}&#37;</TextValue>
+										<TextValue>&#8776;{apy}&#37;</TextValue>
 									</p>
 								)}
-								<NameCell>APR</NameCell>
-								<TooltipWrapper onTouchStart={handleTouchStart} id="apr">
+								<NameCell>APY</NameCell>
+								<TooltipWrapper onTouchStart={handleTouchStart} id="apy">
 									<HelpIcon name="help_icon" width={16} height={18} />
-									<ToolTipAPR>
+									<ToolTipAPY>
 										<p>
-											Displays the average for APR.
+											Displays the average for APY.
 											<br /> Interest rate is calculated for each amount of tokens.
 										</p>
-									</ToolTipAPR>
+									</ToolTipAPY>
 								</TooltipWrapper>
 							</TableCellApy>
 						</td>

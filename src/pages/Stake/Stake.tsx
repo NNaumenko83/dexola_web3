@@ -11,7 +11,7 @@ import { useWeb3 } from "../../hooks/useWeb3";
 import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from "wagmi";
 import contractStakingABI from "../../contracts/contract-staking-abi.json";
 import contractStarRunnerTokenABI from "../../contracts/contract-tokenTracker-abi.json";
-import { validateAmount } from "../../helpers/validateAmount";
+import { validateAmount } from "../../utils/validateAmount";
 import { StakedForm, StakedFormProps } from "../../components/StakedForm/StakedForm";
 import { TransactionStatusWrapper } from "../../components/TransactionStatusWrapper/TransactionStatusWrapper";
 import { LoadingInfo } from "../../components/LoadingInfo/LoadingInfo";
@@ -23,7 +23,7 @@ import { SuccessInfo } from "../../components/SuccessInfo/SuccessInfo";
 const Stake = () => {
 	const { isConnected, address } = useAccount();
 	// const { address } = useAccount();
-	const { contractStarRunnerToken, struBalance, web3, updAll } = useWeb3();
+	const { contractStarRunnerToken, struBalance, web3, updAll, rewardRate, getRewardRate } = useWeb3();
 	const [numberOfSrtu, setNumberOfSrtu] = useState<string>("");
 	const [transactionNumberOfStru, setTransactionNumberOfStru] = useState<string>("");
 	const [allowance, setAllowance] = useState(0);
@@ -132,6 +132,7 @@ const Stake = () => {
 
 	const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = e => {
 		const inputText = e.target.value;
+		getRewardRate(Number(inputText));
 
 		if (!validateAmount(inputText) && inputText === "") {
 			setNumberOfSrtu(inputText);
@@ -178,7 +179,7 @@ const Stake = () => {
 								<PageTitle>Stake</PageTitle>
 								<RewardRateText>
 									<span>Reward rate:</span>
-									<RewardQtyText>1</RewardQtyText>
+									<RewardQtyText>{rewardRate}</RewardQtyText>
 									<StruWeekText>STRU/week</StruWeekText>
 								</RewardRateText>
 							</PageTitleWrapper>

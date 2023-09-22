@@ -44,7 +44,13 @@ export const StakedForm: React.FC<StakedFormProps> = ({
 				inputValue={numberOfSrtu}
 				onChangeInput={onChangeInput}
 				buttonText={
-					isErrorApprovePrepare ? "APPROVE" : isLoadingApprove ? "APPROVING" : isLoadingStake ? "STAKING" : "STAKE"
+					numberOfSrtu && isErrorApprovePrepare
+						? "APPROVE"
+						: isLoadingApprove
+						? "APPROVING"
+						: isLoadingStake
+						? "STAKING"
+						: "STAKE"
 				}
 				balance={struBalance}
 				placeholder={"Enter stake amount"}
