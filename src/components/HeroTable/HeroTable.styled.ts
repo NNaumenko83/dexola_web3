@@ -219,16 +219,19 @@ export const TooltipWrapper = styled.div`
 
 export const ToolTipSTRU = styled(TooltipStyled)`
 	width: 165px;
+	pointer-events: none;
 `;
 export const ToolTipAPY = styled(TooltipStyled)`
 	left: -165px;
 	top: -56px;
 	width: 360px;
+	pointer-events: none;
 `;
 export const ToolTipRewards = styled(TooltipStyled)`
 	left: -74px;
 	top: -55px;
 	width: 176px;
+	pointer-events: none;
 `;
 
 export const RewardsText = styled.p`
