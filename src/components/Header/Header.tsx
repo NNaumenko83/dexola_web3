@@ -88,23 +88,19 @@ export const Header = () => {
 
 					{isConnected ? (
 						<HeaderBalanceInfoWrapper>
-							{struBalance && (
-								<IconBalanceWrapper>
-									<StruIcon></StruIcon>
-									{struBalance} STRU
-								</IconBalanceWrapper>
-							)}
-							<EtheriumInfoWrapper>
-								{balance && (
-									<>
-										<IconBalanceWrapper>
-											<Icon name="eth_icon" width={32} height={32} />
-											{balance} ETH
-										</IconBalanceWrapper>
+							<IconBalanceWrapper>
+								<StruIcon></StruIcon>
+								{struBalance} STRU
+							</IconBalanceWrapper>
 
-										<Delimiter>|</Delimiter>
-									</>
-								)}
+							<EtheriumInfoWrapper>
+								<IconBalanceWrapper>
+									<Icon name="eth_icon" width={32} height={32} />
+									{balance} ETH
+								</IconBalanceWrapper>
+
+								<Delimiter>|</Delimiter>
+
 								<AdddressText>{convertEthereumAddress(address)}</AdddressText>
 							</EtheriumInfoWrapper>
 							{/* При необхідності в майбутньому можна в майбутньому додати кнопку disconnect */}

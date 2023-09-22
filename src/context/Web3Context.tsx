@@ -9,6 +9,7 @@ export type Web3ContextType = {
 	web3: Web3 | null;
 	balance: number | null;
 	struBalance: number | null;
+	balanceStruOnWallet: bigint | null;
 	stakedBalance: number | null;
 	rewardRate: number | null;
 	contractStaking: any | null;
@@ -36,6 +37,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const { address, isConnected } = useAccount();
 	const [balance, setBalance] = useState<number | null>(null);
 	const [struBalance, setStruBalance] = useState<number | null>(null);
+	const [balanceStruOnWallet, setBalanceStruOnWallet] = useState<bigint | null>(null);
 	const [stakedBalance, setStakedBalance] = useState<number | null>(null);
 	const [apy, setApy] = useState<number | null>(null);
 	const [contractStaking, setContractStaking] = useState<any | null>(null); // Додали стейт для контракту contractStaking
@@ -50,6 +52,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const getStruBalance = useCallback(async () => {
 		if (contractStarRunnerToken && web3 && address) {
 			const balanceStruOnWallet = await contractStarRunnerToken.methods.balanceOf(address).call();
+			setBalanceStruOnWallet(balanceStruOnWallet);
 			const formattedStruBalance = Math.floor(Number(web3.utils.fromWei(balanceStruOnWallet, "ether")));
 			setStruBalance(Number(formattedStruBalance));
 		}
@@ -224,6 +227,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				web3,
 				balance,
 				struBalance,
+				balanceStruOnWallet,
 				stakedBalance,
 				rewardRate,
 				contractStaking,

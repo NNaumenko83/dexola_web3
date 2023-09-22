@@ -24,7 +24,8 @@ import { SuccessInfo } from "../../components/SuccessInfo/SuccessInfo";
 const Stake = () => {
 	const { isConnected, address } = useAccount();
 	// const { address } = useAccount();
-	const { contractStarRunnerToken, struBalance, web3, updAll, rewardRate, getRewardRate } = useWeb3();
+	const { contractStarRunnerToken, struBalance, web3, updAll, rewardRate, getRewardRate, balanceStruOnWallet } =
+		useWeb3();
 	const [numberOfSrtu, setNumberOfSrtu] = useState<string>("");
 	const [transactionNumberOfStru, setTransactionNumberOfStru] = useState<string>("");
 	const [allowance, setAllowance] = useState(0);
@@ -140,14 +141,18 @@ const Stake = () => {
 			debouncedGetRewardRate(Number(0));
 			return;
 		}
-		if (!validateAmount(inputText)) {
+		console.log("struBalance:", struBalance);
+		if (!validateAmount(inputText) || !struBalance) {
 			return;
 		}
 		if (
 			struBalance &&
 			web3 &&
-			Number(web3.utils.toWei(struBalance, "ether")) < Number(web3.utils.toWei(e.target.value, "ether"))
+			balanceStruOnWallet &&
+			balanceStruOnWallet < BigInt(web3.utils.toWei(e.target.value, "ether"))
 		) {
+			console.log("Перевірка");
+			console.log("struBalance:", struBalance);
 			return;
 		}
 
