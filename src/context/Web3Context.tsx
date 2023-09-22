@@ -4,6 +4,7 @@ import { useAccount } from "wagmi";
 
 import contractStakingABI from "../contracts/contract-staking-abi.json";
 import contractStarRunnerTokenABI from "../contracts/contract-tokenTracker-abi.json";
+import { fetchBalance } from "../services";
 
 export type Web3ContextType = {
 	web3: Web3 | null;
@@ -134,10 +135,8 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const getBalance = useCallback(async () => {
 		if (web3 && address) {
 			try {
-				const balanceEth = await web3.eth.getBalance(address);
-
-				const formattedBalance = Number(web3.utils.fromWei(balanceEth, "ether")).toFixed(1);
-				setBalance(Number(formattedBalance));
+				const balanceEth = await fetchBalance(web3, address);
+				setBalance(Number(balanceEth));
 			} catch (error) {
 				console.error("Помилка при отриманні балансу:", error);
 			}
@@ -173,14 +172,22 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		}
 	}, [contractStaking, web3, address]);
 
-	const updAll = () => {
-		getBalance();
-		getStruBalance();
-		getStakedBalance();
-		getEarned();
-		getApy();
-		calculateDaysRemaining();
-		getEarned();
+	const updAll = async () => {
+		const promises = [
+			getBalance(),
+			getStruBalance(),
+			getStakedBalance(),
+			getEarned(),
+			getApy(),
+			calculateDaysRemaining(),
+			getEarned(),
+		];
+
+		try {
+			await Promise.all(promises);
+		} catch (error) {
+			console.error("Помилка під час виконання функцій:", error);
+		}
 	};
 
 	useEffect(() => {
@@ -188,6 +195,11 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		if (web3) {
 			const contractStakingInstance = new web3.eth.Contract(contractStakingABI, contractStakingAddress);
 			setContractStaking(contractStakingInstance);
+			const contractStarRunnerTokenInstance = new web3.eth.Contract(
+				contractStarRunnerTokenABI,
+				contractStarRunnerTokenAddress,
+			);
+			setContractStarRunnerToken(contractStarRunnerTokenInstance);
 			setWeb3(web3);
 		}
 	}, []);
@@ -203,13 +215,6 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	useEffect(() => {
 		if (isConnected && address && web3) {
 			getBalance();
-			const contractStakingInstance = new web3.eth.Contract(contractStakingABI, contractStakingAddress);
-			setContractStaking(contractStakingInstance);
-			const contractStarRunnerTokenInstance = new web3.eth.Contract(
-				contractStarRunnerTokenABI,
-				contractStarRunnerTokenAddress,
-			);
-			setContractStarRunnerToken(contractStarRunnerTokenInstance);
 		}
 	}, [address, getBalance, isConnected, web3]);
 
