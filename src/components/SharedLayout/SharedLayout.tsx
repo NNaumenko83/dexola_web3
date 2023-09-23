@@ -8,8 +8,7 @@ import { Main } from "../Main/Main";
 import { Hero } from "../Hero/Hero";
 import { Navigation } from "../Navigation/Navigation";
 import { Spinner } from "../Spinner/Spinner";
-import { TransactionStatusWrapper } from "../TransactionStatusWrapper/TransactionStatusWrapper";
-import { SuccessInfo } from "../SuccessInfo/SuccessInfo";
+import { TransactionNotifications } from "../TransactionNotifications/TransactionNotifications";
 
 export const SharedLayout = () => {
 	return (
@@ -29,14 +28,7 @@ export const SharedLayout = () => {
 					>
 						<Outlet />
 					</Suspense>
-
-					{"isSuccessApprove" && (
-						<TransactionStatusWrapper>
-							<SuccessInfo>
-								<p>Successfully approved</p>
-							</SuccessInfo>
-						</TransactionStatusWrapper>
-					)}
+					<TransactionNotifications />
 				</PagesWrapper>
 			</Main>
 			<Footer />

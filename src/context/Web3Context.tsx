@@ -5,7 +5,6 @@ import contractStakingABI from "../contracts/contract-staking-abi.json";
 import contractStarRunnerTokenABI from "../contracts/contract-tokenTracker-abi.json";
 import { createWeb3Provider } from "../utils/createWeb3Provider";
 import { useContract } from "../hooks/useContract";
-import { useContractWriteStake } from "../hooks/useContractWriteStake";
 
 export type Web3ContextType = {
 	web3: Web3 | null;
@@ -65,9 +64,6 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		updAll,
 		allowance,
 		getAllowance,
-	} = useContract(web3, contractStaking, contractStarRunnerToken);
-
-	const {
 		transactionStakeNumberOfStru,
 		isErrorApprove,
 		isErrorStaked,
@@ -79,7 +75,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		isLoadingStake,
 		isErrorApprovePrepare,
 		numberOfSrtu,
-	} = useContractWriteStake();
+	} = useContract(web3, contractStaking, contractStarRunnerToken);
 
 	useEffect(() => {
 		const web3 = createWeb3Provider();

@@ -1,140 +1,137 @@
-import { useState, useEffect } from "react";
-import { useDebouncedCallback } from "use-debounce";
-import { useWeb3 } from "./useWeb3";
-import { validateAmount } from "../utils/validateAmount";
-import contractStakingABI from "../contracts/contract-staking-abi.json";
-import contractStarRunnerTokenABI from "../contracts/contract-tokenTracker-abi.json";
-import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from "wagmi";
+// import { useState, useEffect } from "react";
 
-export const useContractWriteStake = () => {
-	const { struBalance, web3, updAll, getRewardRate, balanceStruOnWallet, allowance, getAllowance } = useWeb3();
-	const [numberOfSrtu, setNumberOfSrtu] = useState<string>("");
-	const [transactionStakeNumberOfStru, setTransactionStakeNumberOfStru] = useState<string>("");
-	const [isErrorApprove, setIsErrorApprove] = useState(false);
-	const [isErrorStaked, setIsErrorStaked] = useState(false);
-	const [isSuccessApprove, setIsSuccessApprove] = useState(false);
-	const [isSuccessStake, setIsSuccessStake] = useState(false);
+// import contractStakingABI from "../contracts/contract-staking-abi.json";
+// import contractStarRunnerTokenABI from "../contracts/contract-tokenTracker-abi.json";
+// import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from "wagmi";
 
-	useEffect(() => {
-		if (isSuccessApprove) {
-			setTimeout(() => {
-				setIsSuccessApprove(false);
-			}, 5000);
-		}
-		if (isErrorApprove) {
-			setTimeout(() => {
-				setIsErrorApprove(false);
-			}, 5000);
-		}
-		if (isSuccessStake) {
-			setTimeout(() => {
-				setIsSuccessStake(false);
-			}, 5000);
-		}
-		if (isErrorStaked) {
-			setTimeout(() => {
-				setIsErrorStaked(false);
-			}, 5000);
-		}
-	}, [isErrorApprove, isErrorStaked, isSuccessApprove, isSuccessStake]);
+// export const useContractWriteStake = () => {
+// 	const [numberOfSrtu, setNumberOfSrtu] = useState<string>("");
+// 	const [transactionStakeNumberOfStru, setTransactionStakeNumberOfStru] = useState<string>("");
+// 	const [isErrorApprove, setIsErrorApprove] = useState(false);
+// 	const [isErrorStaked, setIsErrorStaked] = useState(false);
+// 	const [isSuccessApprove, setIsSuccessApprove] = useState(false);
+// 	const [isSuccessStake, setIsSuccessStake] = useState(false);
 
-	const formattedNumberOfSrtu = web3?.utils.toWei(numberOfSrtu, "ether");
-	const debouncedGetRewardRate = useDebouncedCallback(input => getRewardRate(Number(input)), 500);
+// 	useEffect(() => {
+// 		if (isSuccessApprove) {
+// 			setTimeout(() => {
+// 				setIsSuccessApprove(false);
+// 			}, 5000);
+// 		}
+// 		if (isErrorApprove) {
+// 			setTimeout(() => {
+// 				setIsErrorApprove(false);
+// 			}, 5000);
+// 		}
+// 		if (isSuccessStake) {
+// 			setTimeout(() => {
+// 				setIsSuccessStake(false);
+// 			}, 5000);
+// 		}
+// 		if (isErrorStaked) {
+// 			setTimeout(() => {
+// 				setIsErrorStaked(false);
+// 			}, 5000);
+// 		}
+// 	}, [isErrorApprove, isErrorStaked, isSuccessApprove, isSuccessStake]);
 
-	const { config: approveConfig } = usePrepareContractWrite({
-		address: "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83",
-		abi: contractStarRunnerTokenABI,
-		functionName: "approve",
-		args: ["0x2f112ed8a96327747565f4d4b4615be8fb89459d", struBalance ? web3?.utils.toWei(struBalance, "ether") : 0],
-		enabled: Boolean(numberOfSrtu),
-	});
+// 	const formattedNumberOfSrtu = web3?.utils.toWei(numberOfSrtu, "ether");
+// 	const debouncedGetRewardRate = useDebouncedCallback(input => getRewardRate(Number(input)), 500);
 
-	const { config: stakeConfig, error: isErrorApprovePrepare } = usePrepareContractWrite({
-		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
-		abi: contractStakingABI,
-		functionName: "stake",
-		args: [formattedNumberOfSrtu],
-		enabled: Boolean(numberOfSrtu),
-	});
+// 	const { config: approveConfig } = usePrepareContractWrite({
+// 		address: "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83",
+// 		abi: contractStarRunnerTokenABI,
+// 		functionName: "approve",
+// 		args: ["0x2f112ed8a96327747565f4d4b4615be8fb89459d", struBalance ? web3?.utils.toWei(struBalance, "ether") : 0],
+// 		enabled: Boolean(numberOfSrtu),
+// 	});
 
-	const { data: approveData, write: approve } = useContractWrite(approveConfig);
-	const { data: stakeData, write: stake } = useContractWrite(stakeConfig);
+// 	const { config: stakeConfig, error: isErrorApprovePrepare } = usePrepareContractWrite({
+// 		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
+// 		abi: contractStakingABI,
+// 		functionName: "stake",
+// 		args: [formattedNumberOfSrtu],
+// 		enabled: Boolean(numberOfSrtu),
+// 	});
 
-	const { isLoading: isLoadingApprove } = useWaitForTransaction({
-		hash: approveData?.hash,
-		onSuccess() {
-			setIsSuccessApprove(true);
-			getAllowance();
-		},
-		onError() {
-			setIsErrorApprove(true);
-		},
-	});
+// 	const { data: approveData, write: approve } = useContractWrite(approveConfig);
+// 	const { data: stakeData, write: stake } = useContractWrite(stakeConfig);
 
-	const { isLoading: isLoadingStake } = useWaitForTransaction({
-		hash: stakeData?.hash,
-		onSuccess() {
-			setIsSuccessStake(true);
-			updAll();
-			setNumberOfSrtu("");
-		},
-		onError() {
-			setIsErrorStaked(true);
-		},
-	});
+// 	const { isLoading: isLoadingApprove } = useWaitForTransaction({
+// 		hash: approveData?.hash,
+// 		onSuccess() {
+// 			setIsSuccessApprove(true);
+// 			getAllowance();
+// 		},
+// 		onError() {
+// 			setIsErrorApprove(true);
+// 		},
+// 	});
 
-	const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = async e => {
-		e.preventDefault();
+// 	const { isLoading: isLoadingStake } = useWaitForTransaction({
+// 		hash: stakeData?.hash,
+// 		onSuccess() {
+// 			setIsSuccessStake(true);
+// 			updAll();
+// 			setNumberOfSrtu("");
+// 		},
+// 		onError() {
+// 			setIsErrorStaked(true);
+// 		},
+// 	});
 
-		if (formattedNumberOfSrtu && allowance && allowance < BigInt(formattedNumberOfSrtu) && approve) {
-			approve();
-			setNumberOfSrtu("");
-			return;
-		}
+// 	const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = async e => {
+// 		e.preventDefault();
 
-		if (stake && numberOfSrtu !== "") {
-			setTransactionStakeNumberOfStru(numberOfSrtu);
-			stake();
-			return;
-		}
-	};
+// 		if (formattedNumberOfSrtu && allowance && allowance < BigInt(formattedNumberOfSrtu) && approve) {
+// 			approve();
+// 			setNumberOfSrtu("");
+// 			return;
+// 		}
 
-	const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = e => {
-		const inputText = e.target.value;
+// 		if (stake && numberOfSrtu !== "") {
+// 			setTransactionStakeNumberOfStru(numberOfSrtu);
+// 			stake();
+// 			return;
+// 		}
+// 	};
 
-		if (!validateAmount(inputText) && inputText === "") {
-			setNumberOfSrtu(inputText);
-			debouncedGetRewardRate(Number(0));
-			return;
-		}
+// 	const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = e => {
+// 		const inputText = e.target.value;
 
-		if (!validateAmount(inputText) || !struBalance) {
-			return;
-		}
-		if (
-			struBalance &&
-			web3 &&
-			balanceStruOnWallet &&
-			balanceStruOnWallet < BigInt(web3.utils.toWei(e.target.value, "ether"))
-		) {
-			return;
-		}
+// 		if (!validateAmount(inputText) && inputText === "") {
+// 			setNumberOfSrtu(inputText);
+// 			debouncedGetRewardRate(Number(0));
+// 			return;
+// 		}
 
-		debouncedGetRewardRate(Number(inputText));
-		setNumberOfSrtu(inputText);
-	};
+// 		if (!validateAmount(inputText) || !struBalance) {
+// 			return;
+// 		}
+// 		if (
+// 			struBalance &&
+// 			web3 &&
+// 			balanceStruOnWallet &&
+// 			balanceStruOnWallet < BigInt(web3.utils.toWei(e.target.value, "ether"))
+// 		) {
+// 			return;
+// 		}
 
-	return {
-		transactionStakeNumberOfStru,
-		isErrorApprove,
-		isErrorStaked,
-		isSuccessApprove,
-		isSuccessStake,
-		onSubmitHandler,
-		onChangeInput,
-		isLoadingApprove,
-		isLoadingStake,
-		isErrorApprovePrepare,
-		numberOfSrtu,
-	};
-};
+// 		debouncedGetRewardRate(Number(inputText));
+// 		setNumberOfSrtu(inputText);
+// 	};
+
+// 	return {
+// 		transactionStakeNumberOfStru,
+// 		isErrorApprove,
+// 		isErrorStaked,
+// 		isSuccessApprove,
+// 		isSuccessStake,
+// 		onSubmitHandler,
+// 		onChangeInput,
+// 		isLoadingApprove,
+// 		isLoadingStake,
+// 		isErrorApprovePrepare,
+// 		numberOfSrtu,
+// 	};
+// };

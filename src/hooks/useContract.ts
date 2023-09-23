@@ -1,6 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { useAccount } from "wagmi";
 import Web3 from "web3";
+import { useDebouncedCallback } from "use-debounce";
+import { validateAmount } from "../utils/validateAmount";
 import {
 	fetchBalance,
 	fetchStakedBalance,
@@ -12,6 +14,9 @@ import {
 	fetchRewardRate,
 	fetchAllowance,
 } from "../services";
+import contractStakingABI from "../contracts/contract-staking-abi.json";
+import contractStarRunnerTokenABI from "../contracts/contract-tokenTracker-abi.json";
+import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from "wagmi";
 
 export const useContract = (
 	web3: Web3 | null,
@@ -29,6 +34,12 @@ export const useContract = (
 	const [balance, setBalance] = useState<number | null>(null);
 	const [apy, setApy] = useState<number | null>(null);
 	const [allowance, setAllowance] = useState(0n);
+	const [numberOfSrtu, setNumberOfSrtu] = useState<string>("");
+	const [transactionStakeNumberOfStru, setTransactionStakeNumberOfStru] = useState<string>("");
+	const [isErrorApprove, setIsErrorApprove] = useState(false);
+	const [isErrorStaked, setIsErrorStaked] = useState(false);
+	const [isSuccessApprove, setIsSuccessApprove] = useState(false);
+	const [isSuccessStake, setIsSuccessStake] = useState(false);
 
 	const getAllowance = useCallback(async () => {
 		if (address) {
@@ -229,6 +240,115 @@ export const useContract = (
 		}
 	}, [contractStaking, contractStarRunnerToken, getEarned, getStakedBalance, getStruBalance, getAllowance]);
 
+	useEffect(() => {
+		if (isSuccessApprove) {
+			setTimeout(() => {
+				setIsSuccessApprove(false);
+			}, 5000);
+		}
+		if (isErrorApprove) {
+			setTimeout(() => {
+				setIsErrorApprove(false);
+			}, 5000);
+		}
+		if (isSuccessStake) {
+			setTimeout(() => {
+				setIsSuccessStake(false);
+			}, 5000);
+		}
+		if (isErrorStaked) {
+			setTimeout(() => {
+				setIsErrorStaked(false);
+			}, 5000);
+		}
+	}, [isErrorApprove, isErrorStaked, isSuccessApprove, isSuccessStake]);
+
+	const formattedNumberOfSrtu = web3?.utils.toWei(numberOfSrtu, "ether");
+	const debouncedGetRewardRate = useDebouncedCallback(input => getRewardRate(Number(input)), 500);
+
+	const { config: approveConfig } = usePrepareContractWrite({
+		address: "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83",
+		abi: contractStarRunnerTokenABI,
+		functionName: "approve",
+		args: ["0x2f112ed8a96327747565f4d4b4615be8fb89459d", struBalance ? web3?.utils.toWei(struBalance, "ether") : 0],
+		enabled: Boolean(numberOfSrtu),
+	});
+
+	const { config: stakeConfig, error: isErrorApprovePrepare } = usePrepareContractWrite({
+		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
+		abi: contractStakingABI,
+		functionName: "stake",
+		args: [formattedNumberOfSrtu],
+		enabled: Boolean(numberOfSrtu),
+	});
+
+	const { data: approveData, write: approve } = useContractWrite(approveConfig);
+	const { data: stakeData, write: stake } = useContractWrite(stakeConfig);
+
+	const { isLoading: isLoadingApprove } = useWaitForTransaction({
+		hash: approveData?.hash,
+		onSuccess() {
+			setIsSuccessApprove(true);
+			getAllowance();
+		},
+		onError() {
+			setIsErrorApprove(true);
+		},
+	});
+
+	const { isLoading: isLoadingStake } = useWaitForTransaction({
+		hash: stakeData?.hash,
+		onSuccess() {
+			setIsSuccessStake(true);
+			updAll();
+			setNumberOfSrtu("");
+		},
+		onError() {
+			setIsErrorStaked(true);
+		},
+	});
+
+	const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = async e => {
+		e.preventDefault();
+
+		if (formattedNumberOfSrtu && allowance && allowance < BigInt(formattedNumberOfSrtu) && approve) {
+			approve();
+			setNumberOfSrtu("");
+			return;
+		}
+
+		if (stake && numberOfSrtu !== "") {
+			setTransactionStakeNumberOfStru(numberOfSrtu);
+			stake();
+			return;
+		}
+	};
+
+	const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = e => {
+		const inputText = e.target.value;
+
+		if (!validateAmount(inputText) && inputText === "") {
+			setNumberOfSrtu(inputText);
+			debouncedGetRewardRate(Number(0));
+			return;
+		}
+
+		if (!validateAmount(inputText) || !struBalance) {
+			return;
+		}
+		if (
+			struBalance &&
+			web3 &&
+			balanceStruOnWallet &&
+			balanceStruOnWallet < BigInt(web3.utils.toWei(e.target.value, "ether"))
+		) {
+			return;
+		}
+
+		debouncedGetRewardRate(Number(inputText));
+		setNumberOfSrtu(inputText);
+	};
+
 	return {
 		struBalance,
 		days,
@@ -248,5 +368,16 @@ export const useContract = (
 		getEarned,
 		updAll,
 		getAllowance,
+		transactionStakeNumberOfStru,
+		isErrorApprove,
+		isErrorStaked,
+		isSuccessApprove,
+		isSuccessStake,
+		onSubmitHandler,
+		onChangeInput,
+		isLoadingApprove,
+		isLoadingStake,
+		isErrorApprovePrepare,
+		numberOfSrtu,
 	};
 };
