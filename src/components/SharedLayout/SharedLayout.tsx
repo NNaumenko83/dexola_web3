@@ -8,7 +8,7 @@ import { Main } from "../Main/Main";
 import { Hero } from "../Hero/Hero";
 import { Navigation } from "../Navigation/Navigation";
 import { Spinner } from "../Spinner/Spinner";
-import { TransactionNotifications } from "../TransactionNotifications/TransactionNotifications";
+import { TransactionStatusWrapper } from "../TransactionStatusWrapper/TransactionStatusWrapper";
 
 export const SharedLayout = () => {
 	return (
@@ -28,7 +28,7 @@ export const SharedLayout = () => {
 					>
 						<Outlet />
 					</Suspense>
-					<TransactionNotifications />
+					<TransactionStatusWrapper />
 				</PagesWrapper>
 			</Main>
 			<Footer />

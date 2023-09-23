@@ -1,14 +1,12 @@
-import React, { ReactNode } from "react";
 import { StatusInfoContainer, TransactionStatusWrapperStyled } from "./TransactionStatusWrapper.styled";
+import { TransactionNotifications } from "../TransactionNotifications/TransactionNotifications";
 
-interface ITransactionStatusWrapperProps {
-	children: ReactNode;
-}
-
-export const TransactionStatusWrapper: React.FC<ITransactionStatusWrapperProps> = ({ children }) => {
+export const TransactionStatusWrapper = () => {
 	return (
 		<TransactionStatusWrapperStyled>
-			<StatusInfoContainer>{children}</StatusInfoContainer>
+			<StatusInfoContainer>
+				<TransactionNotifications mobile={false} />
+			</StatusInfoContainer>
 		</TransactionStatusWrapperStyled>
 	);
 };
