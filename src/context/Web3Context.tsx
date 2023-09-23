@@ -18,6 +18,7 @@ export type Web3ContextType = {
 	apy: number | null;
 	days: number | null;
 	earned: number | null;
+	allowance: bigint | null;
 	getBalance: () => void;
 	getStruBalance: () => void;
 	getStakedBalance: () => void;
@@ -49,6 +50,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		getStakedBalance,
 		getBalance,
 		updAll,
+		allowance,
 	} = useContract(web3, contractStaking, contractStarRunnerToken);
 
 	useEffect(() => {
@@ -84,6 +86,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				days,
 				earned,
 				updAll,
+				allowance,
 			}}
 		>
 			{children}

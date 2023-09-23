@@ -6,3 +6,4 @@ export * from "./fetchTotalRewards";
 export * from "./fetchTotalSupplySTRU";
 export * from "./fetchEarned";
 export * from "./fetchRewardRate";
+export * from "./fetchAllowance";

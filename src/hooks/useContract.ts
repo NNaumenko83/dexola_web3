@@ -10,6 +10,7 @@ import {
 	fetchTotalSupplySTRU,
 	fetchEarned,
 	fetchRewardRate,
+	fetchAllowance,
 } from "../services";
 
 export const useContract = (
@@ -27,6 +28,22 @@ export const useContract = (
 	const [stakedBalance, setStakedBalance] = useState<number | null>(null);
 	const [balance, setBalance] = useState<number | null>(null);
 	const [apy, setApy] = useState<number | null>(null);
+	const [allowance, setAllowance] = useState(0n);
+
+	const getAllowance = useCallback(async () => {
+		if (address) {
+			try {
+				const currentAllowance = await fetchAllowance(
+					contractStarRunnerToken,
+					address,
+					"0x2f112ed8a96327747565f4d4b4615be8fb89459d",
+				);
+				setAllowance(currentAllowance);
+			} catch (error) {
+				console.error(error);
+			}
+		}
+	}, [contractStarRunnerToken, address]);
 
 	const getStruBalance = useCallback(async () => {
 		if (contractStarRunnerToken && web3 && address) {
@@ -204,13 +221,13 @@ export const useContract = (
 		if (contractStaking && contractStarRunnerToken) {
 			(async () => {
 				try {
-					await Promise.all([getStruBalance(), getStakedBalance(), getEarned()]);
+					await Promise.all([getStruBalance(), getStakedBalance(), getEarned(), getAllowance()]);
 				} catch (error) {
 					console.error("Помилка при отриманні даних:", error);
 				}
 			})();
 		}
-	}, [contractStaking, contractStarRunnerToken, getEarned, getStakedBalance, getStruBalance]);
+	}, [contractStaking, contractStarRunnerToken, getEarned, getStakedBalance, getStruBalance, getAllowance]);
 
 	return {
 		struBalance,
@@ -229,5 +246,6 @@ export const useContract = (
 		getApy,
 		getEarned,
 		updAll,
+		allowance,
 	};
 };

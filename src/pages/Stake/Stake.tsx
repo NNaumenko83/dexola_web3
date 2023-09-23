@@ -22,13 +22,12 @@ import { RewardQtyText, RewardRateText, StruWeekText } from "./Stake.styled";
 import { SuccessInfo } from "../../components/SuccessInfo/SuccessInfo";
 
 const Stake = () => {
-	const { isConnected, address } = useAccount();
+	const { isConnected } = useAccount();
 	// const { address } = useAccount();
-	const { contractStarRunnerToken, struBalance, web3, updAll, rewardRate, getRewardRate, balanceStruOnWallet } =
-		useWeb3();
+	const { struBalance, web3, updAll, rewardRate, getRewardRate, balanceStruOnWallet, allowance } = useWeb3();
 	const [numberOfSrtu, setNumberOfSrtu] = useState<string>("");
 	const [transactionNumberOfStru, setTransactionNumberOfStru] = useState<string>("");
-	const [allowance, setAllowance] = useState(0);
+
 	const [isErrorApprove, setIsErrorApprove] = useState(false);
 	const [isErrorStaked, setIsErrorStaked] = useState(false);
 	const [isSuccessApprove, setIsSuccessApprove] = useState(false);
@@ -37,43 +36,28 @@ const Stake = () => {
 	const formattedNumberOfSrtu = web3?.utils.toWei(numberOfSrtu, "ether");
 	const debouncedGetRewardRate = useDebouncedCallback(input => getRewardRate(Number(input)), 500);
 
-	async function fetchAllowance() {
-		const currentAllowance = await contractStarRunnerToken.methods
-			.allowance(address, "0x2f112ed8a96327747565f4d4b4615be8fb89459d")
-			.call();
-
-		setAllowance(currentAllowance);
-	}
-
 	useEffect(() => {
 		if (isSuccessApprove) {
 			setTimeout(() => {
 				setIsSuccessApprove(false);
-			}, 8000);
+			}, 5000);
 		}
 		if (isErrorApprove) {
 			setTimeout(() => {
 				setIsErrorApprove(false);
-			}, 8000);
+			}, 5000);
 		}
 		if (isSuccessStake) {
 			setTimeout(() => {
 				setIsSuccessStake(false);
-			}, 8000);
+			}, 5000);
 		}
 		if (isErrorStaked) {
 			setTimeout(() => {
 				setIsErrorStaked(false);
-			}, 8000);
+			}, 5000);
 		}
 	}, [isErrorApprove, isErrorStaked, isSuccessApprove, isSuccessStake]);
-
-	useEffect(() => {
-		if (contractStarRunnerToken) {
-			fetchAllowance();
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [contractStarRunnerToken]);
 
 	const { config: approveConfig } = usePrepareContractWrite({
 		address: "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83",
@@ -141,7 +125,7 @@ const Stake = () => {
 			debouncedGetRewardRate(Number(0));
 			return;
 		}
-		console.log("struBalance:", struBalance);
+
 		if (!validateAmount(inputText) || !struBalance) {
 			return;
 		}
@@ -151,8 +135,6 @@ const Stake = () => {
 			balanceStruOnWallet &&
 			balanceStruOnWallet < BigInt(web3.utils.toWei(e.target.value, "ether"))
 		) {
-			console.log("Перевірка");
-			console.log("struBalance:", struBalance);
 			return;
 		}
 
