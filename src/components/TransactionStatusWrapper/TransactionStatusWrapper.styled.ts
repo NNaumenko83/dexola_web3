@@ -22,5 +22,6 @@ export const TransactionStatusWrapperStyled = styled.div`
 export const StatusInfoContainer = styled(ContainerStyled)`
 	width: 100%;
 	display: flex;
+	gap: 20px;
 	justify-content: end;
 `;

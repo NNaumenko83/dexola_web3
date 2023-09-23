@@ -18,43 +18,33 @@ export const TransactionNotifications = () => {
 
 	return (
 		<>
-			{isSuccessApprove && (
-				<TransactionStatusWrapper>
+			<TransactionStatusWrapper>
+				{isSuccessApprove && (
 					<SuccessInfo>
 						<p>Successfully approved</p>
 					</SuccessInfo>
-				</TransactionStatusWrapper>
-			)}
-			{isSuccessStake && (
-				<TransactionStatusWrapper>
+				)}
+				{isSuccessStake && (
 					<SuccessInfo>
 						<p>
 							<NumberSTRU>{transactionStakeNumberOfStru} STRU</NumberSTRU> successfully added to Staking
 						</p>
 					</SuccessInfo>
-				</TransactionStatusWrapper>
-			)}
-			{isLoadingApprove && (
-				<TransactionStatusWrapper>
+				)}
+				{isLoadingApprove && (
 					<LoadingInfo mobile={false}>
 						<p>Approving</p>
 					</LoadingInfo>
-				</TransactionStatusWrapper>
-			)}
-			{isLoadingStake && (
-				<TransactionStatusWrapper>
+				)}
+				{isLoadingStake && (
 					<LoadingInfo mobile={false}>
 						<p>
 							Adding <NumberSTRU>{transactionStakeNumberOfStru} STRU</NumberSTRU> to Staking
 						</p>
 					</LoadingInfo>
-				</TransactionStatusWrapper>
-			)}
-			{(isErrorApprove || isErrorStaked) && (
-				<TransactionStatusWrapper>
-					<ErrorMessage mobile={false} />
-				</TransactionStatusWrapper>
-			)}
+				)}
+				{(isErrorApprove || isErrorStaked) && <ErrorMessage mobile={false} />}
+			</TransactionStatusWrapper>
 		</>
 	);
 };
