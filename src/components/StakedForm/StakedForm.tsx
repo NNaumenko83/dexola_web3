@@ -10,8 +10,8 @@ import { SuccessInfo } from "../SuccessInfo/SuccessInfo";
 export const StakedForm = () => {
 	const {
 		struBalance,
-		onSubmitHandler,
-		numberOfSrtu,
+		onSubmitStakeHandler,
+		numberOfStakeSrtu,
 		onChangeInput,
 		isErrorApprovePrepare,
 		isLoadingApprove,
@@ -22,17 +22,16 @@ export const StakedForm = () => {
 		isErrorApprove,
 		transactionStakeNumberOfStru,
 	} = useWeb3();
-	console.log("numberOfSrtu:", numberOfSrtu);
 
 	return (
 		<>
 			<Form
-				onSubmitHandler={onSubmitHandler}
+				onSubmitHandler={onSubmitStakeHandler}
 				inputName="stake"
-				inputValue={numberOfSrtu}
+				inputValue={numberOfStakeSrtu}
 				onChangeInput={onChangeInput}
 				buttonText={
-					Number(numberOfSrtu) && isErrorApprovePrepare
+					Number(numberOfStakeSrtu) && isErrorApprovePrepare
 						? "APPROVE"
 						: isLoadingApprove
 						? "APPROVING"

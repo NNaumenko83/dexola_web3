@@ -19,7 +19,8 @@ export type Web3ContextType = {
 	days: number | null;
 	earned: number | null;
 	allowance: bigint | null;
-	numberOfSrtu: string;
+	numberOfStakeSrtu: string;
+	numberOfWithdrawSrtu: string;
 	getBalance: () => void;
 	getStruBalance: () => void;
 	getStakedBalance: () => void;
@@ -27,15 +28,23 @@ export type Web3ContextType = {
 	getRewardRate: (input: number) => void;
 	getAllowance: () => void;
 	transactionStakeNumberOfStru: string;
+	transactionWithdrawNumberOfStru: string;
 	isErrorApprove: boolean;
 	isErrorStaked: boolean;
 	isSuccessApprove: boolean;
 	isSuccessStake: boolean;
-	onSubmitHandler: React.FormEventHandler<HTMLFormElement>;
+	onSubmitStakeHandler: React.FormEventHandler<HTMLFormElement>;
+	onSubmitWidthdrawHandler: React.FormEventHandler<HTMLFormElement>;
 	onChangeInput: React.ChangeEventHandler<HTMLInputElement>;
 	isLoadingApprove: boolean;
 	isLoadingStake: boolean;
+	isLoadingWithdraw: boolean;
+	isLoadingWithdrawAll: boolean;
 	isErrorApprovePrepare: Error | null;
+	isSuccessWithdrawAll: boolean;
+	isSuccessWithdraw: boolean;
+	isErrorWithdrawAll: boolean;
+	isErrorWithdraw: boolean;
 };
 
 const contractStakingAddress = "0x2f112ed8a96327747565f4d4b4615be8fb89459d";
@@ -65,16 +74,25 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		allowance,
 		getAllowance,
 		transactionStakeNumberOfStru,
+		transactionWithdrawNumberOfStru,
 		isErrorApprove,
 		isErrorStaked,
 		isSuccessApprove,
 		isSuccessStake,
-		onSubmitHandler,
+		onSubmitStakeHandler,
+		onSubmitWidthdrawHandler,
 		onChangeInput,
 		isLoadingApprove,
 		isLoadingStake,
 		isErrorApprovePrepare,
-		numberOfSrtu,
+		numberOfStakeSrtu,
+		numberOfWithdrawSrtu,
+		isLoadingWithdraw,
+		isLoadingWithdrawAll,
+		isSuccessWithdraw,
+		isSuccessWithdrawAll,
+		isErrorWithdraw,
+		isErrorWithdrawAll,
 	} = useContract(web3, contractStaking, contractStarRunnerToken);
 
 	useEffect(() => {
@@ -107,22 +125,31 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				getStruBalance,
 				getStakedBalance,
 				getRewardRate,
-				numberOfSrtu,
+				numberOfStakeSrtu,
+				numberOfWithdrawSrtu,
 				apy,
 				days,
 				earned,
 				updAll,
 				getAllowance,
 				transactionStakeNumberOfStru,
+				transactionWithdrawNumberOfStru,
 				isErrorApprove,
 				isErrorStaked,
 				isSuccessApprove,
 				isSuccessStake,
-				onSubmitHandler,
+				onSubmitStakeHandler,
+				onSubmitWidthdrawHandler,
 				onChangeInput,
 				isLoadingApprove,
 				isLoadingStake,
 				isErrorApprovePrepare,
+				isLoadingWithdraw,
+				isLoadingWithdrawAll,
+				isSuccessWithdrawAll,
+				isSuccessWithdraw,
+				isErrorWithdrawAll,
+				isErrorWithdraw,
 			}}
 		>
 			{children}

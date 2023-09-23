@@ -34,12 +34,21 @@ export const useContract = (
 	const [balance, setBalance] = useState<number | null>(null);
 	const [apy, setApy] = useState<number | null>(null);
 	const [allowance, setAllowance] = useState(0n);
-	const [numberOfSrtu, setNumberOfSrtu] = useState<string>("");
+	const [numberOfStakeSrtu, setNumberOfStakeSrtu] = useState<string>("");
+	const [numberOfWithdrawSrtu, setNumberOfWithdrawSrtu] = useState<string>("");
 	const [transactionStakeNumberOfStru, setTransactionStakeNumberOfStru] = useState<string>("");
+	const [transactionWithdrawNumberOfStru, setTransactionWithdrawNumberOfStru] = useState<string>("");
 	const [isErrorApprove, setIsErrorApprove] = useState(false);
 	const [isErrorStaked, setIsErrorStaked] = useState(false);
 	const [isSuccessApprove, setIsSuccessApprove] = useState(false);
 	const [isSuccessStake, setIsSuccessStake] = useState(false);
+	const [isSuccessWithdraw, setIsSuccessWithdraw] = useState(false);
+	const [isErrorWithdraw, setIsErrorWithdraw] = useState(false);
+	const [isSuccessWithdrawAll, setIsSuccessWithdrawAll] = useState(false);
+	const [isErrorWithdrawAll, setIsErrorWithdrawAll] = useState(false);
+
+	const formattedNumberOfStakeSrtu = web3?.utils.toWei(numberOfStakeSrtu, "ether");
+	const formattedNumberOfWithdrawSrtu = web3?.utils.toWei(numberOfWithdrawSrtu, "ether");
 
 	const getAllowance = useCallback(async () => {
 		if (address) {
@@ -261,9 +270,18 @@ export const useContract = (
 				setIsErrorStaked(false);
 			}, 5000);
 		}
-	}, [isErrorApprove, isErrorStaked, isSuccessApprove, isSuccessStake]);
+		if (isSuccessWithdraw) {
+			setTimeout(() => {
+				setIsSuccessWithdraw(false);
+			}, 8000);
+		}
+		if (isErrorWithdraw) {
+			setTimeout(() => {
+				setIsErrorWithdraw(false);
+			}, 8000);
+		}
+	}, [isErrorApprove, isErrorStaked, isErrorWithdraw, isSuccessApprove, isSuccessStake, isSuccessWithdraw]);
 
-	const formattedNumberOfSrtu = web3?.utils.toWei(numberOfSrtu, "ether");
 	const debouncedGetRewardRate = useDebouncedCallback(input => getRewardRate(Number(input)), 500);
 
 	const { config: approveConfig } = usePrepareContractWrite({
@@ -271,15 +289,15 @@ export const useContract = (
 		abi: contractStarRunnerTokenABI,
 		functionName: "approve",
 		args: ["0x2f112ed8a96327747565f4d4b4615be8fb89459d", struBalance ? web3?.utils.toWei(struBalance, "ether") : 0],
-		enabled: Boolean(numberOfSrtu),
+		enabled: Boolean(numberOfStakeSrtu),
 	});
 
 	const { config: stakeConfig, error: isErrorApprovePrepare } = usePrepareContractWrite({
 		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
 		abi: contractStakingABI,
 		functionName: "stake",
-		args: [formattedNumberOfSrtu],
-		enabled: Boolean(numberOfSrtu),
+		args: [formattedNumberOfStakeSrtu],
+		enabled: Boolean(numberOfStakeSrtu),
 	});
 
 	const { data: approveData, write: approve } = useContractWrite(approveConfig);
@@ -301,53 +319,130 @@ export const useContract = (
 		onSuccess() {
 			setIsSuccessStake(true);
 			updAll();
-			setNumberOfSrtu("");
+			setNumberOfStakeSrtu("");
 		},
 		onError() {
 			setIsErrorStaked(true);
 		},
 	});
 
-	const onSubmitHandler: React.FormEventHandler<HTMLFormElement> = async e => {
+	const onSubmitStakeHandler: React.FormEventHandler<HTMLFormElement> = async e => {
 		e.preventDefault();
 
-		if (formattedNumberOfSrtu && allowance && allowance < BigInt(formattedNumberOfSrtu) && approve) {
+		if (formattedNumberOfStakeSrtu && allowance && allowance < BigInt(formattedNumberOfStakeSrtu) && approve) {
 			approve();
-			setNumberOfSrtu("");
+			setNumberOfStakeSrtu("");
 			return;
 		}
 
-		if (stake && numberOfSrtu !== "") {
-			setTransactionStakeNumberOfStru(numberOfSrtu);
+		if (stake && numberOfStakeSrtu !== "") {
+			setTransactionStakeNumberOfStru(numberOfStakeSrtu);
 			stake();
 			return;
 		}
 	};
 
+	const onSubmitWidthdrawHandler: React.FormEventHandler<HTMLFormElement> = async e => {
+		e.preventDefault();
+
+		if (withdraw && numberOfWithdrawSrtu) {
+			setTransactionWithdrawNumberOfStru(numberOfWithdrawSrtu);
+			withdraw();
+		}
+
+		if (withdrawAll && !numberOfWithdrawSrtu) {
+			withdrawAll();
+		}
+	};
+
 	const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = e => {
+		const inputName = e.target.name;
 		const inputText = e.target.value;
 
-		if (!validateAmount(inputText) && inputText === "") {
-			setNumberOfSrtu(inputText);
-			debouncedGetRewardRate(Number(0));
-			return;
-		}
+		if (inputName === "withdraw") {
+			if (!validateAmount(inputText) && inputText === "") {
+				setNumberOfWithdrawSrtu(inputText);
+				return;
+			}
+			if (!validateAmount(inputText)) {
+				return;
+			}
+			if (
+				stakedBalance &&
+				web3 &&
+				Number(web3.utils.toWei(stakedBalance, "ether")) < Number(web3.utils.toWei(e.target.value, "ether"))
+			) {
+				return;
+			}
 
-		if (!validateAmount(inputText) || !struBalance) {
-			return;
-		}
-		if (
-			struBalance &&
-			web3 &&
-			balanceStruOnWallet &&
-			balanceStruOnWallet < BigInt(web3.utils.toWei(e.target.value, "ether"))
-		) {
-			return;
-		}
+			setNumberOfWithdrawSrtu(inputText);
+		} else if (inputName === "stake") {
+			if (!validateAmount(inputText) && inputText === "") {
+				setNumberOfStakeSrtu(inputText);
+				debouncedGetRewardRate(Number(0));
+				return;
+			}
 
-		debouncedGetRewardRate(Number(inputText));
-		setNumberOfSrtu(inputText);
+			if (!validateAmount(inputText) || !struBalance) {
+				return;
+			}
+			if (
+				struBalance &&
+				web3 &&
+				balanceStruOnWallet &&
+				balanceStruOnWallet < BigInt(web3.utils.toWei(e.target.value, "ether"))
+			) {
+				return;
+			}
+
+			debouncedGetRewardRate(Number(inputText));
+			setNumberOfStakeSrtu(inputText);
+		}
 	};
+
+	const { config: withdrawConfig } = usePrepareContractWrite({
+		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
+		abi: contractStakingABI,
+		functionName: "withdraw",
+		args: [formattedNumberOfWithdrawSrtu],
+		enabled: Boolean(numberOfWithdrawSrtu),
+	});
+
+	const { data: withdrawData, write: withdraw } = useContractWrite(withdrawConfig);
+
+	const { isLoading: isLoadingWithdraw } = useWaitForTransaction({
+		hash: withdrawData?.hash,
+		onSuccess() {
+			setIsSuccessWithdraw(true);
+			updAll();
+			setNumberOfWithdrawSrtu("");
+		},
+		onError() {
+			setIsErrorWithdraw(true);
+		},
+	});
+
+	// Знаття зі стейку всіх токенів і винагороди
+	const { config: withdrawAllConfig } = usePrepareContractWrite({
+		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
+		abi: contractStakingABI,
+		functionName: "exit",
+		enabled: Boolean(!setNumberOfWithdrawSrtu),
+	});
+
+	const { data: withdrawAllData, write: withdrawAll } = useContractWrite(withdrawAllConfig);
+
+	const { isLoading: isLoadingWithdrawAll } = useWaitForTransaction({
+		hash: withdrawAllData?.hash,
+		onSuccess() {
+			setIsSuccessWithdrawAll(true);
+			updAll();
+			// setNumberOfSrtu("");
+		},
+		onError() {
+			setIsErrorWithdrawAll(true);
+		},
+	});
 
 	return {
 		struBalance,
@@ -369,15 +464,24 @@ export const useContract = (
 		updAll,
 		getAllowance,
 		transactionStakeNumberOfStru,
+		transactionWithdrawNumberOfStru,
 		isErrorApprove,
 		isErrorStaked,
 		isSuccessApprove,
 		isSuccessStake,
-		onSubmitHandler,
+		onSubmitStakeHandler,
+		onSubmitWidthdrawHandler,
 		onChangeInput,
 		isLoadingApprove,
 		isLoadingStake,
 		isErrorApprovePrepare,
-		numberOfSrtu,
+		isLoadingWithdraw,
+		isLoadingWithdrawAll,
+		numberOfStakeSrtu,
+		numberOfWithdrawSrtu,
+		isSuccessWithdraw,
+		isSuccessWithdrawAll,
+		isErrorWithdrawAll,
+		isErrorWithdraw,
 	};
 };

@@ -1,44 +1,31 @@
 import { Form } from "../Form/Form";
 
-import React from "react";
 import { useWeb3 } from "../../hooks/useWeb3";
 import { LoadingInfo } from "../LoadingInfo/LoadingInfo";
 import { ErrorMessage } from "../ErrorMessage/ErrorMessage";
 import { SuccessInfo } from "../SuccessInfo/SuccessInfo";
 import { NumberSTRU } from "../StakedForm/StakedForm.styled";
 
-export interface IWithdrawdFormProps {
-	onSubmitHandler: React.FormEventHandler<HTMLFormElement>;
-	onChangeInput: React.ChangeEventHandler<HTMLInputElement>;
-	numberOfSrtu: string;
-	transactionNumberOfStru: string;
-	isLoadingWithdraw: boolean;
-	isErrorWithdraw: boolean;
-	isSuccessWithdraw: boolean;
-	isSuccessWithdrawAll: boolean;
-	isErrorWithdrawAll: boolean;
-	isLoadingWithdrawAll: boolean;
-}
-
-export const WithdrawForm: React.FC<IWithdrawdFormProps> = ({
-	onSubmitHandler,
-	onChangeInput,
-	numberOfSrtu,
-	isLoadingWithdraw,
-	isErrorWithdraw,
-	isSuccessWithdraw,
-	transactionNumberOfStru,
-	isSuccessWithdrawAll,
-	isErrorWithdrawAll,
-	isLoadingWithdrawAll,
-}) => {
-	const { stakedBalance } = useWeb3();
+export const WithdrawForm = () => {
+	const {
+		stakedBalance,
+		onSubmitWidthdrawHandler,
+		numberOfWithdrawSrtu,
+		onChangeInput,
+		isErrorWithdrawAll,
+		isSuccessWithdrawAll,
+		transactionWithdrawNumberOfStru,
+		isLoadingWithdrawAll,
+		isSuccessWithdraw,
+		isErrorWithdraw,
+		isLoadingWithdraw,
+	} = useWeb3();
 
 	return (
 		<Form
-			onSubmitHandler={onSubmitHandler}
+			onSubmitHandler={onSubmitWidthdrawHandler}
 			inputName="withdraw"
-			inputValue={numberOfSrtu}
+			inputValue={numberOfWithdrawSrtu}
 			onChangeInput={onChangeInput}
 			buttonText={"Withdraw"}
 			// isLoading={isLoadingApprove}
@@ -50,14 +37,14 @@ export const WithdrawForm: React.FC<IWithdrawdFormProps> = ({
 			{isSuccessWithdraw && (
 				<SuccessInfo mobile={true}>
 					<p>
-						<NumberSTRU>{transactionNumberOfStru} STRU</NumberSTRU> successfully withdrawed
+						<NumberSTRU>{transactionWithdrawNumberOfStru} STRU</NumberSTRU> successfully withdrawed
 					</p>
 				</SuccessInfo>
 			)}
 			{isLoadingWithdraw && (
 				<LoadingInfo mobile={true}>
 					<p>
-						Withdrawing <NumberSTRU>{transactionNumberOfStru} STRU</NumberSTRU>
+						Withdrawing <NumberSTRU>{transactionWithdrawNumberOfStru} STRU</NumberSTRU>
 					</p>
 				</LoadingInfo>
 			)}

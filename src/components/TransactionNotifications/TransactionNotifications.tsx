@@ -14,6 +14,13 @@ export const TransactionNotifications = () => {
 		isErrorApprove,
 		isErrorStaked,
 		transactionStakeNumberOfStru,
+		transactionWithdrawNumberOfStru,
+		isLoadingWithdraw,
+		isLoadingWithdrawAll,
+		isSuccessWithdrawAll,
+		isErrorWithdrawAll,
+		isErrorWithdraw,
+		isSuccessWithdraw,
 	} = useWeb3();
 
 	return (
@@ -44,6 +51,33 @@ export const TransactionNotifications = () => {
 					</LoadingInfo>
 				)}
 				{(isErrorApprove || isErrorStaked) && <ErrorMessage mobile={false} />}
+				{(isErrorWithdraw || isErrorWithdrawAll) && <ErrorMessage mobile={false} />}
+				{/* Виведення інформації про статус транзакцій при знятті зі стейку */}
+				{isSuccessWithdraw && (
+					<SuccessInfo mobile={false}>
+						<p>
+							<NumberSTRU>{transactionWithdrawNumberOfStru} STRU</NumberSTRU> successfully withdrawed
+						</p>
+					</SuccessInfo>
+				)}
+				{isLoadingWithdraw && (
+					<LoadingInfo mobile={false}>
+						<p>
+							Withdrawing <NumberSTRU>{transactionWithdrawNumberOfStru} STRU</NumberSTRU>
+						</p>
+					</LoadingInfo>
+				)}
+				{/* Виведення інформації про статус транзакцій при знятті всього стейку і винагород */}
+				{isSuccessWithdrawAll && (
+					<SuccessInfo mobile={false}>
+						<p>Successfully withdrawed all and rewards</p>
+					</SuccessInfo>
+				)}
+				{isLoadingWithdrawAll && (
+					<LoadingInfo mobile={false}>
+						<p>Withdrawing all and rewards</p>
+					</LoadingInfo>
+				)}
 			</TransactionStatusWrapper>
 		</>
 	);
