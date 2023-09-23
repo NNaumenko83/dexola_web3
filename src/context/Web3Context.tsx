@@ -5,6 +5,7 @@ import contractStakingABI from "../contracts/contract-staking-abi.json";
 import contractStarRunnerTokenABI from "../contracts/contract-tokenTracker-abi.json";
 import { createWeb3Provider } from "../utils/createWeb3Provider";
 import { useContract } from "../hooks/useContract";
+import { useContractWriteStake } from "../hooks/useContractWriteStake";
 
 export type Web3ContextType = {
 	web3: Web3 | null;
@@ -19,11 +20,23 @@ export type Web3ContextType = {
 	days: number | null;
 	earned: number | null;
 	allowance: bigint | null;
+	numberOfSrtu: string;
 	getBalance: () => void;
 	getStruBalance: () => void;
 	getStakedBalance: () => void;
 	updAll: () => void;
 	getRewardRate: (input: number) => void;
+	getAllowance: () => void;
+	transactionStakeNumberOfStru: string;
+	isErrorApprove: boolean;
+	isErrorStaked: boolean;
+	isSuccessApprove: boolean;
+	isSuccessStake: boolean;
+	onSubmitHandler: React.FormEventHandler<HTMLFormElement>;
+	onChangeInput: React.ChangeEventHandler<HTMLInputElement>;
+	isLoadingApprove: boolean;
+	isLoadingStake: boolean;
+	isErrorApprovePrepare: Error | null;
 };
 
 const contractStakingAddress = "0x2f112ed8a96327747565f4d4b4615be8fb89459d";
@@ -51,7 +64,22 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		getBalance,
 		updAll,
 		allowance,
+		getAllowance,
 	} = useContract(web3, contractStaking, contractStarRunnerToken);
+
+	const {
+		transactionStakeNumberOfStru,
+		isErrorApprove,
+		isErrorStaked,
+		isSuccessApprove,
+		isSuccessStake,
+		onSubmitHandler,
+		onChangeInput,
+		isLoadingApprove,
+		isLoadingStake,
+		isErrorApprovePrepare,
+		numberOfSrtu,
+	} = useContractWriteStake();
 
 	useEffect(() => {
 		const web3 = createWeb3Provider();
@@ -71,6 +99,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		<Web3Context.Provider
 			value={{
 				web3,
+				allowance,
 				balance,
 				struBalance,
 				balanceStruOnWallet,
@@ -82,11 +111,22 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				getStruBalance,
 				getStakedBalance,
 				getRewardRate,
+				numberOfSrtu,
 				apy,
 				days,
 				earned,
 				updAll,
-				allowance,
+				getAllowance,
+				transactionStakeNumberOfStru,
+				isErrorApprove,
+				isErrorStaked,
+				isSuccessApprove,
+				isSuccessStake,
+				onSubmitHandler,
+				onChangeInput,
+				isLoadingApprove,
+				isLoadingStake,
+				isErrorApprovePrepare,
 			}}
 		>
 			{children}

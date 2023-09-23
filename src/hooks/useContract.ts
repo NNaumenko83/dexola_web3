@@ -238,6 +238,7 @@ export const useContract = (
 		balanceStruOnWallet,
 		balance,
 		apy,
+		allowance,
 		getStruBalance,
 		getDaysRemaining,
 		getRewardRate,
@@ -246,6 +247,6 @@ export const useContract = (
 		getApy,
 		getEarned,
 		updAll,
-		allowance,
+		getAllowance,
 	};
 };
