@@ -28,7 +28,6 @@ export const WithdrawForm = () => {
 			inputValue={numberOfWithdrawSrtu}
 			onChangeInput={onChangeInput}
 			buttonText={"Withdraw"}
-			// isLoading={isLoadingApprove}
 			balance={stakedBalance}
 			placeholder={"Enter withdraw amount"}
 		>

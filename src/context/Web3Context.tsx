@@ -29,12 +29,14 @@ export type Web3ContextType = {
 	getAllowance: () => void;
 	transactionStakeNumberOfStru: string;
 	transactionWithdrawNumberOfStru: string;
+	transactionRewardsNumberOfStru: string;
 	isErrorApprove: boolean;
 	isErrorStaked: boolean;
 	isSuccessApprove: boolean;
 	isSuccessStake: boolean;
 	onSubmitStakeHandler: React.FormEventHandler<HTMLFormElement>;
 	onSubmitWidthdrawHandler: React.FormEventHandler<HTMLFormElement>;
+	onSubmitRewardsHandler: React.FormEventHandler<HTMLFormElement>;
 	onChangeInput: React.ChangeEventHandler<HTMLInputElement>;
 	isLoadingApprove: boolean;
 	isLoadingStake: boolean;
@@ -45,6 +47,9 @@ export type Web3ContextType = {
 	isSuccessWithdraw: boolean;
 	isErrorWithdrawAll: boolean;
 	isErrorWithdraw: boolean;
+	isSuccessWithdrawRewards: boolean;
+	isErrorWithdrawRewards: boolean;
+	isLoadingWithdrawRewards: boolean;
 };
 
 const contractStakingAddress = "0x2f112ed8a96327747565f4d4b4615be8fb89459d";
@@ -81,6 +86,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		isSuccessStake,
 		onSubmitStakeHandler,
 		onSubmitWidthdrawHandler,
+		onSubmitRewardsHandler,
 		onChangeInput,
 		isLoadingApprove,
 		isLoadingStake,
@@ -93,6 +99,9 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		isSuccessWithdrawAll,
 		isErrorWithdraw,
 		isErrorWithdrawAll,
+		isSuccessWithdrawRewards,
+		isErrorWithdrawRewards,
+		isLoadingWithdrawRewards,
 	} = useContract(web3, contractStaking, contractStarRunnerToken);
 
 	useEffect(() => {
@@ -140,6 +149,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				isSuccessStake,
 				onSubmitStakeHandler,
 				onSubmitWidthdrawHandler,
+				onSubmitRewardsHandler,
 				onChangeInput,
 				isLoadingApprove,
 				isLoadingStake,
@@ -150,6 +160,9 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				isSuccessWithdraw,
 				isErrorWithdrawAll,
 				isErrorWithdraw,
+				isLoadingWithdrawRewards,
+				isSuccessWithdrawRewards,
+				isErrorWithdrawRewards,
 			}}
 		>
 			{children}

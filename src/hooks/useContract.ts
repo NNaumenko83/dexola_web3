@@ -46,6 +46,9 @@ export const useContract = (
 	const [isErrorWithdraw, setIsErrorWithdraw] = useState(false);
 	const [isSuccessWithdrawAll, setIsSuccessWithdrawAll] = useState(false);
 	const [isErrorWithdrawAll, setIsErrorWithdrawAll] = useState(false);
+	const [transactionRewardsNumberOfStru, setTransactionRewardsNumberOfStru] = useState<string>("");
+	const [isSuccessWithdrawRewards, setIsSuccessWithdrawRewards] = useState(false);
+	const [isErrorWithdrawRewards, setIsErrorWithdrawRewards] = useState(false);
 
 	const formattedNumberOfStakeSrtu = web3?.utils.toWei(numberOfStakeSrtu, "ether");
 	const formattedNumberOfWithdrawSrtu = web3?.utils.toWei(numberOfWithdrawSrtu, "ether");
@@ -273,14 +276,33 @@ export const useContract = (
 		if (isSuccessWithdraw) {
 			setTimeout(() => {
 				setIsSuccessWithdraw(false);
-			}, 8000);
+			}, 5000);
 		}
 		if (isErrorWithdraw) {
 			setTimeout(() => {
 				setIsErrorWithdraw(false);
-			}, 8000);
+			}, 5000);
 		}
-	}, [isErrorApprove, isErrorStaked, isErrorWithdraw, isSuccessApprove, isSuccessStake, isSuccessWithdraw]);
+		if (isSuccessWithdrawRewards) {
+			setTimeout(() => {
+				setIsSuccessWithdrawRewards(false);
+			}, 5000);
+		}
+		if (isErrorWithdrawRewards) {
+			setTimeout(() => {
+				setIsErrorWithdrawRewards(false);
+			}, 5000);
+		}
+	}, [
+		isErrorApprove,
+		isErrorStaked,
+		isErrorWithdraw,
+		isErrorWithdrawRewards,
+		isSuccessApprove,
+		isSuccessStake,
+		isSuccessWithdraw,
+		isSuccessWithdrawRewards,
+	]);
 
 	const debouncedGetRewardRate = useDebouncedCallback(input => getRewardRate(Number(input)), 500);
 
@@ -444,6 +466,34 @@ export const useContract = (
 		},
 	});
 
+	const { config: claimRewardsConfig } = usePrepareContractWrite({
+		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
+		abi: contractStakingABI,
+		functionName: "claimReward",
+	});
+
+	const { data: claimRewardsData, write: claimRewards } = useContractWrite(claimRewardsConfig);
+
+	const { isLoading: isLoadingWithdrawRewards } = useWaitForTransaction({
+		hash: claimRewardsData?.hash,
+		onSuccess() {
+			setIsSuccessWithdrawRewards(true);
+			updAll();
+		},
+		onError() {
+			setIsErrorWithdrawRewards(true);
+		},
+	});
+
+	const onSubmitRewardsHandler: React.FormEventHandler<HTMLFormElement> = async e => {
+		e.preventDefault();
+
+		if (claimRewards && earned) {
+			setTransactionRewardsNumberOfStru(earned.toString());
+			claimRewards();
+		}
+	};
+
 	return {
 		struBalance,
 		days,
@@ -465,12 +515,14 @@ export const useContract = (
 		getAllowance,
 		transactionStakeNumberOfStru,
 		transactionWithdrawNumberOfStru,
+		transactionRewardsNumberOfStru,
 		isErrorApprove,
 		isErrorStaked,
 		isSuccessApprove,
 		isSuccessStake,
 		onSubmitStakeHandler,
 		onSubmitWidthdrawHandler,
+		onSubmitRewardsHandler,
 		onChangeInput,
 		isLoadingApprove,
 		isLoadingStake,
@@ -483,5 +535,8 @@ export const useContract = (
 		isSuccessWithdrawAll,
 		isErrorWithdrawAll,
 		isErrorWithdraw,
+		isSuccessWithdrawRewards,
+		isErrorWithdrawRewards,
+		isLoadingWithdrawRewards,
 	};
 };

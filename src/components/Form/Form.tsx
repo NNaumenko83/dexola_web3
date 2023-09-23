@@ -18,7 +18,6 @@ interface CustomFormProps {
 	inputValue?: string;
 	onChangeInput?: (event: ChangeEvent<HTMLInputElement>) => void;
 	buttonText: string;
-	// isLoading: boolean;
 	balance: number | null;
 	placeholder?: string;
 	children: ReactNode;

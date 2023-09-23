@@ -4,39 +4,36 @@ import { LoadingInfo } from "../LoadingInfo/LoadingInfo";
 import { NumberSTRU } from "../StakedForm/StakedForm.styled";
 import { ErrorMessage } from "../ErrorMessage/ErrorMessage";
 import { SuccessInfo } from "../SuccessInfo/SuccessInfo";
+import { useWeb3 } from "../../hooks/useWeb3";
 
-export interface IClaimRewardsFormProps {
-	onSubmitHandler: React.FormEventHandler<HTMLFormElement>;
-	earned: number | null;
-	transactionNumberOfStru: string;
-	isLoadingWithdrawRewards: boolean;
-	isErrorWithdrawRewards: boolean;
-	isSuccessWithdrawRewards: boolean;
-}
-
-export const ClaimRewardsForm: React.FC<IClaimRewardsFormProps> = ({
-	onSubmitHandler,
-	earned,
-	transactionNumberOfStru,
-	isLoadingWithdrawRewards,
-	isErrorWithdrawRewards,
-	isSuccessWithdrawRewards,
-}) => {
+export const ClaimRewardsForm = () => {
+	const {
+		onSubmitRewardsHandler,
+		earned,
+		isErrorWithdrawRewards,
+		isSuccessWithdrawRewards,
+		transactionRewardsNumberOfStru,
+		isLoadingWithdrawRewards,
+	} = useWeb3();
 	return (
-		<Form onSubmitHandler={onSubmitHandler} buttonText={"Claim rewards"} balance={earned ? Number(earned) : null}>
+		<Form
+			onSubmitHandler={onSubmitRewardsHandler}
+			buttonText={"Claim rewards"}
+			balance={earned ? Number(earned) : null}
+		>
 			{isErrorWithdrawRewards && <ErrorMessage mobile={true} />}
 			{/* Виведення інформації про статус транзакцій при знятті зі стейку */}
 			{isSuccessWithdrawRewards && (
 				<SuccessInfo mobile={true}>
 					<p>
-						Reward: <NumberSTRU>{transactionNumberOfStru} STRU</NumberSTRU> successfully widthdrawed
+						Reward: <NumberSTRU>{transactionRewardsNumberOfStru} STRU</NumberSTRU> successfully widthdrawed
 					</p>
 				</SuccessInfo>
 			)}
 			{isLoadingWithdrawRewards && (
 				<LoadingInfo mobile={true}>
 					<p>
-						Withdrawing reward: <NumberSTRU>{transactionNumberOfStru} STRU</NumberSTRU>
+						Withdrawing reward: <NumberSTRU>{transactionRewardsNumberOfStru} STRU</NumberSTRU>
 					</p>
 				</LoadingInfo>
 			)}
