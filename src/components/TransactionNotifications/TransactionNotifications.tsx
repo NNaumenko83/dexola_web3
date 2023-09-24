@@ -34,12 +34,12 @@ export const TransactionNotifications: React.FC<ITransactionNotificationsProps> 
 	return (
 		<>
 			{isSuccessApprove && (
-				<SuccessInfo>
+				<SuccessInfo mobile={mobile}>
 					<p>Successfully approved</p>
 				</SuccessInfo>
 			)}
 			{isSuccessStake && (
-				<SuccessInfo>
+				<SuccessInfo mobile={mobile}>
 					<p>
 						<NumberSTRU>{transactionStakeNumberOfStru} STRU</NumberSTRU> successfully added to Staking
 					</p>
@@ -60,7 +60,7 @@ export const TransactionNotifications: React.FC<ITransactionNotificationsProps> 
 			{(isErrorApprove || isErrorStaked) && <ErrorMessage mobile={mobile} />}
 			{(isErrorWithdraw || isErrorWithdrawAll) && <ErrorMessage mobile={mobile} />}
 			{/* Виведення інформації про статус транзакцій при знятті зі стейку */}
-			{"isSuccessWithdraw" && (
+			{isSuccessWithdraw && (
 				<SuccessInfo mobile={mobile}>
 					<p>
 						<NumberSTRU>{transactionWithdrawNumberOfStru} STRU</NumberSTRU> successfully withdrawed
