@@ -101,13 +101,6 @@ export const TransactionNotifications: React.FC<ITransactionNotificationsProps> 
 					</p>
 				</LoadingInfo>
 			)}
-			{isSuccessWithdraw && (
-				<SuccessInfo mobile={mobile}>
-					<p>
-						<NumberSTRU>{transactionWithdrawNumberOfStru} STRU</NumberSTRU> successfully withdrawed
-					</p>
-				</SuccessInfo>
-			)}
 		</>
 	);
 };

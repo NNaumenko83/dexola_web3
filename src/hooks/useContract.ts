@@ -352,12 +352,14 @@ export const useContract = (
 		e.preventDefault();
 
 		if (formattedNumberOfStakeSrtu && allowance && allowance < BigInt(formattedNumberOfStakeSrtu) && approve) {
+			console.log("approve:", approve);
 			approve();
 			setNumberOfStakeSrtu("");
 			return;
 		}
 
 		if (stake && numberOfStakeSrtu !== "") {
+			console.log("stake:", stake);
 			setTransactionStakeNumberOfStru(numberOfStakeSrtu);
 			stake();
 			return;
