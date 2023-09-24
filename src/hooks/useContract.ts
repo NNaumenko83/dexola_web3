@@ -31,6 +31,8 @@ export const useContract = (
 	const [rewardRate, setRewardRate] = useState<number | null>(null);
 	const [balanceStruOnWallet, setBalanceStruOnWallet] = useState<bigint | null>(null);
 	const [stakedBalance, setStakedBalance] = useState<number | null>(null);
+	const [stakedBalanceBigint, setStakedBalanceBigint] = useState<bigint | null>(null);
+	console.log("stakedBalanceBigint:", stakedBalanceBigint);
 	const [balance, setBalance] = useState<number | null>(null);
 	const [apy, setApy] = useState<number | null>(null);
 	const [allowance, setAllowance] = useState(0n);
@@ -140,19 +142,23 @@ export const useContract = (
 		if (contractStarRunnerToken && web3 && address) {
 			try {
 				const stakedBalance = await fetchStakedBalance(contractStaking, address);
+				console.log("stakedBalance:", stakedBalance);
 				const formattedStakedBalance = Number(web3.utils.fromWei(stakedBalance, "ether")).toFixed(2);
 
 				if (Number(formattedStakedBalance) < 1) {
+					setStakedBalanceBigint(stakedBalance);
 					setStakedBalance(Number(formattedStakedBalance));
 					return;
 				}
 				setStakedBalance(Math.floor(Number(formattedStakedBalance)));
+				setStakedBalanceBigint(stakedBalance);
+
+				console.log("setStakedBalanceBigint");
 			} catch (error) {
 				console.error(error); // Обробка помилок
 			}
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [contractStarRunnerToken, web3, address]);
+	}, [contractStarRunnerToken, web3, address, contractStaking]);
 
 	const getBalance = useCallback(async () => {
 		if (web3 && address) {
@@ -396,23 +402,28 @@ export const useContract = (
 		const inputText = e.target.value;
 
 		if (inputName === "withdraw") {
+			console.log("withdraw");
 			if (!validateAmount(inputText) && inputText === "") {
 				setNumberOfWithdrawSrtu(inputText);
 				return;
 			}
-			if (!validateAmount(inputText)) {
+			if (!stakedBalanceBigint) {
+				console.log("stakedBalanceBigint:");
 				return;
 			}
-			if (
-				stakedBalance &&
-				web3 &&
-				Number(web3.utils.toWei(stakedBalance, "ether")) < Number(web3.utils.toWei(e.target.value, "ether"))
-			) {
+			if (!validateAmount(inputText)) {
+				console.log("validateAmount:", validateAmount);
+				return;
+			}
+			if (stakedBalanceBigint && web3 && stakedBalanceBigint < BigInt(web3.utils.toWei(e.target.value, "ether"))) {
+				console.log("stakedBalanceBigint:", stakedBalanceBigint);
+				console.log(Boolean(stakedBalanceBigint?.toString()));
 				return;
 			}
 
 			setNumberOfWithdrawSrtu(inputText);
 		} else if (inputName === "stake") {
+			console.log("stake:");
 			if (!validateAmount(inputText) && inputText === "") {
 				setNumberOfStakeSrtu(inputText);
 				debouncedGetRewardRate(Number(0));
@@ -473,7 +484,6 @@ export const useContract = (
 		onSuccess() {
 			setIsSuccessWithdrawAll(true);
 			updAll();
-			// setNumberOfSrtu("");
 		},
 		onError() {
 			setIsErrorWithdrawAll(true);
