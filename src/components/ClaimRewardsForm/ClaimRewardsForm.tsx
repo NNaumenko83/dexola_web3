@@ -6,11 +6,7 @@ import { TransactionNotifications } from "../TransactionNotifications/Transactio
 export const ClaimRewardsForm = () => {
 	const { onSubmitRewardsHandler, earned } = useWeb3();
 	return (
-		<Form
-			onSubmitHandler={onSubmitRewardsHandler}
-			buttonText={"Claim rewards"}
-			balance={earned ? Number(earned) : null}
-		>
+		<Form onSubmitHandler={onSubmitRewardsHandler} buttonText={"Claim rewards"} balance={earned ? Number(earned) : 0}>
 			<TransactionNotifications mobile={true} />
 		</Form>
 	);

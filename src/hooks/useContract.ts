@@ -176,7 +176,7 @@ export const useContract = (
 				const apy = Math.floor(Number(totalRewards / totalSupplySTRU)) * 100;
 				setApy(apy);
 			} catch (error) {
-				console.error("Помилка при отриманні APy:", error);
+				console.error("Помилка при отриманні APY:", error);
 			}
 		}
 	}, [contractStaking, web3, setApy]);
@@ -293,15 +293,27 @@ export const useContract = (
 				setIsErrorWithdrawRewards(false);
 			}, 5000);
 		}
+		if (isSuccessWithdrawAll) {
+			setTimeout(() => {
+				setIsSuccessWithdrawAll(false);
+			}, 5000);
+		}
+		if (isErrorWithdrawAll) {
+			setTimeout(() => {
+				setIsErrorWithdrawAll(false);
+			}, 5000);
+		}
 	}, [
 		isErrorApprove,
-		isErrorStaked,
-		isErrorWithdraw,
-		isErrorWithdrawRewards,
 		isSuccessApprove,
+		isErrorStaked,
 		isSuccessStake,
+		isErrorWithdraw,
 		isSuccessWithdraw,
+		isErrorWithdrawRewards,
 		isSuccessWithdrawRewards,
+		isSuccessWithdrawAll,
+		isErrorWithdrawAll,
 	]);
 
 	const debouncedGetRewardRate = useDebouncedCallback(input => getRewardRate(Number(input)), 500);

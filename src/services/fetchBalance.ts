@@ -7,8 +7,12 @@ export async function fetchBalance(web3: Web3 | null, address: string | null): P
 
 	try {
 		const balanceEth = await web3.eth.getBalance(address);
-		const formattedBalance = Number(web3.utils.fromWei(balanceEth, "ether")).toFixed(1);
-		return Number(formattedBalance);
+		const formattedBalance = Number(web3.utils.fromWei(balanceEth, "ether")).toFixed(5).slice(0, 6);
+
+		if (Number(formattedBalance) < 1) {
+			return Number(formattedBalance);
+		}
+		return Math.floor(Number(formattedBalance));
 	} catch (error) {
 		throw new Error(`Помилка при отриманні балансу: ${error}`);
 	}
