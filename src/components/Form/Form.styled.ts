@@ -23,7 +23,7 @@ export const AvailableWrapper = styled.div<{ $claimrewards?: boolean }>`
 	display: flex;
 	gap: 8px;
 
-	margin-bottom: ${props => (props.$claimrewards ? "17.75rem" : "14rem")};
+	margin-bottom: ${props => (props.$claimrewards ? "17.8rem" : "14rem")};
 
 	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
 		margin-bottom: ${props => (props.$claimrewards ? "7.67rem" : "3.875rem")};
@@ -76,6 +76,11 @@ export const ButtonTextWrapper = styled.div`
 `;
 
 export const WithdrawText = styled.p`
+	@media screen and (max-width: ${props => props.theme.breakpoints.maxMobile}) {
+		position: absolute;
+		bottom: -40px;
+	}
+
 	color: #fff;
 	font-size: 16px;
 	font-weight: 500;
