@@ -310,10 +310,10 @@ export const useContract = (
 		isSuccessStake,
 		isErrorWithdraw,
 		isSuccessWithdraw,
-		isErrorWithdrawRewards,
-		isSuccessWithdrawRewards,
 		isSuccessWithdrawAll,
 		isErrorWithdrawAll,
+		isErrorWithdrawRewards,
+		isSuccessWithdrawRewards,
 	]);
 
 	const debouncedGetRewardRate = useDebouncedCallback(input => getRewardRate(Number(input)), 500);
