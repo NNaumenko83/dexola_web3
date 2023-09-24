@@ -8,48 +8,65 @@ export const FormStyled = styled.form`
 
 export const Input = styled.input`
 	width: 100%;
-	padding-bottom: 8px;
-	margin-bottom: 34px;
+	padding-bottom: 0.5rem;
+	margin-bottom: 2.125rem;
 	background-color: transparent;
-	color: white;
-	border-bottom: 1px solid white;
+	color: ${props => props.theme.colors.inputTextColor};
+	border-bottom: 1px solid ${props => props.theme.colors.inputBorderBotomColor};
 
 	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
 		width: 24.4375rem;
+		font-size: ${props => props.theme.fontSizes.body.tablet};
+		font-weight: ${props => props.theme.fontWeights.medium};
+		line-height: 1.5rem; /* 150% */
+		letter-spacing: 0.02rem;
+	}
+
+	&::placeholder {
+		color: ${props => props.theme.colors.placeholderColor};
+		font-weight: ${props => props.theme.fontWeights.normal};
+
+		line-height: 1.71; /* 171.429% */
+		letter-spacing: 0.0175rem;
+		@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
+			font-size: ${props => props.theme.fontSizes.placeholder.tablet};
+			line-height: 1.5; /* 150% */
+			letter-spacing: 0.02rem;
+		}
 	}
 `;
 
 export const AvailableWrapper = styled.div<{ $claimrewards?: boolean }>`
 	display: flex;
-	gap: 8px;
+	gap: 0.5rem;
 
 	margin-bottom: ${props => (props.$claimrewards ? "17.8rem" : "14rem")};
 
 	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
-		margin-bottom: ${props => (props.$claimrewards ? "7.67rem" : "3.875rem")};
-	}
-`;
-
-export const ButtonStyled = styled(Button)`
-	width: 100%;
-	padding-top: 12px;
-	padding-bottom: 12px;
-
-	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
-		padding: 12px 40px;
-
-		width: fit-content;
+		margin-bottom: ${props => (props.$claimrewards ? "8.06rem" : "3.875rem")};
+		font-size: ${props => props.theme.fontSizes.body.tablet};
 	}
 `;
 
 export const AvailableQtyText = styled.span`
-	font-weight: 700;
+	${props => props.theme.fontWeights.bold};
 `;
 
 export const AvailableQtyWrapper = styled.div`
 	display: flex;
-	gap: 4px;
-	color: white;
+	gap: 0.25rem;
+	color: ${props => props.theme.colors.white};
+`;
+
+export const ButtonStyled = styled(Button)`
+	width: 100%;
+	padding-top: 0.75rem;
+	padding-bottom: 0.75rem;
+
+	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
+		padding: 0.75rem 2.5rem;
+		width: fit-content;
+	}
 `;
 
 export const ChildrenWrapper = styled.div`
@@ -57,34 +74,34 @@ export const ChildrenWrapper = styled.div`
 	width: 100%;
 	left: 50%;
 	transform: translateX(-50%);
-	bottom: 48px;
-	padding-bottom: 20px;
+	bottom: 3rem;
+	padding-bottom: 1.25rem;
 `;
 
 export const ButtonTextWrapper = styled.div`
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	gap: 0.625rem;
 	@media screen and (max-width: ${props => props.theme.breakpoints.maxMobile}) {
 		flex-direction: column;
-		margin-bottom: 56px;
+		margin-bottom: 3.5rem;
 	}
 
 	@media screen and (min-width: ${props => props.theme.breakpoints.tablet}) {
-		gap: 40px;
+		gap: 2.5rem;
 	}
 `;
 
 export const WithdrawText = styled.p`
+	color: ${props => props.theme.colors.white};
+	font-size: ${props => props.theme.fontSizes.body.tablet};
+	font-weight: ${props => props.theme.fontWeights.medium};
+	line-height: 1.5; /* 150% */
+	letter-spacing: 0.02rem;
+	text-transform: uppercase;
+
 	@media screen and (max-width: ${props => props.theme.breakpoints.maxMobile}) {
 		position: absolute;
-		bottom: -40px;
+		bottom: -2.5rem;
 	}
-
-	color: #fff;
-	font-size: 16px;
-	font-weight: 500;
-	line-height: 1.5; /* 150% */
-	letter-spacing: 0.32px;
-	text-transform: uppercase;
 `;

@@ -29,6 +29,12 @@ const theme = {
 		balanceColor: "#FFFFFF",
 		// Info Loading and error text color
 		infoColor: "#FFFFFF",
+		// Placeholder color
+		placeholderColor: "#B3B3B3",
+		// Input border botom color
+		inputBorderBotomColor: "#FFFFFF",
+		// Input text color
+		inputTextColor: "#FFFFFF",
 
 		//
 		//
@@ -69,7 +75,7 @@ const theme = {
 		// Input Star Color
 		inputStarColor: "#EB3795",
 		// Input text color
-		inputTextColor: "#FFFFFF",
+
 		// Hero text color
 		heroTextColor: "#FFFFFF",
 		// Input placeholder color
@@ -121,6 +127,11 @@ const theme = {
 			mobile: "0.875rem",
 		},
 
+		placeholder: {
+			tablet: "1rem",
+			mobile: "0.875rem",
+		},
+
 		navLink: {
 			web: "1.125rem",
 			tablet: "1rem",
@@ -143,7 +154,7 @@ const theme = {
 	},
 
 	fontWeights: {
-		// normal: 400,
+		normal: 400,
 		medium: 500,
 		semiBold: 600,
 		bold: 700,
