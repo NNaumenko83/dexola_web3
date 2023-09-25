@@ -21,9 +21,7 @@ const NotFound = lazy(() => import("./pages/NotFound/NotFound"));
 import { Web3Provider } from "./context/Web3Context";
 
 const infuraApiKey = import.meta.env.VITE_APP_INFURA_API_KEY;
-console.log("infuraApiKey:", infuraApiKey);
 const appProjectId = import.meta.env.VITE_APP_PROJECT_ID;
-console.log("appProjectId:", appProjectId);
 
 const { chains, publicClient } = configureChains(
 	[sepolia],
