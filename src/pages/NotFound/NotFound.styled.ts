@@ -1,17 +1,17 @@
 import { styled } from "styled-components";
-import notFoundImage from "../../assets/10-error-404-page-examples-for-UX-design_min.jpg";
+import notFoundImage from "../../assets/404-Not-Found-Black-min.jpeg";
 
 export const NotFoundContainer = styled.div`
 	display: flex;
 	padding: 1.25rem;
-	color: black;
+	color: white;
 	font-size: 1.875rem;
 
-	min-height: 27.625rem;
-	background-color: black;
+	min-height: 25rem;
+	background-color: transparent;
 	background-image: url(${notFoundImage});
 	background-repeat: no-repeat;
-	background-position: center;
+	background-position: top;
 	background-size: cover;
 
 	font-size: ${props => props.theme.fontSizes.medium};
