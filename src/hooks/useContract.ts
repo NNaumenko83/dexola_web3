@@ -18,12 +18,7 @@ import contractStakingABI from "../contracts/contract-staking-abi.json";
 import contractStarRunnerTokenABI from "../contracts/contract-tokenTracker-abi.json";
 import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from "wagmi";
 
-export const useContract = (
-	web3: Web3 | null,
-	// address: string | null,
-	contractStaking: any | null,
-	contractStarRunnerToken: any | null,
-) => {
+export const useContract = (web3: Web3 | null, contractStaking: any | null, contractStarRunnerToken: any | null) => {
 	const { address, isConnected } = useAccount();
 	const [struBalance, setStruBalance] = useState<number | null>(null);
 	const [days, setDays] = useState<number | null>(null);
