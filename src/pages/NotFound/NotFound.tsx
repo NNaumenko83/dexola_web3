@@ -1,5 +1,14 @@
+import { Container } from "../../components/Container/Container";
+import { NotFoundContainer } from "./NotFound.styled";
+
 const NotFound = () => {
-	return <h2>NotFound</h2>;
+	return (
+		<NotFoundContainer>
+			<Container>
+				<p>Page not found</p>
+			</Container>
+		</NotFoundContainer>
+	);
 };
 
 export default NotFound;

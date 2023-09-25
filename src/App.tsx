@@ -52,8 +52,8 @@ function App() {
 								<Route index element={<Stake />} />
 								<Route path="withdraw" element={<Withdraw />} />
 								<Route path="claimrewards" element={<ClaimRewards />} />
+								<Route path="*" element={<NotFound />} />
 							</Route>
-							<Route path="*" element={<NotFound />} />
 						</Routes>
 
 						<ToastContainer
