@@ -1,5 +1,6 @@
 import { useContext } from "react";
-import { Web3Context, Web3ContextType } from "../context/Web3Context";
+import { Web3Context } from "../context/Web3Context";
+import { Web3ContextType } from "../types/contextType";
 
 export const useWeb3 = (): Web3ContextType => {
 	const context = useContext(Web3Context);

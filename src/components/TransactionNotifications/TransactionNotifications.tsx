@@ -57,9 +57,12 @@ export const TransactionNotifications: React.FC<ITransactionNotificationsProps> 
 					</p>
 				</LoadingInfo>
 			)}
-			{(isErrorApprove || isErrorStaked) && <ErrorMessage mobile={mobile} />}
-			{(isErrorWithdraw || isErrorWithdrawAll) && <ErrorMessage mobile={mobile} />}
-			{/* Виведення інформації про статус транзакцій при знятті зі стейку */}
+			{isErrorApprove && <ErrorMessage mobile={mobile} />}
+			{isErrorStaked && <ErrorMessage mobile={mobile} />}
+			{isErrorWithdraw && <ErrorMessage mobile={mobile} />}
+			{isErrorWithdrawAll && <ErrorMessage mobile={mobile} />}
+			{isErrorWithdrawRewards && <ErrorMessage mobile={mobile} />}
+
 			{isSuccessWithdraw && (
 				<SuccessInfo mobile={mobile}>
 					<p>
@@ -85,7 +88,7 @@ export const TransactionNotifications: React.FC<ITransactionNotificationsProps> 
 					<p>Withdrawing all and rewards</p>
 				</LoadingInfo>
 			)}
-			{isErrorWithdrawRewards && <ErrorMessage mobile={mobile} />}
+
 			{/* Виведення інформації про статус транзакціії зняття винагород */}
 			{isSuccessWithdrawRewards && (
 				<SuccessInfo mobile={mobile}>
