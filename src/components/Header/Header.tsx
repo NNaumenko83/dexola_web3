@@ -1,4 +1,4 @@
-import { useAccount /*useDisconnect*/ } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 import { Container } from "../Container/Container";
 import Icon from "../Icon/Icon";
 import {
@@ -78,7 +78,7 @@ export const Header = () => {
 	// }, []);
 
 	// Використовуємо хук для відключення аккаунта (при необхідностф можна додати в майбутньому)
-	// const { disconnect } = useDisconnect();
+	const { disconnect } = useDisconnect();
 
 	return (
 		<HeaderStyled>
@@ -104,7 +104,7 @@ export const Header = () => {
 								<AdddressText>{convertEthereumAddress(address)}</AdddressText>
 							</EtheriumInfoWrapper>
 							{/* При необхідності в майбутньому можна в майбутньому додати кнопку disconnect */}
-							{/* <button onClick={() => disconnect()}>Disconnect</button> */}
+							<button onClick={() => disconnect()}>Disconnect</button>
 						</HeaderBalanceInfoWrapper>
 					) : (
 						<ConnectToWalletButtonHeader />

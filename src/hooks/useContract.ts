@@ -32,12 +32,13 @@ export const useContract = (
 	const [balanceStruOnWallet, setBalanceStruOnWallet] = useState<bigint | null>(null);
 	const [stakedBalance, setStakedBalance] = useState<number | null>(null);
 	const [stakedBalanceBigint, setStakedBalanceBigint] = useState<bigint | null>(null);
-	console.log("stakedBalanceBigint:", stakedBalanceBigint);
 	const [balance, setBalance] = useState<number | null>(null);
 	const [apy, setApy] = useState<number | null>(null);
 	const [allowance, setAllowance] = useState(0n);
+	console.log("allowance:", allowance);
 	const [numberOfStakeSrtu, setNumberOfStakeSrtu] = useState<string>("");
 	const [numberOfWithdrawSrtu, setNumberOfWithdrawSrtu] = useState<string>("");
+	console.log("numberOfWithdrawSrtu:", Boolean(numberOfWithdrawSrtu));
 	const [transactionStakeNumberOfStru, setTransactionStakeNumberOfStru] = useState<string>("");
 	const [transactionWithdrawNumberOfStru, setTransactionWithdrawNumberOfStru] = useState<string>("");
 	const [isErrorApprove, setIsErrorApprove] = useState(false);
@@ -341,7 +342,9 @@ export const useContract = (
 	});
 
 	const { data: approveData, write: approve } = useContractWrite(approveConfig);
+	console.log("approve:", approve);
 	const { data: stakeData, write: stake } = useContractWrite(stakeConfig);
+	console.log("stake:", stake);
 
 	const { isLoading: isLoadingApprove } = useWaitForTransaction({
 		hash: approveData?.hash,
@@ -369,15 +372,13 @@ export const useContract = (
 	const onSubmitStakeHandler: React.FormEventHandler<HTMLFormElement> = async e => {
 		e.preventDefault();
 
-		if (formattedNumberOfStakeSrtu && allowance && allowance < BigInt(formattedNumberOfStakeSrtu) && approve) {
-			console.log("approve:", approve);
+		if (formattedNumberOfStakeSrtu && allowance < BigInt(formattedNumberOfStakeSrtu) && approve) {
 			approve();
 			setNumberOfStakeSrtu("");
 			return;
 		}
 
 		if (stake && numberOfStakeSrtu !== "") {
-			console.log("stake:", stake);
 			setTransactionStakeNumberOfStru(numberOfStakeSrtu);
 			stake();
 			return;
@@ -408,16 +409,12 @@ export const useContract = (
 				return;
 			}
 			if (!stakedBalanceBigint) {
-				console.log("stakedBalanceBigint:");
 				return;
 			}
 			if (!validateAmount(inputText)) {
-				console.log("validateAmount:", validateAmount);
 				return;
 			}
 			if (stakedBalanceBigint && web3 && stakedBalanceBigint < BigInt(web3.utils.toWei(e.target.value, "ether"))) {
-				console.log("stakedBalanceBigint:", stakedBalanceBigint);
-				console.log(Boolean(stakedBalanceBigint?.toString()));
 				return;
 			}
 
@@ -456,6 +453,7 @@ export const useContract = (
 	});
 
 	const { data: withdrawData, write: withdraw } = useContractWrite(withdrawConfig);
+	console.log("withdraw:", withdraw);
 
 	const { isLoading: isLoadingWithdraw } = useWaitForTransaction({
 		hash: withdrawData?.hash,
@@ -474,10 +472,11 @@ export const useContract = (
 		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
 		abi: contractStakingABI,
 		functionName: "exit",
-		enabled: Boolean(!setNumberOfWithdrawSrtu),
+		enabled: Boolean(!numberOfWithdrawSrtu),
 	});
 
 	const { data: withdrawAllData, write: withdrawAll } = useContractWrite(withdrawAllConfig);
+	console.log("withdrawAll:", withdrawAll);
 
 	const { isLoading: isLoadingWithdrawAll } = useWaitForTransaction({
 		hash: withdrawAllData?.hash,
@@ -510,6 +509,7 @@ export const useContract = (
 	});
 
 	const onSubmitRewardsHandler: React.FormEventHandler<HTMLFormElement> = async e => {
+		console.log("onSubmitRewardsHandler:");
 		e.preventDefault();
 
 		if (claimRewards && earned) {
