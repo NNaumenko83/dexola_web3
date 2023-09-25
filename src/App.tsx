@@ -18,10 +18,6 @@ const Stake = lazy(() => import("./pages/Stake/Stake"));
 const Withdraw = lazy(() => import("./pages/Withdraw/Withdraw"));
 const NotFound = lazy(() => import("./pages/NotFound/NotFound"));
 
-// import ClaimRewards from "./pages/ClaimRewards/ClaimRewards";
-// import Stake from "./pages/Stake/Stake";
-// import Withdraw from "./pages/Withdraw/Withdraw";
-// import NotFound from "./pages/NotFound/NotFound";
 import { Web3Provider } from "./context/Web3Context";
 
 const { chains, publicClient } = configureChains(
