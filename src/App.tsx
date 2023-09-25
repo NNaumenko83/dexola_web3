@@ -20,6 +20,7 @@ const NotFound = lazy(() => import("./pages/NotFound/NotFound"));
 
 import { Web3Provider } from "./context/Web3Context";
 
+// Імпортуємо ключі з середовища
 const infuraApiKey = import.meta.env.VITE_APP_INFURA_API_KEY;
 const appProjectId = import.meta.env.VITE_APP_PROJECT_ID;
 
