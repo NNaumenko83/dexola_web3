@@ -7,6 +7,7 @@ const NavLinkStyled = styled(NavLink)`
 	display: inline-block;
 	padding-top: 1rem;
 	padding-bottom: 1rem;
+	height: 100%;
 
 	&.active {
 		color: ${props => props.theme.colors.activePageLinkColor};

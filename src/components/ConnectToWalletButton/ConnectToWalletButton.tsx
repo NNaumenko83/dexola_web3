@@ -1,7 +1,6 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Button } from "../Button/Button";
 import styled from "styled-components";
-import React from "react";
 
 export const ConnectWalletStyled = styled(Button)`
 	width: 100%;
@@ -21,14 +20,9 @@ const ButtonWrapper = styled.div`
 
 // В даному компоненті використаний код з https://www.rainbowkit.com/docs/custom-connect-button
 
-interface IConnectButtonCustom {
-	section?: string | undefined;
-}
-
 // В даному компоненті використаний код з https://www.rainbowkit.com/docs/custom-connect-button
 
-export const ConnectToWalletButton: React.FC<IConnectButtonCustom> = ({ section }) => {
-	console.log("section:", section);
+export const ConnectToWalletButton = () => {
 	return (
 		<ConnectButton.Custom>
 			{({ account, chain, openAccountModal, openChainModal, openConnectModal, authenticationStatus, mounted }) => {

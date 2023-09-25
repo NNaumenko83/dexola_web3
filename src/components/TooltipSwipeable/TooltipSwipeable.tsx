@@ -43,7 +43,6 @@ const Tooltip = styled(animated.div)`
 `;
 
 const tooltip: HTMLElement | null = document.getElementById("tooltip-root");
-console.log("tooltip:", tooltip);
 
 interface ITooltipSwipeable {
 	isTooltipVisible: boolean;
