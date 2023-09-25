@@ -20,14 +20,19 @@ const NotFound = lazy(() => import("./pages/NotFound/NotFound"));
 
 import { Web3Provider } from "./context/Web3Context";
 
+const infuraApiKey = import.meta.env.VITE_APP_INFURA_API_KEY;
+console.log("infuraApiKey:", infuraApiKey);
+const appProjectId = import.meta.env.VITE_APP_PROJECT_ID;
+console.log("appProjectId:", appProjectId);
+
 const { chains, publicClient } = configureChains(
 	[sepolia],
-	[infuraProvider({ apiKey: "35a6a592708b48bc8707f2ba01b3aaf2" }), publicProvider()],
+	[infuraProvider({ apiKey: infuraApiKey }), publicProvider()],
 );
 
 const { connectors } = getDefaultWallets({
 	appName: "My RainbowKit App",
-	projectId: "d2e5b14023db785f96b1bbb053881d95",
+	projectId: appProjectId,
 	chains,
 });
 
