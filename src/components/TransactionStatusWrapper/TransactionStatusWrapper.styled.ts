@@ -7,7 +7,7 @@ export const TransactionStatusWrapperStyled = styled.div`
 	justify-content: flex-end;
 	position: absolute;
 	right: 0;
-	bottom: 16px;
+	bottom: 1rem;
 	@media screen and (min-width: 744px) {
 		width: 100%;
 		display: flex;
@@ -15,7 +15,7 @@ export const TransactionStatusWrapperStyled = styled.div`
 	}
 
 	@media screen and (min-width: 1440px) {
-		bottom: 110px;
+		bottom: 5.625rem;
 	}
 `;
 
