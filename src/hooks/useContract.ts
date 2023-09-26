@@ -102,30 +102,23 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 		async (input: number) => {
 			try {
 				if (contractStaking && web3 && address) {
-					const [periodFinishValue, rewardRateValue, totalSupplySTRUValue, stakedBalanceValue] = await Promise.all([
-						fetchPeriodFinish(contractStaking),
-						fetchRewardRate(contractStaking),
-						fetchTotalSupplySTRU(contractStaking),
-						fetchStakedBalance(contractStaking, address),
+					const [periodFinish, rewardRate, totalSupplySTRUValue, stakedBalanceValue] = await Promise.all([
+						fetchPeriodFinish(contractStaking) /* bigint */,
+						fetchRewardRate(contractStaking) /* bigint */,
+						fetchTotalSupplySTRU(contractStaking) /* bigint */,
+						fetchStakedBalance(contractStaking, address) /* bigint */,
 					]);
 
-					const periodFinish = Number(periodFinishValue);
-					const rewardRate = Number(rewardRateValue);
-					const totalSupplySTRU = Number(totalSupplySTRUValue);
-					const stakedBalance = Number(stakedBalanceValue);
+					const totalSupplySTRU = Number(Number(web3.utils.fromWei(totalSupplySTRUValue, "ether")).toFixed(6));
+					const stakedBalance = Number(Number(web3.utils.fromWei(stakedBalanceValue, "ether")).toFixed(6));
 					const currentTimestamp = Math.floor(Date.now() / 1000);
-					const timeRemainingInSeconds = periodFinish - currentTimestamp;
-					const totalAvailableRewards = BigInt(timeRemainingInSeconds) * BigInt(rewardRate);
-
-					if (web3) {
-						const rewardRate =
-							(BigInt(stakedBalance) * totalAvailableRewards) / BigInt(totalSupplySTRU) +
-							BigInt(web3.utils.toWei(input.toString(), "ether"));
-
-						const formattedRewardRate = Number(web3.utils.fromWei(rewardRate.toString(), "ether")).toFixed(3);
-
-						setRewardRate(formattedRewardRate);
-					}
+					const timeRemainingInSeconds = periodFinish - BigInt(currentTimestamp);
+					const totalAvailableRewards = Number(
+						Number(web3.utils.fromWei(timeRemainingInSeconds * rewardRate, "ether")).toFixed(6),
+					);
+					const rewardRateCalculate = (stakedBalance * totalAvailableRewards) / totalSupplySTRU + input;
+					const formattedRewardRate = rewardRateCalculate.toFixed(3);
+					setRewardRate(formattedRewardRate);
 				}
 			} catch (error) {
 				setIsFetchInfoError(true);
