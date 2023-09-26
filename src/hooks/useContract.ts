@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useAccount } from "wagmi";
 import Web3 from "web3";
 import { useDebouncedCallback } from "use-debounce";
@@ -97,8 +97,6 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 	}, [contractStaking]);
 
 	//  Функція для отримання і обчислення значення reward rate
-	// Змінна для відстеження інтервалу оновлення reward rate
-	const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
 	const getRewardRate = useCallback(
 		async (input: number) => {
@@ -138,22 +136,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 		[contractStaking, web3, address],
 	);
 
-	// Функція для відстеження інтервалу
-	const startGetRewardRateInterval = useCallback(() => {
-		console.log("intervalRef.current:", intervalRef.current);
-		if (intervalRef.current !== null) {
-			clearInterval(intervalRef.current);
-		}
-
-		if (numberOfStakeSrtu !== null) {
-			// Запускаємо getRewardRate кожні 3 секунди
-			intervalRef.current = setInterval(() => {
-				getRewardRate(Number(numberOfStakeSrtu));
-			}, 3000);
-		}
-	}, [getRewardRate, numberOfStakeSrtu]);
-
-	// Функція для отримання балансу на стейкє
+	// Функція для отримання балансу на стейці
 
 	const getStakedBalance = useCallback(async () => {
 		if (contractStarRunnerToken && web3 && address) {
@@ -452,17 +435,6 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 	};
 
 	//
-	useEffect(() => {
-		startGetRewardRateInterval();
-	}, [numberOfStakeSrtu, startGetRewardRateInterval]);
-
-	useEffect(() => {
-		return () => {
-			if (intervalRef.current) {
-				clearInterval(intervalRef.current);
-			}
-		};
-	}, []);
 
 	useEffect(() => {
 		if (web3) {

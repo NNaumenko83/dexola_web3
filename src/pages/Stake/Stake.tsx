@@ -9,10 +9,42 @@ import { useWeb3 } from "../../hooks/useWeb3";
 
 import { StakedForm } from "../../components/StakedForm/StakedForm";
 import { RewardQtyText, RewardRateText, StruWeekText } from "./Stake.styled";
+import { useRef, useEffect, useCallback } from "react";
 
 const Stake = () => {
 	const { isConnected } = useAccount();
-	const { rewardRate } = useWeb3();
+	const { rewardRate, getRewardRate, numberOfStakeSrtu } = useWeb3();
+
+	// Змінна для відстеження інтервалу оновлення reward rate
+	const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+	// Функція для відстеження інтервалу
+	const startGetRewardRateInterval = useCallback(() => {
+		console.log("intervalRef.current:", intervalRef.current);
+		if (intervalRef.current !== null) {
+			clearInterval(intervalRef.current);
+		}
+
+		if (numberOfStakeSrtu !== null) {
+			// Запускаємо getRewardRate кожні 3 секунди
+			intervalRef.current = setInterval(() => {
+				getRewardRate(Number(numberOfStakeSrtu));
+			}, 3000);
+		}
+	}, [getRewardRate, numberOfStakeSrtu]);
+
+	useEffect(() => {
+		getRewardRate(Number(numberOfStakeSrtu));
+		startGetRewardRateInterval();
+	}, [numberOfStakeSrtu, startGetRewardRateInterval, getRewardRate]);
+
+	useEffect(() => {
+		return () => {
+			if (intervalRef.current) {
+				clearInterval(intervalRef.current);
+			}
+		};
+	}, []);
 
 	return (
 		<Container>
