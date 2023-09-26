@@ -45,6 +45,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 	const [transactionRewardsNumberOfStru, setTransactionRewardsNumberOfStru] = useState<string>("");
 	const [isSuccessWithdrawRewards, setIsSuccessWithdrawRewards] = useState(false);
 	const [isErrorWithdrawRewards, setIsErrorWithdrawRewards] = useState(false);
+	const [isFetchInfoError, setIsFetchInfoError] = useState(false);
 
 	const formattedNumberOfStakeSrtu = web3?.utils.toWei(numberOfStakeSrtu, "ether");
 	const formattedNumberOfWithdrawSrtu = web3?.utils.toWei(numberOfWithdrawSrtu, "ether");
@@ -59,7 +60,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 				);
 				setAllowance(currentAllowance);
 			} catch (error) {
-				console.error(error);
+				setIsFetchInfoError(true);
 			}
 		}
 	}, [contractStarRunnerToken, address]);
@@ -72,7 +73,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 				const formattedStruBalance = Math.floor(Number(web3.utils.fromWei(balanceStruOnWallet, "ether")));
 				setStruBalance(Number(formattedStruBalance));
 			} catch (error) {
-				console.error(error);
+				setIsFetchInfoError(true);
 			}
 		}
 	}, [contractStarRunnerToken, web3, address]);
@@ -86,7 +87,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 			const daysRemaining = Math.floor(timeRemainingInSeconds / oneDayInSeconds);
 			setDays(daysRemaining);
 		} catch (error) {
-			console.error(error);
+			setIsFetchInfoError(true);
 		}
 	}, [contractStaking]);
 
@@ -125,8 +126,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 					}
 				}
 			} catch (error) {
-				console.error("Помилка при отриманні reward rate:", error);
-				return null;
+				setIsFetchInfoError(true);
 			}
 		},
 		[contractStaking, web3, address],
@@ -146,7 +146,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 				setStakedBalance(Math.floor(Number(formattedStakedBalance)));
 				setStakedBalanceBigint(stakedBalance);
 			} catch (error) {
-				console.error(error); // Обробка помилок
+				setIsFetchInfoError(true);
 			}
 		}
 	}, [contractStarRunnerToken, web3, address, contractStaking]);
@@ -157,7 +157,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 				const balanceEth = await fetchBalance(web3, address);
 				setBalance(Number(balanceEth));
 			} catch (error) {
-				console.error("Помилка при отриманні балансу:", error);
+				setIsFetchInfoError(true);
 			}
 		}
 	}, [web3, address, setBalance]);
@@ -173,7 +173,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 				const apy = Math.floor(Number(totalRewards / totalSupplySTRU)) * 100;
 				setApy(apy);
 			} catch (error) {
-				console.error("Помилка при отриманні APY:", error);
+				setIsFetchInfoError(true);
 			}
 		}
 	}, [contractStaking, web3, setApy]);
@@ -190,7 +190,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 				}
 				setEarned(Math.floor(Number(formattedEarned)));
 			} catch (error) {
-				console.error("Помилка при отриманні earned:", error);
+				setIsFetchInfoError(true);
 			}
 		}
 	}, [contractStaking, web3, address]);
@@ -209,7 +209,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 		try {
 			await Promise.all(promises);
 		} catch (error) {
-			console.error("Помилка під час виконання функцій:", error);
+			setIsFetchInfoError(true);
 		}
 	};
 
@@ -300,6 +300,11 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 				setIsErrorWithdrawAll(false);
 			}, 5000);
 		}
+		if (isFetchInfoError) {
+			setTimeout(() => {
+				setIsFetchInfoError(false);
+			}, 5000);
+		}
 	}, [
 		isErrorApprove,
 		isSuccessApprove,
@@ -311,6 +316,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 		isErrorWithdrawAll,
 		isErrorWithdrawRewards,
 		isSuccessWithdrawRewards,
+		isFetchInfoError,
 	]);
 
 	const debouncedGetRewardRate = useDebouncedCallback(input => getRewardRate(Number(input)), 500);
@@ -546,5 +552,6 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 		isSuccessWithdrawRewards,
 		isErrorWithdrawRewards,
 		isLoadingWithdrawRewards,
+		isFetchInfoError,
 	};
 };

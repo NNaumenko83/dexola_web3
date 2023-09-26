@@ -29,6 +29,7 @@ export const TransactionNotifications: React.FC<ITransactionNotificationsProps> 
 		isErrorWithdrawRewards,
 		isLoadingWithdrawRewards,
 		isSuccessWithdrawRewards,
+		isFetchInfoError,
 	} = useWeb3();
 
 	return (
@@ -62,6 +63,7 @@ export const TransactionNotifications: React.FC<ITransactionNotificationsProps> 
 			{isErrorWithdraw && <ErrorMessage mobile={mobile} />}
 			{isErrorWithdrawAll && <ErrorMessage mobile={mobile} />}
 			{isErrorWithdrawRewards && <ErrorMessage mobile={mobile} />}
+			{isFetchInfoError && <ErrorMessage mobile={mobile} />}
 
 			{isSuccessWithdraw && (
 				<SuccessInfo mobile={mobile}>

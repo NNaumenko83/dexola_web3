@@ -44,4 +44,5 @@ export type Web3ContextType = {
 	isSuccessWithdrawRewards: boolean;
 	isErrorWithdrawRewards: boolean;
 	isLoadingWithdrawRewards: boolean;
+	fetchInfoError: boolean;
 };
