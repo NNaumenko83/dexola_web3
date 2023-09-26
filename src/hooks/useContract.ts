@@ -101,7 +101,6 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 	const getRewardRate = useCallback(
 		async (input: number) => {
 			try {
-				console.log("getRewardRate:", getRewardRate);
 				if (contractStaking && web3 && address) {
 					const [periodFinishValue, rewardRateValue, totalSupplySTRUValue, stakedBalanceValue] = await Promise.all([
 						fetchPeriodFinish(contractStaking),
@@ -122,7 +121,6 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 						const rewardRate =
 							(BigInt(stakedBalance) * totalAvailableRewards) / BigInt(totalSupplySTRU) +
 							BigInt(web3.utils.toWei(input.toString(), "ether"));
-						console.log("testRewardRate:", rewardRate);
 
 						const formattedRewardRate = Number(web3.utils.fromWei(rewardRate.toString(), "ether")).toFixed(3);
 

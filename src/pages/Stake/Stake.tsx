@@ -20,7 +20,6 @@ const Stake = () => {
 
 	// Функція для відстеження інтервалу
 	const startGetRewardRateInterval = useCallback(() => {
-		console.log("intervalRef.current:", intervalRef.current);
 		if (intervalRef.current !== null) {
 			clearInterval(intervalRef.current);
 		}
