@@ -178,7 +178,10 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 					fetchTotalRewards(contractStaking),
 				]);
 
-				const apy = Math.floor(Number(totalRewards / totalSupplySTRU)) * 100;
+				const apy = Math.floor(
+					(Number(web3?.utils.fromWei(totalRewards.toString(), "ether")) * 100) /
+						Number(web3?.utils.fromWei(totalSupplySTRU.toString(), "ether")),
+				);
 				setApy(apy);
 			} catch (error) {
 				setIsFetchInfoError(true);
