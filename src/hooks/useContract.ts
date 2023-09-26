@@ -23,7 +23,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 	const [struBalance, setStruBalance] = useState<number | null>(null);
 	const [days, setDays] = useState<number | null>(null);
 	const [earned, setEarned] = useState<number | null>(null);
-	const [rewardRate, setRewardRate] = useState<number | null>(null);
+	const [rewardRate, setRewardRate] = useState<string | null>(null);
 	const [balanceStruOnWallet, setBalanceStruOnWallet] = useState<bigint | null>(null);
 	const [stakedBalance, setStakedBalance] = useState<number | null>(null);
 	const [stakedBalanceBigint, setStakedBalanceBigint] = useState<bigint | null>(null);
@@ -50,9 +50,6 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 	const formattedNumberOfStakeSrtu = web3?.utils.toWei(numberOfStakeSrtu, "ether");
 	const formattedNumberOfWithdrawSrtu = web3?.utils.toWei(numberOfWithdrawSrtu, "ether");
 
-	// Змінна для відстеження інтервалу оновлення reward rate
-	const intervalRef = useRef<NodeJS.Timeout | null>(null);
-	console.log("intervalRef:", intervalRef);
 	// Функція отримання allowance
 	const getAllowance = useCallback(async () => {
 		if (address) {
@@ -100,6 +97,8 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 	}, [contractStaking]);
 
 	//  Функція для отримання і обчислення значення reward rate
+	// Змінна для відстеження інтервалу оновлення reward rate
+	const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
 	const getRewardRate = useCallback(
 		async (input: number) => {
@@ -122,18 +121,14 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 					const totalAvailableRewards = BigInt(timeRemainingInSeconds) * BigInt(rewardRate);
 
 					if (web3) {
-						const testRewardRate =
+						const rewardRate =
 							(BigInt(stakedBalance) * totalAvailableRewards) / BigInt(totalSupplySTRU) +
 							BigInt(web3.utils.toWei(input.toString(), "ether"));
-						console.log("testRewardRate:", testRewardRate);
+						console.log("testRewardRate:", rewardRate);
 
-						const formattedRewardRate = Number(web3.utils.fromWei(testRewardRate.toString(), "ether")).toFixed(3);
+						const formattedRewardRate = Number(web3.utils.fromWei(rewardRate.toString(), "ether")).toFixed(3);
 
-						if (Number(formattedRewardRate) < 1) {
-							setRewardRate(Number(formattedRewardRate));
-							return;
-						}
-						setRewardRate(Math.floor(Number(formattedRewardRate)));
+						setRewardRate(formattedRewardRate);
 					}
 				}
 			} catch (error) {
@@ -145,6 +140,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 
 	// Функція для відстеження інтервалу
 	const startGetRewardRateInterval = useCallback(() => {
+		console.log("intervalRef.current:", intervalRef.current);
 		if (intervalRef.current !== null) {
 			clearInterval(intervalRef.current);
 		}
@@ -156,6 +152,8 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 			}, 3000);
 		}
 	}, [getRewardRate, numberOfStakeSrtu]);
+
+	// Функція для отримання балансу на стейкє
 
 	const getStakedBalance = useCallback(async () => {
 		if (contractStarRunnerToken && web3 && address) {
@@ -176,6 +174,8 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 		}
 	}, [contractStarRunnerToken, web3, address, contractStaking]);
 
+	// Функція для сотримання балансу тестових ETH
+
 	const getBalance = useCallback(async () => {
 		if (web3 && address) {
 			try {
@@ -186,6 +186,8 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 			}
 		}
 	}, [web3, address, setBalance]);
+
+	// Функція для отримання процентної ставки
 
 	const getApy = useCallback(async () => {
 		if (contractStaking && web3) {
@@ -203,6 +205,8 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 		}
 	}, [contractStaking, web3, setApy]);
 
+	// Функція для отримання значення винагороди на даний момент
+
 	const getEarned = useCallback(async () => {
 		if (contractStaking && web3 && address) {
 			try {
@@ -219,6 +223,8 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 			}
 		}
 	}, [contractStaking, web3, address]);
+
+	// Функція для воновленя всіх даних
 
 	const updAll = async () => {
 		const promises = [
