@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useAccount } from "wagmi";
 import Web3 from "web3";
 import { useDebouncedCallback } from "use-debounce";
@@ -50,6 +50,9 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 	const formattedNumberOfStakeSrtu = web3?.utils.toWei(numberOfStakeSrtu, "ether");
 	const formattedNumberOfWithdrawSrtu = web3?.utils.toWei(numberOfWithdrawSrtu, "ether");
 
+	// Змінна для відстеження інтервалу оновлення reward rate
+	const intervalRef = useRef<NodeJS.Timeout | null>(null);
+	console.log("intervalRef:", intervalRef);
 	// Функція отримання allowance
 	const getAllowance = useCallback(async () => {
 		if (address) {
@@ -101,6 +104,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 	const getRewardRate = useCallback(
 		async (input: number) => {
 			try {
+				console.log("getRewardRate:", getRewardRate);
 				if (contractStaking && web3 && address) {
 					const [periodFinishValue, rewardRateValue, totalSupplySTRUValue, stakedBalanceValue] = await Promise.all([
 						fetchPeriodFinish(contractStaking),
@@ -113,7 +117,6 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 					const rewardRate = Number(rewardRateValue);
 					const totalSupplySTRU = Number(totalSupplySTRUValue);
 					const stakedBalance = Number(stakedBalanceValue);
-
 					const currentTimestamp = Math.floor(Date.now() / 1000);
 					const timeRemainingInSeconds = periodFinish - currentTimestamp;
 					const totalAvailableRewards = BigInt(timeRemainingInSeconds) * BigInt(rewardRate);
@@ -122,6 +125,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 						const testRewardRate =
 							(BigInt(stakedBalance) * totalAvailableRewards) / BigInt(totalSupplySTRU) +
 							BigInt(web3.utils.toWei(input.toString(), "ether"));
+						console.log("testRewardRate:", testRewardRate);
 
 						const formattedRewardRate = Number(web3.utils.fromWei(testRewardRate.toString(), "ether")).toFixed(3);
 
@@ -138,6 +142,20 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 		},
 		[contractStaking, web3, address],
 	);
+
+	// Функція для відстеження інтервалу
+	const startGetRewardRateInterval = useCallback(() => {
+		if (intervalRef.current !== null) {
+			clearInterval(intervalRef.current);
+		}
+
+		if (numberOfStakeSrtu !== null) {
+			// Запускаємо getRewardRate кожні 3 секунди
+			intervalRef.current = setInterval(() => {
+				getRewardRate(Number(numberOfStakeSrtu));
+			}, 3000);
+		}
+	}, [getRewardRate, numberOfStakeSrtu]);
 
 	const getStakedBalance = useCallback(async () => {
 		if (contractStarRunnerToken && web3 && address) {
@@ -428,6 +446,18 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 	};
 
 	//
+	useEffect(() => {
+		startGetRewardRateInterval();
+	}, [numberOfStakeSrtu, startGetRewardRateInterval]);
+
+	useEffect(() => {
+		return () => {
+			if (intervalRef.current) {
+				clearInterval(intervalRef.current);
+			}
+		};
+	}, []);
+
 	useEffect(() => {
 		if (web3) {
 			(async () => {
