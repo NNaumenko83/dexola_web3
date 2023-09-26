@@ -58,6 +58,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		isSuccessWithdrawRewards,
 		isErrorWithdrawRewards,
 		isLoadingWithdrawRewards,
+		isFetchInfoError,
 	} = useContract(web3, contractStaking, contractStarRunnerToken);
 
 	useEffect(() => {
@@ -120,6 +121,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				isLoadingWithdrawRewards,
 				isSuccessWithdrawRewards,
 				isErrorWithdrawRewards,
+				isFetchInfoError,
 			}}
 		>
 			{children}
