@@ -6,7 +6,7 @@ export type Web3ContextType = {
 	struBalance: number | null;
 	balanceStruOnWallet: bigint | null;
 	stakedBalance: number | null;
-	rewardRate: number | null;
+	rewardRate: string | null;
 	contractStaking: any | null;
 	contractStarRunnerToken: any | null;
 	apy: number | null;
