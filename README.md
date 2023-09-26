@@ -41,7 +41,7 @@ Before you begin, please ensure that you have the following components installed
 To start the application, run the following command:
 
 ```bash
-npm run start
+npm run dev
 ```
 
 The application will be available at `http://localhost:5173/.
@@ -50,7 +50,7 @@ The application will be available at `http://localhost:5173/.
 
 In this project, the following environment variables are used:
 
-- `VITE_APP_INFURA_API_KEY`: Your Infura API key. You can obtain it from [тут](https://www.infura.io/).
+- `VITE_APP_INFURA_API_KEY`: Your Infura API key. You can obtain it from [here](https://www.infura.io/).
 
 - `VITE_APP_PROJECT_ID`:Your project ID from WalletConnect Cloud. You can get it from [WalletConnect Cloud](https://cloud.walletconnect.com/).
 
