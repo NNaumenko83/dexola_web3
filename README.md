@@ -1,45 +1,64 @@
-# STARRUNNER ECOSYSTEM Landing Page
+# StarRunner Token Staking
 
-This landing page is designed to provide information about the **STARRUNNER ECOSYSTEM**, a blockchain ecosystem that offers innovative solutions and services. You can also use this page to register and join our community.
+**Language: [English](README.md) | [Українська](README.ua.md)**
 
-## About the Project
+StarRunner Token Staking is a web3 application that allows you to stake tokens, claim rewards, and withdraw tokens from the staking pool at any time. This project was built using Vite.
 
-This website is built using the [Vite](https://vitejs.dev/) framework, a fast and efficient development build tool for web applications. Vite enables rapid development and hot module replacement, making it easy to get started with this project.
+## Table of Contents
+
+- [StarRunner Token Staking](#starrunner-token-staking)
+  - [Table of Contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Environment Variables](#environment-variables)
 
 ## Requirements
 
 Before you begin, please ensure that you have the following components installed:
 
-- **Node.js**: You will need Node.js to run the server-side code and manage project dependencies.
+- [Node.js](https://nodejs.org/) installed on your computer.
 
-## Getting Started
-
- To get started with Dexola Camp, follow these steps:
+## Installation
 
 1. Clone this repository to your local machine:
-
    ```bash
-   git clone https://github.com/NNaumenko83/dexola_camp.git
+   git clone https://github.com/NNaumenko83/dexola_web3
    ```
-
 2. Navigate to the project directory:
 
    ```bash
-   cd dexola_camp
+   cd dexola_web3
    ```
 
-3. Install project dependencies:
-
+3. Install the project dependencies:
    ```bash
    npm install
    ```
 
 ## Usage
 
-1. Start the development server:
+To start the application, run the following command:
 
-   ```bash
-   npm run dev
-   ```
+```bash
+npm run start
+```
 
-2. Open your web browser and navigate to http://localhost:5173 The page will automatically reload whenever you save changes to the project files.
+The application will be available at `http://localhost:5173/.
+
+## Environment Variables
+
+In this project, the following environment variables are used:
+
+- `VITE_APP_INFURA_API_KEY`: Your Infura API key. You can obtain it from [тут](https://www.infura.io/).
+
+- `VITE_APP_PROJECT_ID`:Your project ID from WalletConnect Cloud. You can get it from [WalletConnect Cloud](https://cloud.walletconnect.com/).
+
+To set up these environment variables, create a `.env` file in the project root and add the following lines:
+
+```plaintext
+VITE_APP_INFURA_API_KEY=ваш-ключ-infura-api
+VITE_APP_PROJECT_ID=ваш-ідентифікатор-walletconnect-проекту
+```
+
+**These environment variables are used to configure the application and should be set before running the project.**
