@@ -50,6 +50,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 	const formattedNumberOfStakeSrtu = web3?.utils.toWei(numberOfStakeSrtu, "ether");
 	const formattedNumberOfWithdrawSrtu = web3?.utils.toWei(numberOfWithdrawSrtu, "ether");
 
+	// Функція отримання allowance
 	const getAllowance = useCallback(async () => {
 		if (address) {
 			try {
@@ -65,6 +66,8 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 		}
 	}, [contractStarRunnerToken, address]);
 
+	// Функція отримання балансу STRU токенів
+
 	const getStruBalance = useCallback(async () => {
 		if (contractStarRunnerToken && web3 && address) {
 			try {
@@ -78,6 +81,8 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 		}
 	}, [contractStarRunnerToken, web3, address]);
 
+	// Функція отримання кількості днів до, що залишилися до завершення періоду розподілу нагороди в контракті
+
 	const getDaysRemaining = useCallback(async () => {
 		try {
 			const periodFinish = await fetchPeriodFinish(contractStaking);
@@ -90,6 +95,8 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 			setIsFetchInfoError(true);
 		}
 	}, [contractStaking]);
+
+	//  Функція для отримання і обчислення значення reward rate
 
 	const getRewardRate = useCallback(
 		async (input: number) => {
@@ -213,13 +220,221 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 		}
 	};
 
+	// debounce для інпута для розрахунку reward rate
+	const debouncedGetRewardRate = useDebouncedCallback(input => getRewardRate(Number(input)), 500);
+
+	// МЕТОДИ WRITE ДЛЯ КОНТРАКТІВ
+
+	// Метод approve
+
+	const { config: approveConfig } = usePrepareContractWrite({
+		address: "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83",
+		abi: contractStarRunnerTokenABI,
+		functionName: "approve",
+		args: ["0x2f112ed8a96327747565f4d4b4615be8fb89459d", struBalance ? web3?.utils.toWei(struBalance, "ether") : 0],
+		enabled: Boolean(numberOfStakeSrtu),
+	});
+
+	const { data: approveData, write: approve } = useContractWrite(approveConfig);
+
+	const { isLoading: isLoadingApprove } = useWaitForTransaction({
+		hash: approveData?.hash,
+		onSuccess() {
+			setIsSuccessApprove(true);
+			getAllowance();
+		},
+		onError() {
+			setIsErrorApprove(true);
+		},
+	});
+
+	// Підготовка методу approve stake
+
+	const { config: stakeConfig, error: isErrorApprovePrepare } = usePrepareContractWrite({
+		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
+		abi: contractStakingABI,
+		functionName: "stake",
+		args: [formattedNumberOfStakeSrtu],
+		enabled: Boolean(numberOfStakeSrtu),
+	});
+
+	const { data: stakeData, write: stake } = useContractWrite(stakeConfig);
+
+	const { isLoading: isLoadingStake } = useWaitForTransaction({
+		hash: stakeData?.hash,
+		onSuccess() {
+			setIsSuccessStake(true);
+			updAll();
+			setNumberOfStakeSrtu("");
+		},
+		onError() {
+			setIsErrorStaked(true);
+		},
+	});
+
+	// Обробка сабміту при стекінгу
+
+	const onSubmitStakeHandler: React.FormEventHandler<HTMLFormElement> = async e => {
+		e.preventDefault();
+
+		if (formattedNumberOfStakeSrtu && allowance < BigInt(formattedNumberOfStakeSrtu) && approve) {
+			approve();
+			setNumberOfStakeSrtu("");
+			return;
+		}
+
+		if (stake && numberOfStakeSrtu !== "") {
+			setTransactionStakeNumberOfStru(numberOfStakeSrtu);
+			stake();
+			return;
+		}
+	};
+
+	// Обробка сабміту при знятті зі стейту, або, якщо в інпуті нічого не введено, всієї кількості токенів
+	// що застейкані плюс всієї винагороди
+
+	const onSubmitWidthdrawHandler: React.FormEventHandler<HTMLFormElement> = async e => {
+		e.preventDefault();
+
+		if (withdraw && numberOfWithdrawSrtu) {
+			setTransactionWithdrawNumberOfStru(numberOfWithdrawSrtu);
+			withdraw();
+		}
+
+		if (withdrawAll && !numberOfWithdrawSrtu) {
+			withdrawAll();
+		}
+	};
+
+	// Обробка інпутів стейкінгу або зняття зі стейту
+
+	const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = e => {
+		const inputName = e.target.name;
+		const inputText = e.target.value;
+
+		if (inputName === "withdraw") {
+			if (!validateAmount(inputText) && inputText === "") {
+				setNumberOfWithdrawSrtu(inputText);
+				return;
+			}
+			if (!stakedBalanceBigint) {
+				return;
+			}
+			if (!validateAmount(inputText)) {
+				return;
+			}
+			if (stakedBalanceBigint && web3 && stakedBalanceBigint < BigInt(web3.utils.toWei(e.target.value, "ether"))) {
+				return;
+			}
+
+			setNumberOfWithdrawSrtu(inputText);
+		} else if (inputName === "stake") {
+			if (!validateAmount(inputText) && inputText === "") {
+				setNumberOfStakeSrtu(inputText);
+				debouncedGetRewardRate(Number(0));
+				return;
+			}
+
+			if (!validateAmount(inputText) || !struBalance) {
+				return;
+			}
+			if (
+				struBalance &&
+				web3 &&
+				balanceStruOnWallet &&
+				balanceStruOnWallet < BigInt(web3.utils.toWei(e.target.value, "ether"))
+			) {
+				return;
+			}
+
+			debouncedGetRewardRate(Number(inputText));
+			setNumberOfStakeSrtu(inputText);
+		}
+	};
+
+	// Зняття зі стейту певної кількості токенів
+
+	const { config: withdrawConfig } = usePrepareContractWrite({
+		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
+		abi: contractStakingABI,
+		functionName: "withdraw",
+		args: [formattedNumberOfWithdrawSrtu],
+		enabled: Boolean(numberOfWithdrawSrtu),
+	});
+
+	const { data: withdrawData, write: withdraw } = useContractWrite(withdrawConfig);
+
+	const { isLoading: isLoadingWithdraw } = useWaitForTransaction({
+		hash: withdrawData?.hash,
+		onSuccess() {
+			setIsSuccessWithdraw(true);
+			updAll();
+			setNumberOfWithdrawSrtu("");
+		},
+		onError() {
+			setIsErrorWithdraw(true);
+		},
+	});
+
+	// Знаття зі стейку всіх токенів і винагороди
+	const { config: withdrawAllConfig } = usePrepareContractWrite({
+		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
+		abi: contractStakingABI,
+		functionName: "exit",
+		enabled: Boolean(!numberOfWithdrawSrtu),
+	});
+
+	const { data: withdrawAllData, write: withdrawAll } = useContractWrite(withdrawAllConfig);
+
+	const { isLoading: isLoadingWithdrawAll } = useWaitForTransaction({
+		hash: withdrawAllData?.hash,
+		onSuccess() {
+			setIsSuccessWithdrawAll(true);
+			updAll();
+		},
+		onError() {
+			setIsErrorWithdrawAll(true);
+		},
+	});
+
+	// Знаття винагороди
+
+	const { config: claimRewardsConfig } = usePrepareContractWrite({
+		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
+		abi: contractStakingABI,
+		functionName: "claimReward",
+	});
+
+	const { data: claimRewardsData, write: claimRewards } = useContractWrite(claimRewardsConfig);
+
+	const { isLoading: isLoadingWithdrawRewards } = useWaitForTransaction({
+		hash: claimRewardsData?.hash,
+		onSuccess() {
+			setIsSuccessWithdrawRewards(true);
+			updAll();
+		},
+		onError() {
+			setIsErrorWithdrawRewards(true);
+		},
+	});
+
+	const onSubmitRewardsHandler: React.FormEventHandler<HTMLFormElement> = async e => {
+		e.preventDefault();
+
+		if (claimRewards && earned) {
+			setTransactionRewardsNumberOfStru(earned.toString());
+			claimRewards();
+		}
+	};
+
+	//
 	useEffect(() => {
 		if (web3) {
 			(async () => {
 				try {
 					await Promise.all([getApy(), getDaysRemaining(), getRewardRate(0)]);
 				} catch (error) {
-					console.error("Помилка при отриманні даних:", error);
+					setIsFetchInfoError(true);
 				}
 			})();
 		}
@@ -231,7 +446,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 				try {
 					await getBalance();
 				} catch (error) {
-					console.error("Помилка при отриманні балансу:", error);
+					setIsFetchInfoError(true);
 				}
 			})();
 		}
@@ -243,12 +458,13 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 				try {
 					await Promise.all([getStruBalance(), getStakedBalance(), getEarned(), getAllowance()]);
 				} catch (error) {
-					console.error("Помилка при отриманні даних:", error);
+					setIsFetchInfoError(true);
 				}
 			})();
 		}
 	}, [contractStaking, contractStarRunnerToken, getEarned, getStakedBalance, getStruBalance, getAllowance]);
 
+	// Приховування повідомлень про стан транзакцій
 	useEffect(() => {
 		if (isSuccessApprove) {
 			setTimeout(() => {
@@ -318,195 +534,6 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 		isSuccessWithdrawRewards,
 		isFetchInfoError,
 	]);
-
-	const debouncedGetRewardRate = useDebouncedCallback(input => getRewardRate(Number(input)), 500);
-
-	const { config: approveConfig } = usePrepareContractWrite({
-		address: "0x59Ec26901B19fDE7a96f6f7f328f12d8f682CB83",
-		abi: contractStarRunnerTokenABI,
-		functionName: "approve",
-		args: ["0x2f112ed8a96327747565f4d4b4615be8fb89459d", struBalance ? web3?.utils.toWei(struBalance, "ether") : 0],
-		enabled: Boolean(numberOfStakeSrtu),
-	});
-
-	const { config: stakeConfig, error: isErrorApprovePrepare } = usePrepareContractWrite({
-		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
-		abi: contractStakingABI,
-		functionName: "stake",
-		args: [formattedNumberOfStakeSrtu],
-		enabled: Boolean(numberOfStakeSrtu),
-	});
-
-	const { data: approveData, write: approve } = useContractWrite(approveConfig);
-
-	const { data: stakeData, write: stake } = useContractWrite(stakeConfig);
-
-	const { isLoading: isLoadingApprove } = useWaitForTransaction({
-		hash: approveData?.hash,
-		onSuccess() {
-			setIsSuccessApprove(true);
-			getAllowance();
-		},
-		onError() {
-			setIsErrorApprove(true);
-		},
-	});
-
-	const { isLoading: isLoadingStake } = useWaitForTransaction({
-		hash: stakeData?.hash,
-		onSuccess() {
-			setIsSuccessStake(true);
-			updAll();
-			setNumberOfStakeSrtu("");
-		},
-		onError() {
-			setIsErrorStaked(true);
-		},
-	});
-
-	const onSubmitStakeHandler: React.FormEventHandler<HTMLFormElement> = async e => {
-		e.preventDefault();
-
-		if (formattedNumberOfStakeSrtu && allowance < BigInt(formattedNumberOfStakeSrtu) && approve) {
-			approve();
-			setNumberOfStakeSrtu("");
-			return;
-		}
-
-		if (stake && numberOfStakeSrtu !== "") {
-			setTransactionStakeNumberOfStru(numberOfStakeSrtu);
-			stake();
-			return;
-		}
-	};
-
-	const onSubmitWidthdrawHandler: React.FormEventHandler<HTMLFormElement> = async e => {
-		e.preventDefault();
-
-		if (withdraw && numberOfWithdrawSrtu) {
-			setTransactionWithdrawNumberOfStru(numberOfWithdrawSrtu);
-			withdraw();
-		}
-
-		if (withdrawAll && !numberOfWithdrawSrtu) {
-			withdrawAll();
-		}
-	};
-
-	const onChangeInput: React.ChangeEventHandler<HTMLInputElement> = e => {
-		const inputName = e.target.name;
-		const inputText = e.target.value;
-
-		if (inputName === "withdraw") {
-			if (!validateAmount(inputText) && inputText === "") {
-				setNumberOfWithdrawSrtu(inputText);
-				return;
-			}
-			if (!stakedBalanceBigint) {
-				return;
-			}
-			if (!validateAmount(inputText)) {
-				return;
-			}
-			if (stakedBalanceBigint && web3 && stakedBalanceBigint < BigInt(web3.utils.toWei(e.target.value, "ether"))) {
-				return;
-			}
-
-			setNumberOfWithdrawSrtu(inputText);
-		} else if (inputName === "stake") {
-			if (!validateAmount(inputText) && inputText === "") {
-				setNumberOfStakeSrtu(inputText);
-				debouncedGetRewardRate(Number(0));
-				return;
-			}
-
-			if (!validateAmount(inputText) || !struBalance) {
-				return;
-			}
-			if (
-				struBalance &&
-				web3 &&
-				balanceStruOnWallet &&
-				balanceStruOnWallet < BigInt(web3.utils.toWei(e.target.value, "ether"))
-			) {
-				return;
-			}
-
-			debouncedGetRewardRate(Number(inputText));
-			setNumberOfStakeSrtu(inputText);
-		}
-	};
-
-	const { config: withdrawConfig } = usePrepareContractWrite({
-		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
-		abi: contractStakingABI,
-		functionName: "withdraw",
-		args: [formattedNumberOfWithdrawSrtu],
-		enabled: Boolean(numberOfWithdrawSrtu),
-	});
-
-	const { data: withdrawData, write: withdraw } = useContractWrite(withdrawConfig);
-
-	const { isLoading: isLoadingWithdraw } = useWaitForTransaction({
-		hash: withdrawData?.hash,
-		onSuccess() {
-			setIsSuccessWithdraw(true);
-			updAll();
-			setNumberOfWithdrawSrtu("");
-		},
-		onError() {
-			setIsErrorWithdraw(true);
-		},
-	});
-
-	// Знаття зі стейку всіх токенів і винагороди
-	const { config: withdrawAllConfig } = usePrepareContractWrite({
-		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
-		abi: contractStakingABI,
-		functionName: "exit",
-		enabled: Boolean(!numberOfWithdrawSrtu),
-	});
-
-	const { data: withdrawAllData, write: withdrawAll } = useContractWrite(withdrawAllConfig);
-
-	const { isLoading: isLoadingWithdrawAll } = useWaitForTransaction({
-		hash: withdrawAllData?.hash,
-		onSuccess() {
-			setIsSuccessWithdrawAll(true);
-			updAll();
-		},
-		onError() {
-			setIsErrorWithdrawAll(true);
-		},
-	});
-
-	const { config: claimRewardsConfig } = usePrepareContractWrite({
-		address: "0x2f112ed8a96327747565f4d4b4615be8fb89459d",
-		abi: contractStakingABI,
-		functionName: "claimReward",
-	});
-
-	const { data: claimRewardsData, write: claimRewards } = useContractWrite(claimRewardsConfig);
-
-	const { isLoading: isLoadingWithdrawRewards } = useWaitForTransaction({
-		hash: claimRewardsData?.hash,
-		onSuccess() {
-			setIsSuccessWithdrawRewards(true);
-			updAll();
-		},
-		onError() {
-			setIsErrorWithdrawRewards(true);
-		},
-	});
-
-	const onSubmitRewardsHandler: React.FormEventHandler<HTMLFormElement> = async e => {
-		e.preventDefault();
-
-		if (claimRewards && earned) {
-			setTransactionRewardsNumberOfStru(earned.toString());
-			claimRewards();
-		}
-	};
 
 	return {
 		struBalance,
