@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useAccount } from "wagmi";
 import Web3 from "web3";
-import { useDebouncedCallback } from "use-debounce";
 import { validateAmount } from "../utils/validateAmount";
 import {
 	fetchBalance,
@@ -221,9 +220,6 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 		}
 	};
 
-	// debounce для інпута для розрахунку reward rate
-	const debouncedGetRewardRate = useDebouncedCallback(input => getRewardRate(Number(input)), 500);
-
 	// МЕТОДИ WRITE ДЛЯ КОНТРАКТІВ
 
 	// Метод approve
@@ -332,7 +328,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 		} else if (inputName === "stake") {
 			if (!validateAmount(inputText) && inputText === "") {
 				setNumberOfStakeSrtu(inputText);
-				debouncedGetRewardRate(Number(0));
+				getRewardRate(Number(0));
 				return;
 			}
 
@@ -348,7 +344,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 				return;
 			}
 
-			debouncedGetRewardRate(Number(inputText));
+			getRewardRate(Number(inputText));
 			setNumberOfStakeSrtu(inputText);
 		}
 	};
