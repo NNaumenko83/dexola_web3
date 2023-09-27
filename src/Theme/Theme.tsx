@@ -35,65 +35,16 @@ const theme = {
 		inputBorderBotomColor: "#FFFFFF",
 		// Input text color
 		inputTextColor: "#FFFFFF",
-
-		//
-		//
-		//
-		//
-		//
+		// footer borders
+		footerBordersColor: "#204FFE",
+		// Subtitle color
+		subtitle: "#FFFFFF",
+		//Footer text color
+		footerTextColor: "#B3B3B3",
 		//ButtonColors
 		buttonTextColor: "#FFFFFF",
 		buttonBackgroundColor: "#272A2E",
 		buttonHoverBackgroundColor: "rgba(39, 42, 46, 0.9)",
-		//Footer text color
-		footerTextColor: "#B3B3B3",
-
-		// Subtitle color
-		subtitle: "#FFFFFF",
-		// Card border color
-		borderCard: "#09237E",
-		// Bottom border for title
-		titleBottomBorder: "#FFFFFF",
-		// Hero images list border
-		heroImagesListBorder: "#204FFE",
-		// Hero images list border
-		heroImagesBorder: "#204FFE",
-		// header bottom border
-		headerBottomColor: "#204FFE",
-		// footer borders
-		footerBordersColor: "#204FFE",
-		// Table row second background
-		tableRowSecondBackground: "#080B27",
-		// Table head color
-		tableHead: "#FFFFFF",
-		// Table body color
-		tableBody: "#FFFFFF",
-		// Input border bottom
-		inputBorderBottom: "#FFFFFF",
-		// Input Error border bottom
-		inputErrorBorderBottom: "#EB3795",
-		// Input Star Color
-		inputStarColor: "#EB3795",
-		// Input text color
-
-		// Hero text color
-		heroTextColor: "#FFFFFF",
-		// Input placeholder color
-		inputPlaceholder: "#B3B3B3",
-		// Form border color
-		formBorderColor: "#204FFE",
-		// Error message
-		errorMessageColor: "#EB3795",
-		// Eye default color
-		eyeDefaultColor: "#FFFFFF",
-		// Eye hover color
-		eyeHoverColor: "#204FFE",
-		// Scroll bottom border color
-		scrollDownBorderolor: "#FFFFFF",
-		// Starruner text color
-		starrunerTextColor: "#FFFFFF",
-		// Starruner rectangle background
-		starrunerBackgroundRectangle: "#121456",
 	},
 
 	fontSizes: {
@@ -104,21 +55,21 @@ const theme = {
 		},
 
 		textValueTable: {
-			web: "36px",
-			tablet: "28px",
-			mobile: "18px",
+			web: "2.25rem",
+			tablet: "1.75rem",
+			mobile: "1.125rem",
 		},
 
 		subTitle: {
-			web: "24px",
-			tablet: "24px",
-			mobile: "18px",
+			web: "1.5rem",
+			tablet: "1.5rem",
+			mobile: "1.125rem",
 		},
 
 		table: {
-			web: "16px",
-			tablet: "16px",
-			mobile: "12px",
+			web: "1rem",
+			tablet: "1rem",
+			mobile: "0.75rem",
 		},
 
 		body: {
@@ -139,8 +90,8 @@ const theme = {
 		},
 
 		headerBalance: {
-			big: "14px",
-			small: "12px",
+			big: "0.875rem",
+			small: "0.75rem",
 		},
 
 		button: {
@@ -149,8 +100,6 @@ const theme = {
 		},
 
 		footerText: { tablet: "0.875rem", mobile: "0.6875rem" },
-
-		// error: "0.8125rem",
 	},
 
 	fontWeights: {
