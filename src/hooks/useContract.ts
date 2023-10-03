@@ -88,7 +88,7 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 			const currentTimestamp = Math.floor(Date.now() / 1000);
 			const timeRemainingInSeconds = Number(periodFinish) - currentTimestamp;
 			const oneDayInSeconds = 24 * 60 * 60;
-			const daysRemaining = Math.floor(timeRemainingInSeconds / oneDayInSeconds);
+			const daysRemaining = timeRemainingInSeconds < 0 ? 0 : Math.floor(timeRemainingInSeconds / oneDayInSeconds);
 			setDays(daysRemaining);
 		} catch (error) {
 			setIsFetchInfoError(true);
@@ -111,7 +111,8 @@ export const useContract = (web3: Web3 | null, contractStaking: any | null, cont
 					const totalSupplySTRU = Number(Number(web3.utils.fromWei(totalSupplySTRUValue, "ether")).toFixed(6));
 					const stakedBalance = Number(Number(web3.utils.fromWei(stakedBalanceValue, "ether")).toFixed(6));
 					const currentTimestamp = Math.floor(Date.now() / 1000);
-					const timeRemainingInSeconds = periodFinish - BigInt(currentTimestamp);
+					const timeRemainingInSeconds =
+						periodFinish - BigInt(currentTimestamp) < 0 ? BigInt(0) : periodFinish - BigInt(currentTimestamp);
 					const totalAvailableRewards = Number(
 						Number(web3.utils.fromWei(timeRemainingInSeconds * rewardRate, "ether")).toFixed(6),
 					);
